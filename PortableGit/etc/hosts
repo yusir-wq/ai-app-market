@@ -1,0 +1,69 @@
+
+
+# --- SWITCHHOSTS_CONTENT_START ---
+
+117.25.139.76 cmall1-web.chinaz.com
+117.25.139.76 cmall1-api.chinaz.com
+
+##源码下载host
+117.25.139.73 down1_web.chinaz.com
+117.25.139.73 down1_m.chinaz.com
+
+#星网大数据
+110.80.135.23  data.chinaz.com
+
+## 运营后台 正式环境
+## 工具后台 
+117.25.139.75 aitmnbjrye941dapigvlmcj5f4wbcjy2.chinaz.com
+## 开放平台后台
+117.25.139.75 nyp9hm0n3tz1kpjoqon1o9sv71jiadr3.chinaz.com
+## aibase后台
+117.25.139.75 vd7ah0u4x4aku09l9o3el1kva37s8l89.chinaz.com
+## 支付中台后台
+117.25.139.75 thlt394zi7buk4lds89q5no8r3g1mq35.chinaz.com
+
+## 运营后台 测试环境
+## 工具后台
+110.80.135.23 toolmanageumpmsw.chinaz.com
+## 开放平台后台
+110.80.135.23 openplatformmanagemopawt.chinaz.com
+## aibase运营后台
+110.80.135.23 aibasemanageaasxmd.chinaz.com
+## 支付中台后台
+110.80.135.23 paymanagefdecxa.chinaz.com
+
+## 站长AI 前端测试环境
+110.80.135.23 aitest.chinaz.com
+
+## 站长AI的API，使用正式环境要关闭
+###110.80.135.23 aiapi.chinaz.com
+###110.80135.11  my.chinaz.com
+
+110.80.135.23 chatgpt.chinaz.com
+
+117.25.139.73 admscin.chinaz.com
+
+117.25.139.73 sc66.chinaz.com
+117.25.139.68 sc1.chinaz.com
+#小程序
+###110.80.135.23 my.chinaz.com
+110.80.135.23 apiipminiapps.chinaz.com
+
+192.168.0.204 ai.admin.chinaz.com
+110.80.135.23 aitest.chinaz.com
+
+#GEO工具后台
+117.25.139.75 kwbBW9Dkh8yVpe6GL7.chinaz.com
+
+117.25.139.69 aihub.chinaz.com
+##正式环境
+##117.25.139.69 ai.chinaz.net
+117.25.139.69 afasdfasdhgas.chinaz.net
+##测试环境
+##110.80.135.23  ai.chinaz.net
+
+117.25.139.73 spiderlog25.chinaz.com
+
+117.25.139.69 geoaitest.chinaz.cn
+
+192.168.0.54 aisquare.chinaz.com

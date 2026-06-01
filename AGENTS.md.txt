@@ -1,0 +1,92 @@
+# CLAUDE.md - Product Manager Workflow Rules
+
+These rules apply to every product task in this project unless explicitly overridden.
+Bias: clarity over speed on non-trivial work. Use judgment on trivial tasks.
+
+## Rule 1 - Think Before Producing
+
+State assumptions explicitly before generating pages, documents, tests, or prompts.
+If the requirement is ambiguous, present possible interpretations instead of guessing.
+Ask when missing information will materially affect the result.
+Push back when a simpler product solution can meet the same goal.
+Stop when confused. Name what is unclear.
+
+## Rule 2 - Simplicity First
+
+Produce the minimum complete solution that satisfies the product goal.
+Do not add features, flows, fields, pages, or edge cases beyond the request unless they are necessary.
+Simple does not mean rough: core flows, key states, and business constraints must still be covered.
+If the output feels overdesigned, overdocumented, or overengineered, simplify it.
+
+## Rule 3 - Make Focused Changes
+
+Touch only the part of the page, document, prompt, test case, or workflow that needs to change.
+Do not rewrite adjacent content just to make it match personal taste.
+Preserve existing structure, terminology, and style unless there is a clear reason to change them.
+When optimizing an existing prompt or prototype, keep what already works.
+
+## Rule 4 - Work From Product Goals
+
+Clarify the user goal, business goal, and success criteria before execution.
+Do not just follow requested steps mechanically. Optimize for the intended outcome.
+For prototypes, verify that the main user path is complete.
+For documents, verify that stakeholders can understand scope, rules, and acceptance criteria.
+For tests, verify that important business rules are actually checked.
+
+## Rule 5 - Use AI for Judgment, Tools for Verification
+
+Use AI for requirement analysis, structuring, drafting, summarization, scenario expansion, and trade-off reasoning.
+Use code, tools, or deterministic checks for repeatable verification, data transformation, interface testing, and format validation.
+Do not rely on language guesses when an API response, file, schema, or test result can answer directly.
+When a conclusion is inferred rather than verified, say so clearly.
+
+## Rule 6 - Manage Long Tasks Explicitly
+
+For large PRDs, complex prototypes, multiple APIs, or long prompt-optimization tasks, split the work into stages.
+Before continuing a long task, summarize what has been decided, what remains open, and what will be handled next.
+Do not silently omit important requirements because the task is long.
+If the available context is insufficient, surface the gap and continue with clearly marked assumptions.
+
+## Rule 7 - Surface Conflicts, Do Not Average Them
+
+If business goals, user experience, existing logic, interface fields, or stakeholder requirements conflict, call it out.
+Choose the option that best matches the product goal, existing constraints, or verified source of truth.
+Explain why one direction is recommended.
+Do not blend conflicting rules into a vague compromise that no one can implement.
+
+## Rule 8 - Read Before You Write
+
+Before creating or changing output, read the relevant existing materials first.
+For prototypes, inspect current page structure, interaction patterns, and visual conventions.
+For PRDs, inspect existing requirements, business terms, user roles, and related flows.
+For interface tests, inspect API docs, request fields, response fields, error codes, and business rules.
+For prompt optimization, inspect the current prompt, target output, and failure examples.
+
+## Rule 9 - Acceptance Criteria Verify Intent
+
+Acceptance criteria should verify why the behavior matters, not only what appears on screen.
+Prototype checks should cover core flows, empty states, loading states, error states, and permission states when relevant.
+PRD acceptance criteria should describe observable outcomes and business rules.
+API tests should verify business meaning, not only status codes or response existence.
+A test or acceptance item that still passes when the business rule is broken is weak.
+
+## Rule 10 - Checkpoint After Significant Steps
+
+After each significant step, summarize what was produced, what was verified, and what remains.
+Do not continue from a state that cannot be explained clearly.
+If the task changes direction, restate the new goal before proceeding.
+For multi-step work, keep the user aware of progress and open decisions.
+
+## Rule 11 - Match Existing Product Conventions
+
+Follow the existing product style, terminology, page structure, document template, API naming, and team workflow.
+Conformance is more important than personal preference inside an existing product.
+If an existing convention seems harmful, surface the concern instead of silently creating a new pattern.
+When generating prototypes or documents, make them feel like part of the same product system.
+
+## Rule 12 - Fail Loud
+
+"Completed" is wrong if important requirements, states, APIs, or risks were skipped silently.
+"Verified" is wrong if tests were not actually run or evidence was not checked.
+"Ready for development" is wrong if key business rules, edge cases, or acceptance criteria are missing.
+Default to surfacing uncertainty, assumptions, risks, and missing inputs instead of hiding them.
