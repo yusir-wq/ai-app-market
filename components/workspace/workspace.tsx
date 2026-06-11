@@ -27,6 +27,7 @@ import { LoginModal } from '@/components/auth/login-modal'
 import { RechargeModal } from '@/components/auth/recharge-modal'
 import { BillingUsage } from './billing-usage'
 import { BillingPayments } from './billing-payments'
+import { CategoryPage } from './category-page'
 import { MCPCenter } from './mcp-center'
 import { MCPQuickCreateModal } from './mcp-quick-create-modal'
 import { MCPQuickConfigModal } from './mcp-quick-config-modal'
@@ -201,6 +202,8 @@ export function Workspace() {
           deepThinking: enableThinking,
           timestamp: new Date(),
           responseTime,
+          costPoints: model.costPoints,
+          status: 'success',
         } as Message
 
         setMessages(prev => {
@@ -295,6 +298,8 @@ export function Workspace() {
           deepThinking: enableThinking,
           timestamp: new Date(),
           responseTime,
+          costPoints: model.costPoints,
+          status: 'success',
         } as Message
 
         setMessages(prev => {
@@ -343,6 +348,7 @@ export function Workspace() {
         timestamp: new Date(),
         responseTime: 1500,
         costPoints: model.costPoints,
+        status: 'success',
       } as Message
 
       setMessages(prev => {
@@ -385,6 +391,7 @@ export function Workspace() {
         timestamp: new Date(),
         responseTime: 2000,
         costPoints: model.costPoints,
+        status: 'success',
       } as Message
 
       setMessages(prev => {
@@ -432,6 +439,8 @@ export function Workspace() {
         deepThinking: enableThinking,
         timestamp: new Date(),
         responseTime: 1200,
+        costPoints: model.costPoints,
+        status: 'success',
       } as Message
 
       setMessages(prev => {
@@ -550,7 +559,7 @@ export function Workspace() {
                   {selectedModels.map(m => m.name).join('、')}
                 </h2>
                 <p className="text-xs text-muted-foreground">
-                  多模型对话 · {selectedModels.length} 个模型
+                  {selectedModels.length === 1 ? '1个模型' : `多模型对话 · ${selectedModels.length} 个模型`}
                 </p>
               </div>
             </>
@@ -815,54 +824,28 @@ export function Workspace() {
   }
 
   // ===== 分类页 =====
-  const renderCategoryPage = () => {
-    const categoryModels = mockModels.filter(m => m.type === categoryFilter)
-    const categoryNames: Record<string, string> = { chat: '聊天模型', image: '图片模型', video: '视频模型' }
-
-    return (
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-border shrink-0">
-          <h2 className="text-lg font-semibold text-foreground">{categoryNames[categoryFilter] || '模型列表'}</h2>
-        </div>
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {categoryModels.map((model) => (
-                <div
-                  key={model.id}
-                  className="p-4 rounded-lg border border-border bg-card hover:border-primary/30 hover:bg-primary/[0.03] cursor-pointer transition-all"
-                  onClick={() => {
-                    setSelectedModels([model])
-                    setReplyModel(null)
-                    setViewMode('chat')
-                    setMessages([])
-                    const convId = `conv-${Date.now()}`
-                    const newConv: Conversation = {
-                      id: convId,
-                      title: `与 ${model.name} 的新对话`,
-                      preview: '',
-                      createdAt: new Date(),
-                      modelIds: [model.id],
-                      messages: [],
-                    }
-                    setActiveConversationId(convId)
-                    setConversations(prev => [newConv, ...prev])
-                  }}
-                >
-                  <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center text-2xl mb-3">
-                    {model.logo}
-                  </div>
-                  <h3 className="font-semibold text-sm text-foreground mb-1">{model.name}</h3>
-                  <p className="text-xs text-muted-foreground line-clamp-2">{model.description}</p>
-                  <p className="text-xs text-muted-foreground mt-2">单次消耗 {model.costPoints} 智点</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  const renderCategoryPage = () => (
+    <CategoryPage
+      initialTab={categoryFilter}
+      onSelectModel={(model) => {
+        setSelectedModels([model])
+        setReplyModel(null)
+        setViewMode('chat')
+        setMessages([])
+        const convId = `conv-${Date.now()}`
+        const newConv: Conversation = {
+          id: convId,
+          title: `与 ${model.name} 的新对话`,
+          preview: '',
+          createdAt: new Date(),
+          modelIds: [model.id],
+          messages: [],
+        }
+        setActiveConversationId(convId)
+        setConversations(prev => [newConv, ...prev])
+      }}
+    />
+  )
 
   // ===== 模型详情页 / 单模型对话启动器 =====
   const renderModelDetail = () => {
@@ -907,6 +890,8 @@ export function Workspace() {
             modelId: model.id,
             timestamp: new Date(),
             responseTime: 1200,
+            costPoints: model.costPoints,
+            status: 'success',
           } as Message
           setMessages(prev => {
             const updated = [...prev, aiMessage]
@@ -1176,6 +1161,7 @@ function generateConversationMessages(conv: Conversation): Message[] {
         timestamp: new Date(timestamp.getTime() + 1000 + index * 500),
         responseTime: 1500,
         costPoints: model.costPoints,
+        status: 'success',
       } as Message
     } else if (model.type === 'video') {
       return {
@@ -1189,6 +1175,7 @@ function generateConversationMessages(conv: Conversation): Message[] {
         timestamp: new Date(timestamp.getTime() + 1000 + index * 500),
         responseTime: 2000,
         costPoints: model.costPoints,
+        status: 'success',
       } as Message
     } else {
       return {
@@ -1199,6 +1186,8 @@ function generateConversationMessages(conv: Conversation): Message[] {
         modelId: model.id,
         timestamp: new Date(timestamp.getTime() + 1000 + index * 500),
         responseTime: 800 + index * 1200 + Math.random() * 1500,
+        costPoints: model.costPoints,
+        status: 'success',
       } as Message
     }
   })

@@ -134,6 +134,17 @@ export const mockModels: Model[] = [
     costPoints: 100,
     gradient: 'from-emerald-400 to-teal-500',
   },
+  {
+    id: 'doubao-seedance-2-0-260128',
+    name: 'doubao-seedance-2-0-260128',
+    type: 'video',
+    description: '豆包视频生成模型，支持高质量视频内容创作与编辑',
+    logo: '🎬',
+    addedAt: new Date('2025-06-01'),
+    requiresReference: false,
+    costPoints: 120,
+    gradient: 'from-cyan-400 to-blue-500',
+  },
 ]
 
 // MCP消息内容类型

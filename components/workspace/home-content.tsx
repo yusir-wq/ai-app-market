@@ -4,10 +4,15 @@ import { useState, useMemo, useRef, useCallback, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { ModelListRow } from './model-list-row'
+import { ModelMentionPopover } from './model-mention-popover'
+import { ModelSearchDialog } from './model-search-dialog'
 import { MCPServiceSelector } from './mcp-service-selector'
+import { AttachmentPreview, type UploadedFile, buildUploadedFiles } from './attachment-preview'
 import { mockModels, type Model } from '@/lib/mock-data'
 import { useAuth } from '@/contexts/auth-context'
-import { ArrowUp, Globe, Brain, Paperclip, AtSign, MessageSquare, Image, Video, Sparkles } from 'lucide-react'
+import { ArrowUp, Globe, Brain, Paperclip, MessageSquare, Image, Video, Sparkles, X, Search } from 'lucide-react'
+
+const recommendedModelIds = ['deepseek-v4-pro', 'gpt-image-2', 'doubao-seedance-2-0-260128']
 
 interface HomeContentProps {
   onSendMessage: (message: string, modelIds: string[]) => void
@@ -32,16 +37,22 @@ export function HomeContent({
 }: HomeContentProps) {
   const { isLoggedIn, setShowLoginModal } = useAuth()
   const [inputValue, setInputValue] = useState('')
+  const [selectedMentionModels, setSelectedMentionModels] = useState<Model[]>([])
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const LINE_HEIGHT = 24 // 单行高度 px（text-sm leading-relaxed）
+  const LINE_HEIGHT = 24
   const MAX_LINES = 6
 
   const chatModels = useMemo(() => mockModels.filter(m => m.type === 'chat'), [])
   const imageModels = useMemo(() => mockModels.filter(m => m.type === 'image'), [])
   const videoModels = useMemo(() => mockModels.filter(m => m.type === 'video'), [])
+  const recommendedModels = useMemo(
+    () => recommendedModelIds.map(id => mockModels.find(m => m.id === id)!).filter(Boolean),
+    []
+  )
 
-  // 自动调整 textarea 高度
   const autoResize = useCallback(() => {
     const el = textareaRef.current
     if (!el) return
@@ -54,20 +65,53 @@ export function HomeContent({
     autoResize()
   }, [inputValue, autoResize])
 
+  const handleToggleMentionModel = useCallback((model: Model) => {
+    setSelectedMentionModels(prev => {
+      const isSelected = prev.some(m => m.id === model.id)
+      return isSelected
+        ? prev.filter(m => m.id !== model.id)
+        : [...prev, model]
+    })
+  }, [])
+
+  const handleRemoveMentionModel = useCallback((modelId: string) => {
+    setSelectedMentionModels(prev => prev.filter(m => m.id !== modelId))
+  }, [])
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+    const newFiles = buildUploadedFiles(files)
+    setUploadedFiles(prev => [...prev, ...newFiles])
+    e.target.value = ''
+  }
+
+  const handleRemoveFile = useCallback((id: string) => {
+    setUploadedFiles(prev => prev.filter(f => f.id !== id))
+  }, [])
+
   const handleSend = () => {
     if (!isLoggedIn) {
       setShowLoginModal(true)
       return
     }
-    if (!inputValue.trim()) return
-    onSendMessage(inputValue.trim(), chatModels.map(m => m.id))
+    if (!inputValue.trim() && uploadedFiles.length === 0) return
+    const targetModelIds = selectedMentionModels.length > 0
+      ? selectedMentionModels.map(m => m.id)
+      : chatModels.map(m => m.id)
+    onSendMessage(inputValue.trim(), targetModelIds)
     setInputValue('')
+    setSelectedMentionModels([])
+    setUploadedFiles([])
   }
+
+  const costPointsPerModel = 10
+  const modelCount = selectedMentionModels.length
+  const totalCost = modelCount * costPointsPerModel
 
   return (
     <div className="flex-1 flex flex-col items-center min-w-0 overflow-y-auto bg-background">
       <div className="flex flex-col items-center w-full max-w-[720px] mx-auto px-4 md:px-6 pt-[150px] pb-[150px]">
-        {/* 品牌标题 */}
         <div className="flex items-center justify-center gap-3 mb-8 md:mb-10 shrink-0">
           <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
             <Sparkles className="h-5 w-5 md:h-6 md:w-6 text-primary" />
@@ -75,8 +119,51 @@ export function HomeContent({
           <h1 className="text-xl md:text-2xl font-bold text-foreground">AI 应用广场</h1>
         </div>
 
-        {/* 中心输入区 */}
+        {/* 推荐模型栏 */}
+        <div className="w-full flex items-center justify-center gap-2 mb-4 shrink-0">
+          {recommendedModels.map(model => (
+            <button
+              key={model.id}
+              onClick={() => onSelectModel(model)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border hover:border-primary/30 hover:bg-accent text-sm transition-colors cursor-pointer"
+            >
+              <span>{model.logo}</span>
+              <span className="text-foreground">{model.name}</span>
+            </button>
+          ))}
+          <button
+            onClick={() => setSearchDialogOpen(true)}
+            className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border hover:border-primary/30 hover:bg-accent transition-colors cursor-pointer"
+          >
+            <Search className="h-4 w-4 text-muted-foreground" />
+          </button>
+        </div>
+
         <div className="w-full rounded-lg border border-border shadow-sm p-4 mb-6 shrink-0" style={{ backgroundColor: '#F7F8FB' }}>
+          {/* @提及 模型 Pills */}
+          {selectedMentionModels.length > 0 && (
+            <div className="flex items-center gap-1.5 mb-3 flex-wrap">
+              {selectedMentionModels.map(model => (
+                <div
+                  key={model.id}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary"
+                >
+                  <span>{model.logo}</span>
+                  <span>{model.name}</span>
+                  <button
+                    onClick={() => handleRemoveMentionModel(model.id)}
+                    className="ml-0.5 rounded-full hover:bg-primary/20 p-0.5"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 上传文件预览 */}
+          <AttachmentPreview files={uploadedFiles} onRemove={handleRemoveFile} />
+
           <textarea
             ref={textareaRef}
             value={inputValue}
@@ -93,10 +180,8 @@ export function HomeContent({
             }}
           />
 
-          {/* 底部操作栏 */}
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/50">
             <div className="flex items-center gap-1">
-              {/* 上传附件 */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -112,25 +197,20 @@ export function HomeContent({
                   <p>上传附件</p>
                 </TooltipContent>
               </Tooltip>
-              <input ref={fileInputRef} type="file" multiple className="hidden" />
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                className="hidden"
+                accept="image/*,.pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx"
+                onChange={handleFileUpload}
+              />
 
-              {/* 提及模型 */}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    className="h-8 w-8"
-                  >
-                    <AtSign className="h-4 w-4 text-muted-foreground" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top">
-                  <p>提及模型</p>
-                </TooltipContent>
-              </Tooltip>
+              <ModelMentionPopover
+                selectedModels={selectedMentionModels}
+                onToggleModel={handleToggleMentionModel}
+              />
 
-              {/* MCP服务 */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span className="inline-flex">
@@ -142,10 +222,8 @@ export function HomeContent({
                 </TooltipContent>
               </Tooltip>
 
-              {/* 分隔 */}
               <div className="w-px h-4 bg-border/50 mx-1" />
 
-              {/* 联网搜索 */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -162,7 +240,6 @@ export function HomeContent({
                 </TooltipContent>
               </Tooltip>
 
-              {/* 深度思考 */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -181,13 +258,19 @@ export function HomeContent({
             </div>
 
             <div className="flex items-center gap-2">
+              {modelCount > 0 && (
+                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {totalCost}
+                </span>
+              )}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
                     size="icon-sm"
                     className="h-8 w-8 rounded-full"
                     onClick={handleSend}
-                    disabled={!inputValue.trim()}
+                    disabled={!inputValue.trim() && uploadedFiles.length === 0}
                   >
                     <ArrowUp className="h-4 w-4" />
                   </Button>
@@ -200,7 +283,6 @@ export function HomeContent({
           </div>
         </div>
 
-        {/* 模型列表 - 3行 */}
         <div className="w-full space-y-6 shrink-0">
           <ModelListRow
             title="聊天模型"
@@ -228,6 +310,13 @@ export function HomeContent({
           />
         </div>
       </div>
+
+      {/* 模型搜索弹窗 */}
+      <ModelSearchDialog
+        open={searchDialogOpen}
+        onOpenChange={setSearchDialogOpen}
+        onSelectModel={onSelectModel}
+      />
     </div>
   )
 }

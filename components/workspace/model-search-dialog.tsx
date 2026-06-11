@@ -1,0 +1,142 @@
+'use client'
+
+import { useState, useMemo } from 'react'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Button } from '@/components/ui/button'
+import { mockModels, type Model } from '@/lib/mock-data'
+import { Search, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+const categoryTabs = [
+  { id: 'all', label: '全部' },
+  { id: 'chat', label: '聊天' },
+  { id: 'image', label: '图片' },
+  { id: 'video', label: '视频' },
+] as const
+
+interface ModelSearchDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onSelectModel: (model: Model) => void
+}
+
+export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSearchDialogProps) {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeTab, setActiveTab] = useState<string>('all')
+
+  const filteredModels = useMemo(() => {
+    let result = mockModels
+    if (activeTab !== 'all') {
+      result = result.filter(m => m.type === activeTab)
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
+      result = result.filter(m =>
+        m.name.toLowerCase().includes(q) ||
+        m.description.toLowerCase().includes(q)
+      )
+    }
+    return result
+  }, [searchQuery, activeTab])
+
+  const handleSelect = (model: Model) => {
+    onSelectModel(model)
+    onOpenChange(false)
+    setSearchQuery('')
+    setActiveTab('all')
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[480px] p-0 gap-0" showCloseButton={false}>
+        <DialogTitle className="sr-only">搜索模型</DialogTitle>
+
+        {/* 标题栏 + 关闭按钮 */}
+        <div className="flex items-center justify-between px-4 pt-4 pb-2">
+          <h3 className="text-sm font-semibold text-foreground">搜索模型</h3>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="h-7 w-7"
+            onClick={() => onOpenChange(false)}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+
+        {/* 搜索框 */}
+        <div className="px-4 pb-2">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="搜索模型..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 h-9 text-sm border-border"
+              autoFocus
+            />
+          </div>
+        </div>
+
+        {/* 分类 Tabs */}
+        <div className="flex items-center gap-1 px-4 pt-1 pb-2 border-b border-border/50">
+          {categoryTabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={cn(
+                'px-3 py-1.5 text-xs font-medium rounded-full transition-colors',
+                activeTab === tab.id
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* 模型列表 */}
+        <ScrollArea className="h-[420px]">
+          <div className="p-2 space-y-0.5">
+            {filteredModels.length > 0 ? (
+              filteredModels.map(model => (
+                <button
+                  key={model.id}
+                  onClick={() => handleSelect(model)}
+                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors w-full text-left cursor-pointer"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-lg shrink-0">
+                    {model.logo}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium truncate">{model.name}</span>
+                      <span className={cn(
+                        'text-[10px] px-1.5 py-0.5 rounded font-medium shrink-0',
+                        model.type === 'chat' && 'bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400',
+                        model.type === 'image' && 'bg-green-50 text-green-600 dark:bg-green-950 dark:text-green-400',
+                        model.type === 'video' && 'bg-purple-50 text-purple-600 dark:bg-purple-950 dark:text-purple-400',
+                      )}>
+                        {{ chat: '聊天', image: '图片', video: '视频' }[model.type]}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                      {model.description}
+                    </p>
+                  </div>
+                </button>
+              ))
+            ) : (
+              <div className="flex items-center justify-center py-12">
+                <p className="text-sm text-muted-foreground">未找到匹配的模型</p>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  )
+}

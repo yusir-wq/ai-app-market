@@ -296,7 +296,7 @@ export function NavPanel({
                     onClick={() => onSelectConversation(conv.id)}
                   >
                     {/* 模型图标 */}
-                    <div className="w-7 h-7 rounded-lg bg-background border border-border flex items-center justify-center text-sm shrink-0 mt-0.5">
+                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${firstModel?.gradient || 'from-violet-500 to-indigo-600'} flex items-center justify-center text-white text-sm shadow-sm shrink-0 mt-0.5`}>
                       {firstModel?.logo || '💬'}
                     </div>
                     

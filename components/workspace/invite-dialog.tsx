@@ -9,9 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
-import { mockInviteRecords, type InviteRecord } from '@/lib/mock-data'
-import { Copy, Check, Share2, Gift, Users, ExternalLink } from 'lucide-react'
+import { Copy, Check, Info } from 'lucide-react'
 
 interface InviteDialogProps {
   open: boolean
@@ -19,7 +17,7 @@ interface InviteDialogProps {
   userId?: string
 }
 
-const INVITE_LINK = 'https://ai-app-market.com/invite/abc123xyz'
+const INVITE_LINK = 'https://ai.chinaz.cn//invite/8K2M9P'
 
 export function InviteDialog({ open, onOpenChange, userId = 'user_demo' }: InviteDialogProps) {
   const [copied, setCopied] = useState(false)
@@ -30,50 +28,60 @@ export function InviteDialog({ open, onOpenChange, userId = 'user_demo' }: Invit
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
-  }
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px]">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-lg">
-            <Gift className="h-5 w-5 text-primary" />
-            邀请好友
-          </DialogTitle>
-        </DialogHeader>
+      <DialogContent className="sm:max-w-[520px] p-0 overflow-hidden rounded-2xl">
+        {/* 头部区域 */}
+        <div className="px-8 pt-8 pb-6">
+          <DialogHeader className="mb-0">
+            <DialogTitle className="sr-only">邀请好友</DialogTitle>
+          </DialogHeader>
 
-        <div className="space-y-5">
-          {/* 奖励说明 */}
-          <div className="p-4 rounded-lg bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <Users className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground">邀请好友注册</p>
-                <p className="text-xs text-muted-foreground">双方各获奖励</p>
-              </div>
+          <div className="flex items-start gap-4">
+            {/* 礼物图标 */}
+            <div className="shrink-0">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="20" width="32" height="24" rx="4" fill="#575CE9" fillOpacity="0.1"/>
+                <rect x="8" y="20" width="32" height="20" rx="4" fill="#575CE9" fillOpacity="0.15"/>
+                <rect x="14" y="16" width="20" height="8" rx="2" fill="#575CE9" fillOpacity="0.2"/>
+                <path d="M18 16C18 12.686 20.686 10 24 10C27.314 10 30 12.686 30 16" stroke="#575CE9" strokeWidth="3" strokeLinecap="round" fill="none"/>
+                <rect x="22" y="8" width="4" height="8" rx="1" fill="#575CE9" fillOpacity="0.3"/>
+                <path d="M24 24V36" stroke="#575CE9" strokeWidth="2" strokeLinecap="round"/>
+                <rect x="8" y="26" width="32" height="2" fill="#575CE9" fillOpacity="0.1"/>
+                <circle cx="36" cy="12" r="3" fill="#575CE9" fillOpacity="0.15"/>
+                <circle cx="38" cy="10" r="2" fill="#575CE9" fillOpacity="0.1"/>
+              </svg>
             </div>
-            <p className="text-2xl font-bold text-primary text-center mt-2">
-              500 <span className="text-sm font-normal">智点</span>
-            </p>
-          </div>
 
-          {/* 邀请链接 */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-foreground">邀请链接</label>
+            {/* 标题和副标题 */}
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-foreground leading-tight">
+                邀请好友，赚取智点
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
+                分享专属邀请链接，好友成功注册后，你将获得 <span className="font-semibold" style={{ color: '#575CE9' }}>500 智点</span>奖励
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="px-8 pb-8 space-y-6">
+          {/* 邀请链接区域 */}
+          <div className="border border-border rounded-xl p-5 bg-card">
+            <h4 className="text-sm font-semibold text-foreground mb-3">
+              你的专属邀请链接
+            </h4>
             <div className="flex items-center gap-2">
               <Input
                 value={INVITE_LINK}
                 readOnly
-                className="font-mono text-xs h-10 bg-secondary"
+                className="font-mono text-sm h-11 bg-secondary border-input flex-1"
               />
               <Button
-                variant={copied ? 'default' : 'outline'}
-                size="default"
-                className="shrink-0 gap-2 h-10"
+                variant={copied ? 'default' : 'default'}
+                size="sm"
+                className="shrink-0 gap-1.5 h-11 px-5 font-medium"
+                style={{ backgroundColor: copied ? undefined : '#575CE9' }}
                 onClick={handleCopyLink}
               >
                 {copied ? (
@@ -84,66 +92,63 @@ export function InviteDialog({ open, onOpenChange, userId = 'user_demo' }: Invit
                 ) : (
                   <>
                     <Copy className="h-4 w-4" />
-                    复制
+                    复制链接
                   </>
                 )}
               </Button>
             </div>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="w-full gap-2"
-              onClick={handleCopyLink}
-            >
-              <Share2 className="h-4 w-4" />
-              分享邀请链接
-            </Button>
           </div>
 
-          {/* 邀请记录 */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium text-foreground">邀请记录</h4>
-            <div className="border border-border rounded-lg overflow-hidden">
-              {/* 表头 */}
-              <div className="grid grid-cols-3 gap-2 px-4 py-2.5 bg-secondary text-xs font-medium text-muted-foreground">
-                <span>用户</span>
-                <span>注册时间</span>
-                <span className="text-right">奖励状态</span>
+          {/* 奖励信息区域 */}
+          <div className="bg-secondary rounded-xl p-5">
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* 左侧 - 你将获得 */}
+              <div className="flex items-center gap-3 pr-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: '#575CE910' }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="7" r="4" fill="#575CE9" fillOpacity="0.3"/>
+                    <path d="M4 17C4 13.686 6.686 11 10 11C13.314 11 16 13.686 16 17" stroke="#575CE9" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">你将获得</p>
+                  <p className="text-base font-semibold text-foreground">
+                    <span style={{ color: '#575CE9' }}>500 智点</span>
+                    <span className="text-muted-foreground font-normal"> / 每位好友</span>
+                  </p>
+                </div>
               </div>
-              {/* 记录列表 */}
-              <div className="divide-y divide-border">
-                {mockInviteRecords.map((record) => (
-                  <div
-                    key={record.id}
-                    className="grid grid-cols-3 gap-2 px-4 py-2.5 text-xs"
+
+              {/* 右侧 - 好友将获得 */}
+              <div className="flex items-center gap-3 pl-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: '#575CE910' }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="7" r="4" fill="#575CE9" fillOpacity="0.3"/>
+                    <path d="M4 17C4 13.686 6.686 11 10 11C13.314 11 16 13.686 16 17" stroke="#575CE9" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">好友将获得</p>
+                  <p className="text-base font-semibold"
+                    style={{ color: '#575CE9' }}
                   >
-                    <span className="text-foreground font-medium truncate">
-                      {record.invitedUserName}
-                    </span>
-                    <span className="text-muted-foreground">
-                      {formatDate(record.registeredAt)}
-                    </span>
-                    <span className="text-right">
-                      {record.rewardStatus === 'granted' ? (
-                        <Badge
-                          variant="secondary"
-                          className="text-[10px] h-4 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                        >
-                          已发放
-                        </Badge>
-                      ) : (
-                        <Badge
-                          variant="secondary"
-                          className="text-[10px] h-4 bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                        >
-                          待发放
-                        </Badge>
-                      )}
-                    </span>
-                  </div>
-                ))}
+                    100 智点
+                  </p>
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* 底部提示 */}
+          <div className="flex items-start gap-2 text-xs text-muted-foreground">
+            <Info className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground" />
+            <p className="leading-relaxed">
+              每位好友仅可通过你的链接注册一次，奖励将在好友完成注册后自动发放
+            </p>
           </div>
         </div>
       </DialogContent>

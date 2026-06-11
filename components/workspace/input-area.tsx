@@ -4,9 +4,11 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
+import { ModelMentionPopover } from './model-mention-popover'
 import { MCPServiceSelector } from './mcp-service-selector'
+import { AttachmentPreview, type UploadedFile, buildUploadedFiles } from './attachment-preview'
 import { type Model } from '@/lib/mock-data'
-import { ArrowUp, Paperclip, Image, Upload, X, Info, Globe, Brain, AtSign } from 'lucide-react'
+import { ArrowUp, Paperclip, Upload, X, Info, Globe, Brain, Sparkles } from 'lucide-react'
 
 interface InputAreaProps {
   model: Model | null
@@ -37,6 +39,8 @@ export function InputArea({
 }: InputAreaProps) {
   const [uploadedImages, setUploadedImages] = useState<string[]>([])
   const [uploadedVideos, setUploadedVideos] = useState<string[]>([])
+  const [uploadedAttachments, setUploadedAttachments] = useState<UploadedFile[]>([])
+  const [selectedMentionModels, setSelectedMentionModels] = useState<Model[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const LINE_HEIGHT = 24
@@ -48,7 +52,6 @@ export function InputArea({
   const hasReference = isImageModel || isVideoModel
   const requiresReference = activeModel?.requiresReference || false
 
-  // 自动调整 textarea 高度
   const autoResize = useCallback(() => {
     const el = textareaRef.current
     if (!el) return
@@ -67,6 +70,8 @@ export function InputArea({
     onInputChange('')
     setUploadedImages([])
     setUploadedVideos([])
+    setUploadedAttachments([])
+    setSelectedMentionModels([])
   }
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +91,33 @@ export function InputArea({
   const removeUploadedVideo = (index: number) => {
     setUploadedVideos(prev => prev.filter((_, i) => i !== index))
   }
+
+  // 切换 @提及 模型
+  const handleToggleMentionModel = useCallback((model: Model) => {
+    setSelectedMentionModels(prev => {
+      const isSelected = prev.some(m => m.id === model.id)
+      return isSelected
+        ? prev.filter(m => m.id !== model.id)
+        : [...prev, model]
+    })
+  }, [])
+
+  // 移除单个 @提及 模型（通过 pill 的 X 按钮）
+  const handleRemoveMentionModel = useCallback((modelId: string) => {
+    setSelectedMentionModels(prev => prev.filter(m => m.id !== modelId))
+  }, [])
+
+  const handleAttachmentUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+    const newFiles = buildUploadedFiles(files)
+    setUploadedAttachments(prev => [...prev, ...newFiles])
+    e.target.value = ''
+  }
+
+  const handleRemoveAttachment = useCallback((id: string) => {
+    setUploadedAttachments(prev => prev.filter(f => f.id !== id))
+  }, [])
 
   const placeholder = isImageModel
     ? '描述你想要生成的图片...'
@@ -200,6 +232,32 @@ export function InputArea({
 
         {/* 文本输入区 */}
         <div className="p-4">
+          {/* @提及 模型 Pills */}
+          {selectedMentionModels.length > 0 && (
+            <div className="flex items-center gap-1.5 mb-3 flex-wrap">
+              {selectedMentionModels.map(mentionModel => (
+                <div
+                  key={mentionModel.id}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary"
+                >
+                  <span>{mentionModel.logo}</span>
+                  <span>{mentionModel.name}</span>
+                  <button
+                    onClick={() => handleRemoveMentionModel(mentionModel.id)}
+                    className="ml-0.5 rounded-full hover:bg-primary/20 p-0.5"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 上传文件预览（非参考模式） */}
+          {!hasReference && (
+            <AttachmentPreview files={uploadedAttachments} onRemove={handleRemoveAttachment} />
+          )}
+
           <textarea
             ref={textareaRef}
             value={inputValue}
@@ -233,21 +291,22 @@ export function InputArea({
                     <p>上传附件</p>
                   </TooltipContent>
                 </Tooltip>
-                <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileUpload} />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  className="hidden"
+                  accept="image/*,.pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx"
+                  onChange={handleAttachmentUpload}
+                />
               </>
             )}
 
             {/* 提及模型 */}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon-sm" className="h-8 w-8">
-                  <AtSign className="h-4 w-4 text-muted-foreground" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="top">
-                <p>提及模型</p>
-              </TooltipContent>
-            </Tooltip>
+            <ModelMentionPopover
+              selectedModels={selectedMentionModels}
+              onToggleModel={handleToggleMentionModel}
+            />
 
             {/* MCP服务 */}
             <Tooltip>
@@ -313,13 +372,21 @@ export function InputArea({
               </span>
             )}
 
+            {/* @提及模型消耗 */}
+            {!hasReference && selectedMentionModels.length > 0 && (
+              <span className="flex items-center gap-1 text-xs text-muted-foreground mr-2">
+                <Sparkles className="h-3.5 w-3.5" />
+                {selectedMentionModels.length * 10}
+              </span>
+            )}
+
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   size="icon-sm"
                   className="h-8 w-8 rounded-full"
                   onClick={handleSend}
-                  disabled={!inputValue.trim() && uploadedImages.length === 0}
+                  disabled={!inputValue.trim() && uploadedImages.length === 0 && uploadedAttachments.length === 0}
                 >
                   <ArrowUp className="h-4 w-4" />
                 </Button>

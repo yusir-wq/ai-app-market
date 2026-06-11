@@ -105,12 +105,17 @@ export function MCPServiceSelector({ onNavigate, iconOnly = false }: MCPServiceS
             variant="ghost"
             size="icon-sm"
             className={cn(
-              "h-8 w-8",
+              "h-8 w-8 relative",
               mcpEnabled && selectedCount > 0 && "text-primary"
             )}
             onClick={() => setOpen(prev => !prev)}
           >
             <Puzzle className="h-4 w-4" />
+            {mcpEnabled && selectedCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-[16px] h-4 flex items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground px-0.5">
+                {selectedCount}
+              </span>
+            )}
           </Button>
         ) : (
           <Button 

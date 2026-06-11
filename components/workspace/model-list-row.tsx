@@ -77,7 +77,7 @@ export function ModelListRow({
         {/* 模型列表 - 彩色大卡片风格 */}
         <div
           ref={scrollRef}
-          className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"
+          className="flex gap-0 overflow-x-auto pb-2 scrollbar-hide"
           style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}
           onScroll={updateScrollButtons}
         >
@@ -85,7 +85,7 @@ export function ModelListRow({
             <button
               key={model.id}
               onClick={() => onSelectModel(model)}
-              className={`flex flex-col items-center gap-3 p-4 rounded-xl border border-border/60 bg-card hover:border-primary/30 hover:shadow-md transition-all shrink-0 scroll-snap-align-start ${
+              className={`flex flex-col items-center gap-3 p-2 rounded-xl border border-transparent bg-card hover:border-border hover:shadow-md transition-all shrink-0 scroll-snap-align-start ${
                 compact ? 'w-[140px]' : 'w-[170px]'
               }`}
               style={{ scrollSnapAlign: 'start' }}
@@ -95,7 +95,7 @@ export function ModelListRow({
                 {model.logo}
               </div>
               <div className="flex flex-col items-center gap-0.5 w-full">
-                <span className="text-sm font-medium text-foreground truncate w-full text-center">
+                <span className="text-sm font-medium text-foreground line-clamp-2 text-center w-full">
                   {model.name}
                 </span>
                 {!compact && (
