@@ -234,11 +234,11 @@ export function InputArea({
         <div className="p-4">
           {/* @提及 模型 Pills */}
           {selectedMentionModels.length > 0 && (
-            <div className="flex items-center gap-1.5 mb-3 flex-wrap">
+            <div className="flex items-center gap-1.5 mb-3 overflow-x-auto scrollbar-hide flex-nowrap">
               {selectedMentionModels.map(mentionModel => (
                 <div
                   key={mentionModel.id}
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary"
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary whitespace-nowrap shrink-0"
                 >
                   <span>{mentionModel.logo}</span>
                   <span>{mentionModel.name}</span>
@@ -302,11 +302,13 @@ export function InputArea({
               </>
             )}
 
-            {/* 提及模型 */}
-            <ModelMentionPopover
-              selectedModels={selectedMentionModels}
-              onToggleModel={handleToggleMentionModel}
-            />
+            {/* 提及模型 - 仅聊天模型支持 */}
+            {!hasReference && (
+              <ModelMentionPopover
+                selectedModels={selectedMentionModels}
+                onToggleModel={handleToggleMentionModel}
+              />
+            )}
 
             {/* MCP服务 */}
             <Tooltip>

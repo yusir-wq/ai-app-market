@@ -340,7 +340,7 @@ export function NavPanel({
                           <Button
                             variant="ghost"
                             size="icon-sm"
-                            className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                            className="h-6 w-6 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity shrink-0"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <MoreHorizontal className="h-3.5 w-3.5" />

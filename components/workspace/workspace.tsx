@@ -43,7 +43,7 @@ import {
   type Message,
   type Conversation,
 } from '@/lib/mock-data'
-import { Search, MoreHorizontal, Pencil, Trash2, Plus, MessageSquare, UserPlus, Sparkles, ArrowUp, Globe, Brain } from 'lucide-react'
+import { Search, MoreHorizontal, Pencil, Trash2, ArrowUp, Globe, Brain, Menu } from 'lucide-react'
 
 type ViewMode = 'home' | 'chat' | 'history-all' | 'category' | 'model-detail' | 'billing-usage' | 'billing-payments' | 'mcp-center'
 
@@ -71,6 +71,9 @@ export function Workspace() {
   const [enableThinking, setEnableThinking] = useState(false)
   // 回复模式：单模型对话
   const [replyModel, setReplyModel] = useState<Model | null>(null)
+
+  // 移动端导航面板状态
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
 
   const activeConversation = conversations.find(c => c.id === activeConversationId)
 
@@ -153,7 +156,13 @@ export function Workspace() {
     const models = modelIds.map(id => mockModels.find(m => m.id === id)!).filter(Boolean)
     if (models.length === 0) return
 
-    setSelectedModels(models)
+    // 图片/视频模型禁止多模型对话
+    const hasNonChat = models.some(m => m.type === 'image' || m.type === 'video')
+    const effectiveModels = hasNonChat ? models.filter(m => m.type !== 'chat').slice(0, 1) : models
+    if (effectiveModels.length === 0) return
+    const effectiveModelIds = effectiveModels.map(m => m.id)
+
+    setSelectedModels(effectiveModels)
     setReplyModel(null)
 
     const timestamp = new Date()
@@ -162,7 +171,7 @@ export function Workspace() {
       role: 'user',
       content: message,
       contentType: 'text',
-      modelIds,
+      modelIds: effectiveModelIds,
       timestamp,
       onlineSearch: enableSearch,
       deepThinking: enableThinking,
@@ -178,7 +187,7 @@ export function Workspace() {
       title: message.slice(0, 30) + (message.length > 30 ? '...' : ''),
       preview: message.slice(0, 50),
       createdAt: timestamp,
-      modelIds,
+      modelIds: effectiveModelIds,
       messages: newMessages,
     }
     setActiveConversationId(convId)
@@ -187,7 +196,7 @@ export function Workspace() {
     setIsLoading(true)
 
     // 并行加载所有模型回复
-    models.forEach((model, index) => {
+    effectiveModels.forEach((model, index) => {
       const delay = 800 + index * 1200
       const responseTime = 800 + index * 1200 + Math.random() * 1500
 
@@ -196,7 +205,7 @@ export function Workspace() {
           id: `msg-${Date.now()}-ai-${model.id}`,
           role: 'assistant',
           content: getMockResponse(model, message),
-          contentType: models.length > 1 ? 'text' : 'markdown',
+          contentType: effectiveModels.length > 1 ? 'text' : 'markdown',
           modelId: model.id,
           onlineSearch: enableSearch,
           deepThinking: enableThinking,
@@ -216,9 +225,9 @@ export function Workspace() {
           )
           // Check if all responded
           const respondedModels = updated.filter(m =>
-            m.role === 'assistant' && modelIds.includes(m.modelId || '')
+            m.role === 'assistant' && effectiveModelIds.includes(m.modelId || '')
           )
-          if (respondedModels.length >= models.length) {
+          if (respondedModels.length >= effectiveModels.length) {
             setIsLoading(false)
           }
           return updated
@@ -520,10 +529,18 @@ export function Workspace() {
     // 获取模型映射
     const modelMap = new Map(mockModels.map(m => [m.id, m]))
 
+    // 获取自适应网格列数：多模型根据实际数量+屏幕宽度，单模型永远1列
+    const getGridCols = (count: number) => {
+      if (count <= 1) return 'grid gap-4 grid-cols-1'
+      if (count === 2) return 'grid gap-4 grid-cols-1 sm:grid-cols-2'
+      if (count === 3) return 'grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+      return 'grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+    }
+
     return (
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* 对话标题栏 */}
-        <div className="flex items-center gap-3 px-6 py-3 border-b border-border shrink-0">
+        <div className="flex items-center gap-3 pl-14 md:pl-6 pr-6 py-3 border-b border-border shrink-0">
           {replyModel ? (
             <>
               <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-base">
@@ -531,16 +548,20 @@ export function Workspace() {
               </div>
               <div className="flex-1">
                 <h2 className="text-sm font-semibold text-foreground">{replyModel.name}</h2>
-                <p className="text-xs text-muted-foreground">单模型对话模式</p>
+                <p className="text-xs text-muted-foreground">
+                  {replyModel.type === 'chat' ? '单模型对话模式' : '1个模型'}
+                </p>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-xs text-muted-foreground"
-                onClick={() => setReplyModel(null)}
-              >
-                切换回多模型
-              </Button>
+              {replyModel.type === 'chat' && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs text-muted-foreground"
+                  onClick={() => setReplyModel(null)}
+                >
+                  切换回多模型
+                </Button>
+              )}
             </>
           ) : (
             <>
@@ -564,25 +585,6 @@ export function Workspace() {
               </div>
             </>
           )}
-          {/* 联网搜索/深度思考开关 */}
-          <div className="flex items-center gap-1">
-            <Button
-              variant={enableSearch ? 'default' : 'ghost'}
-              size="icon-sm"
-              className="h-8 w-8"
-              onClick={() => setEnableSearch(!enableSearch)}
-            >
-              <Globe className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={enableThinking ? 'default' : 'ghost'}
-              size="icon-sm"
-              className="h-8 w-8"
-              onClick={() => setEnableThinking(!enableThinking)}
-            >
-              <Brain className="h-4 w-4" />
-            </Button>
-          </div>
         </div>
 
         {/* 消息内容区 */}
@@ -591,7 +593,6 @@ export function Workspace() {
             {pairedMessages.length > 0 ? (
               pairedMessages.map((pair, idx) => {
                 const nModels = pair.assistants.length || selectedModels.length
-                const gridCols = Math.min(nModels, 4)
 
                 return (
                   <div key={pair.user.id} className="space-y-4">
@@ -609,10 +610,7 @@ export function Workspace() {
 
                     {/* AI 回复卡片网格 */}
                     {pair.assistants.length > 0 && (
-                      <div
-                        className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(280px,1fr))]"
-                        style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
-                      >
+                      <div className={getGridCols(nModels)}>
                         {pair.assistants.map((assistantMsg) => {
                           const model = modelMap.get(assistantMsg.modelId || '')
                           if (!model) return null
@@ -633,10 +631,7 @@ export function Workspace() {
 
                     {/* Loading skeleton */}
                     {isLoading && pair.assistants.length === 0 && (
-                      <div
-                        className="grid gap-4 grid-cols-1 sm:grid-cols-2"
-                        style={{ gridTemplateColumns: `repeat(${Math.min(selectedModels.length, 4)}, 1fr)` }}
-                      >
+                      <div className={getGridCols(selectedModels.length)}>
                         {selectedModels.map(model => (
                           <div key={model.id} className="rounded-lg border border-border bg-card p-4 space-y-3 animate-pulse">
                             <div className="flex items-center gap-2">
@@ -726,7 +721,7 @@ export function Workspace() {
 
     return (
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-border shrink-0">
+        <div className="flex items-center gap-3 pl-12 md:pl-6 pr-6 py-4 border-b border-border shrink-0">
           <h2 className="text-lg font-semibold text-foreground">全部对话</h2>
           <span className="text-xs text-muted-foreground">共 {filtered.length} 条</span>
         </div>
@@ -771,7 +766,7 @@ export function Workspace() {
                           <Button
                             variant="ghost"
                             size="icon-sm"
-                            className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                            className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity shrink-0"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <MoreHorizontal className="h-4 w-4" />
@@ -908,7 +903,7 @@ export function Workspace() {
     return (
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* 标题栏 */}
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-border shrink-0">
+        <div className="flex items-center gap-3 pl-12 md:pl-6 pr-6 py-4 border-b border-border shrink-0">
           <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-lg shrink-0">
             {model.logo}
           </div>
@@ -1052,7 +1047,7 @@ export function Workspace() {
   // ===== 默认工作台 =====
   return (
     <MCPProvider>
-      <div className="h-screen flex bg-background overflow-hidden pb-14 md:pb-0">
+      <div className="h-screen flex bg-background overflow-hidden">
         <div className="hidden md:flex">
           <NavPanel
             isCollapsed={isNavCollapsed}
@@ -1089,24 +1084,34 @@ export function Workspace() {
         {viewMode === 'billing-payments' && renderBillingPayments()}
         {viewMode === 'mcp-center' && renderMCPCenter()}
 
-        {/* 移动端底部导航 */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-14 bg-background border-t border-border flex items-center justify-around z-50">
-          <button onClick={() => setViewMode('home')} className="flex flex-col items-center gap-0.5">
-            <Sparkles className="h-5 w-5 text-muted-foreground" />
-            <span className="text-[10px] text-muted-foreground">首页</span>
-          </button>
-          <button onClick={handleNewChat} className="flex flex-col items-center gap-0.5">
-            <Plus className="h-5 w-5 text-muted-foreground" />
-            <span className="text-[10px] text-muted-foreground">新建</span>
-          </button>
-          <button onClick={handleViewAll} className="flex flex-col items-center gap-0.5">
-            <MessageSquare className="h-5 w-5 text-muted-foreground" />
-            <span className="text-[10px] text-muted-foreground">对话</span>
-          </button>
-          <button onClick={handleOpenInvite} className="flex flex-col items-center gap-0.5">
-            <UserPlus className="h-5 w-5 text-muted-foreground" />
-            <span className="text-[10px] text-muted-foreground">邀请</span>
-          </button>
+        {/* 移动端汉堡按钮 - 全局固定，浮动在所有视图左上角 */}
+        <button
+          className={`md:hidden fixed top-4 left-4 z-[60] w-9 h-9 flex items-center justify-center rounded-lg bg-background/95 backdrop-blur-sm border border-border shadow-sm hover:bg-accent transition-all duration-300 ${isMobileNavOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          onClick={() => setIsMobileNavOpen(true)}
+        >
+          <Menu className="h-4 w-4" />
+        </button>
+
+        {/* 移动端导航面板遮罩 */}
+        <div
+          className={`md:hidden fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${isMobileNavOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          onClick={() => setIsMobileNavOpen(false)}
+        />
+        <div
+          className={`md:hidden fixed left-0 top-0 h-full z-50 transition-transform duration-300 shadow-lg ${isMobileNavOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        >
+          <NavPanel
+            isCollapsed={false}
+            onToggleCollapse={() => setIsMobileNavOpen(false)}
+            onNewChat={() => { setIsMobileNavOpen(false); handleNewChat() }}
+            onSelectConversation={(convId) => { setIsMobileNavOpen(false); handleSelectConversation(convId) }}
+            onViewAll={() => { setIsMobileNavOpen(false); handleViewAll() }}
+            onOpenInvite={() => { setIsMobileNavOpen(false); handleOpenInvite() }}
+            onNavigate={(page) => { setIsMobileNavOpen(false); setViewMode(page as ViewMode) }}
+            onRenameChat={handleRenameChat}
+            onDeleteChat={handleDeleteChat}
+            conversations={conversations}
+          />
         </div>
 
         <LoginModal />
@@ -1136,16 +1141,22 @@ function getMockResponse(model: Model, userMessage: string): string {
 
 // 根据 conversation 生成 mock 对话消息
 function generateConversationMessages(conv: Conversation): Message[] {
-  const models = mockModels.filter(m => conv.modelIds.includes(m.id))
+  let models = mockModels.filter(m => conv.modelIds.includes(m.id))
   const userContent = conv.title
   const timestamp = new Date(conv.createdAt)
+
+  // 图片/视频模型禁止多模型：只保留第一个非聊天模型，移除其他
+  const nonChatModels = models.filter(m => m.type !== 'chat')
+  if (nonChatModels.length > 0 && models.length > 1) {
+    models = nonChatModels.slice(0, 1)
+  }
 
   const userMessage: Message = {
     id: `hist-${conv.id}-user`,
     role: 'user',
     content: userContent,
     contentType: 'text',
-    modelIds: conv.modelIds,
+    modelIds: models.map(m => m.id),
     timestamp,
   } as Message
 
@@ -1157,7 +1168,7 @@ function generateConversationMessages(conv: Conversation): Message[] {
         role: 'assistant',
         contentType: 'image',
         modelId: model.id,
-        images: ['https://images.unsplash.com/photo-1579783902614-e3fb5141b0cb?w=512&h=320&fit=crop'],
+        images: ['https://placehold.co/512x320/e2e8f0/475569?text=GPT-Image-2+Sample'],
         timestamp: new Date(timestamp.getTime() + 1000 + index * 500),
         responseTime: 1500,
         costPoints: model.costPoints,

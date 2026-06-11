@@ -34,14 +34,15 @@ function amountToPoints(amount: number): number {
 
 export function BillingPayments({ onBack }: BillingPaymentsProps) {
   return (
-    <div className="p-6 space-y-6">
+    <div className="py-6 space-y-6">
       {/* 顶部标题栏 */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pl-14 md:pl-6 pr-6">
         <h1 className="text-lg font-semibold text-foreground">支付记录</h1>
         <div className="w-[100px]" />
       </div>
 
       {/* 支付记录表格 */}
+      <div className="px-6">
       <Card className="bg-card border rounded-lg">
         <CardContent className="p-0">
           <Table>
@@ -76,6 +77,7 @@ export function BillingPayments({ onBack }: BillingPaymentsProps) {
           </Table>
         </CardContent>
       </Card>
+      </div>
     </div>
   )
 }

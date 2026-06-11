@@ -393,7 +393,7 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* 头部：Tabs居中 + 按钮 */}
-      <div className="p-4 border-b">
+      <div className="pl-14 md:pl-4 pr-4 pt-4 pb-4 border-b">
         <div className="flex items-center justify-between">
           {/* 中间：Tabs */}
           <Tabs 

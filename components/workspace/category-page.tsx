@@ -37,7 +37,7 @@ export function CategoryPage({ initialTab, onSelectModel }: CategoryPageProps) {
 
   return (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-      <div className="flex items-center gap-3 px-6 py-4 border-b border-border shrink-0">
+      <div className="flex items-center gap-3 pl-14 md:pl-6 pr-6 py-4 border-b border-border shrink-0">
         <h2 className="text-lg font-semibold text-foreground">模型列表</h2>
         <span className="text-xs text-muted-foreground">共 {filteredModels.length} 个</span>
       </div>

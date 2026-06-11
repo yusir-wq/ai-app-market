@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -12,6 +12,8 @@ import {
 import { mockModels, type Model } from '@/lib/mock-data'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+
+const typeOrder: Record<Model['type'], number> = { chat: 0, image: 1, video: 2 }
 
 interface ModelMentionPopoverProps {
   selectedModels: Model[]
@@ -26,8 +28,12 @@ export function ModelMentionPopover({
 }: ModelMentionPopoverProps) {
   const [open, setOpen] = useState(false)
 
-  // 展示全部模型
-  const allModels = mockModels
+  // 按类别排序：聊天 → 图片 → 视频
+  const sortedModels = useMemo(
+    () => [...mockModels].sort((a, b) => typeOrder[a.type] - typeOrder[b.type]),
+    []
+  )
+
   const selectedCount = selectedModels.length
   const isMaxReached = selectedCount >= maxModels
 
@@ -38,6 +44,10 @@ export function ModelMentionPopover({
       return
     }
     onToggleModel(model)
+    // 选中图片或视频模型时，立即隐藏气泡卡片
+    if (!isSelected && model.type !== 'chat') {
+      setOpen(false)
+    }
   }
 
   return (
@@ -70,7 +80,7 @@ export function ModelMentionPopover({
         {/* 模型列表 */}
         <ScrollArea className="h-[360px]">
           <div className="p-2 space-y-1">
-            {allModels.map((model) => {
+            {sortedModels.map((model) => {
               const isSelected = selectedModels.some(m => m.id === model.id)
 
               return (

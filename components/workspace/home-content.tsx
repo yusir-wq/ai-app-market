@@ -11,6 +11,7 @@ import { AttachmentPreview, type UploadedFile, buildUploadedFiles } from './atta
 import { mockModels, type Model } from '@/lib/mock-data'
 import { useAuth } from '@/contexts/auth-context'
 import { ArrowUp, Globe, Brain, Paperclip, MessageSquare, Image, Video, Sparkles, X, Search } from 'lucide-react'
+import { toast } from 'sonner'
 
 const recommendedModelIds = ['deepseek-v4-pro', 'gpt-image-2', 'doubao-seedance-2-0-260128']
 
@@ -68,9 +69,22 @@ export function HomeContent({
   const handleToggleMentionModel = useCallback((model: Model) => {
     setSelectedMentionModels(prev => {
       const isSelected = prev.some(m => m.id === model.id)
-      return isSelected
-        ? prev.filter(m => m.id !== model.id)
-        : [...prev, model]
+      if (isSelected) {
+        return prev.filter(m => m.id !== model.id)
+      }
+      // 图片/视频模型：仅单选，清除所有已选
+      if (model.type === 'image' || model.type === 'video') {
+        if (prev.length > 0 && prev.some(m => m.type !== model.type)) {
+          toast.info('图片、视频模型暂不支持多模型对话')
+        }
+        return [model]
+      }
+      // 聊天模型：移除已选的图片/视频模型，保留其他聊天模型
+      if (prev.some(m => m.type === 'image' || m.type === 'video')) {
+        toast.info('图片、视频模型暂不支持多模型对话')
+      }
+      const chatOnly = prev.filter(m => m.type === 'chat')
+      return [...chatOnly, model]
     })
   }, [])
 
@@ -120,12 +134,12 @@ export function HomeContent({
         </div>
 
         {/* 推荐模型栏 */}
-        <div className="w-full flex items-center justify-center gap-2 mb-4 shrink-0">
+        <div className="w-full flex items-center justify-start md:justify-center gap-2 mb-4 shrink-0 overflow-x-auto scrollbar-hide">
           {recommendedModels.map(model => (
             <button
               key={model.id}
               onClick={() => onSelectModel(model)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border hover:border-primary/30 hover:bg-accent text-sm transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border hover:border-primary/30 hover:bg-accent text-sm transition-colors cursor-pointer whitespace-nowrap shrink-0"
             >
               <span>{model.logo}</span>
               <span className="text-foreground">{model.name}</span>
@@ -133,7 +147,7 @@ export function HomeContent({
           ))}
           <button
             onClick={() => setSearchDialogOpen(true)}
-            className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border hover:border-primary/30 hover:bg-accent transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border hover:border-primary/30 hover:bg-accent transition-colors cursor-pointer shrink-0"
           >
             <Search className="h-4 w-4 text-muted-foreground" />
           </button>
@@ -142,11 +156,11 @@ export function HomeContent({
         <div className="w-full rounded-lg border border-border shadow-sm p-4 mb-6 shrink-0" style={{ backgroundColor: '#F7F8FB' }}>
           {/* @提及 模型 Pills */}
           {selectedMentionModels.length > 0 && (
-            <div className="flex items-center gap-1.5 mb-3 flex-wrap">
+            <div className="flex items-center gap-1.5 mb-3 overflow-x-auto scrollbar-hide flex-nowrap">
               {selectedMentionModels.map(model => (
                 <div
                   key={model.id}
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary"
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary whitespace-nowrap shrink-0"
                 >
                   <span>{model.logo}</span>
                   <span>{model.name}</span>

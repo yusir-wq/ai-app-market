@@ -45,13 +45,13 @@ export function ModelResponseCard({
     <>
       <div className="rounded-lg border border-border bg-card overflow-hidden">
         {/* 模型卡片头部 */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-background border border-border flex items-center justify-center text-sm">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30 gap-2">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+            <div className="w-7 h-7 rounded-lg bg-background border border-border flex items-center justify-center text-sm shrink-0">
               {model.logo}
             </div>
-            <div>
-              <span className="text-sm font-semibold text-foreground">{model.name}</span>
+            <div className="min-w-0">
+              <span className="text-sm font-semibold text-foreground truncate block">{model.name}</span>
               <div className="flex items-center gap-1.5 mt-0.5">
                 {onlineSearch && (
                   <Badge variant="secondary" className="text-[10px] h-4 px-1.5 gap-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800">
@@ -68,7 +68,7 @@ export function ModelResponseCard({
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             {/* 状态标签 */}
             {message.status && (
               <Badge
