@@ -106,8 +106,8 @@ function MyMCPServiceCard({
 
   return (
     <Card className="relative overflow-hidden">
-      <CardContent className="p-4">
-        <div className="absolute right-3 top-3 z-10">
+      <CardContent className="p-3 md:p-4">
+        <div className="absolute right-2 md:right-3 top-2 md:top-3 z-10">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -115,7 +115,7 @@ function MyMCPServiceCard({
                 size="icon-sm"
                 title="更多"
               >
-                <MoreHorizontal className="h-4 w-4" />
+                <MoreHorizontal className="h-3.5 w-3.5 md:h-4 md:w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -131,7 +131,7 @@ function MyMCPServiceCard({
           </DropdownMenu>
         </div>
 
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10">
+        <div className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 z-10">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -146,20 +146,20 @@ function MyMCPServiceCard({
           </TooltipProvider>
         </div>
 
-        <div className="flex items-center gap-3 pr-20">
+        <div className="flex items-center gap-2 md:gap-3 pr-16 md:pr-20">
           {/* Icon */}
           <div className="shrink-0">
-            <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-sm font-medium">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-muted flex items-center justify-center text-sm font-medium">
               {service.icon}
             </div>
           </div>
 
           {/* 信息 */}
-          <div className="flex-1 min-w-0 space-y-1">
+          <div className="flex-1 min-w-0 space-y-0.5 md:space-y-1">
             {/* 服务名称 + 英文名称 */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-medium text-sm truncate">{service.name}</span>
-              <span className="text-xs text-muted-foreground truncate">{service.englishName}</span>
+            <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
+              <span className="font-medium text-xs md:text-sm truncate">{service.name}</span>
+              <span className="text-[10px] md:text-xs text-muted-foreground truncate">{service.englishName}</span>
             </div>
             {/* 服务介绍 - hover显示详情按钮 */}
             <DescriptionWithDetail 
@@ -209,21 +209,21 @@ function MCPMarketCard({
 }) {
   return (
     <Card className="overflow-hidden">
-      <CardContent className="p-4">
-        <div className="flex items-start gap-3">
+      <CardContent className="p-3 md:p-4">
+        <div className="flex items-start gap-2 md:gap-3">
           {/* Icon */}
-          <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-sm font-medium shrink-0">
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-muted flex items-center justify-center text-sm font-medium shrink-0">
             {service.icon}
           </div>
           
           {/* 信息 */}
-          <div className="flex-1 min-w-0 space-y-1">
+          <div className="flex-1 min-w-0 space-y-0.5 md:space-y-1">
             {/* 服务名称 + 英文名称 */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-medium text-sm truncate">{service.name}</span>
-              <span className="text-xs text-muted-foreground truncate">{service.englishName}</span>
+            <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
+              <span className="font-medium text-xs md:text-sm truncate">{service.name}</span>
+              <span className="text-[10px] md:text-xs text-muted-foreground truncate">{service.englishName}</span>
             </div>
-            {/* 服务介绍 - hover显示详情按钮 */}
+            {/* 服务介绍 */}
             <DescriptionWithDetail 
               description={service.description} 
               onDetail={onDetail} 
@@ -237,9 +237,9 @@ function MCPMarketCard({
                 variant="outline"
                 size="sm"
                 onClick={onAdd}
-                className="gap-1"
+                className="gap-1 text-xs md:text-sm"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-3.5 w-3.5 md:h-4 md:w-4" />
                 添加
               </Button>
             ) : (
@@ -393,13 +393,12 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* 头部：Tabs居中 + 按钮 */}
-      <div className="pl-14 md:pl-4 pr-4 pt-4 pb-4 border-b">
-        <div className="flex items-center justify-between">
-          {/* 中间：Tabs */}
+      <div className="pl-14 md:pl-4 pr-3 md:pr-4 pt-3 md:pt-4 pb-3 md:pb-4 border-b">
+        <div className="flex items-center justify-center md:justify-between">
+          {/* Tabs */}
           <Tabs 
             value={activeTab} 
             onValueChange={(v) => setActiveTab(v as 'my' | 'market')}
-            className="max-w-sm mx-auto"
           >
             <TabsList>
               <TabsTrigger value="my">我的MCP</TabsTrigger>
@@ -408,9 +407,8 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
           </Tabs>
           
           {/* 右侧：提示文本 + 联系MCP客服 + 企业级MCP定制 */}
-          <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2">
             <span className="text-sm text-orange-500 font-medium shrink-0">MCP免费体验名额正在发放中...</span>
-            {/* 联系MCP客服按钮 */}
             <Button
               variant="outline"
               size="sm"
@@ -419,22 +417,6 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
             >
               联系MCP客服
             </Button>
-            {/* 服务商入驻按钮 - 隐藏 */}
-            {/* <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 shrink-0"
-              asChild
-            >
-              <a
-                href="https://www.chinaz.net/partner"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLink className="h-4 w-4" />
-                服务商入驻
-              </a>
-            </Button> */}
             <Button
               variant="outline"
               size="sm"
@@ -455,12 +437,12 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
       </div>
       
       {/* 内容区域 */}
-      <ScrollArea className="flex-1 px-4 py-4">
+      <ScrollArea className="flex-1 px-3 md:px-4 py-4">
         {/* MCP市场：分类Tabs + 搜索框同一行 */}
         {activeTab === 'market' && (
-          <div className="flex items-center justify-between gap-4 mb-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4 mb-4">
             {/* 分类Tabs */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 md:gap-2">
               {categories.map((category) => (
                 <Button
                   key={category.id}
@@ -468,7 +450,7 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
                   size="sm"
                   onClick={() => setSelectedCategory(category.id as MCPCategory)}
                   className={cn(
-                    "text-xs",
+                    "text-xs py-1 px-2.5",
                     selectedCategory === category.id && "bg-primary text-primary-foreground"
                   )}
                 >
@@ -477,7 +459,7 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
               ))}
             </div>
             {/* 搜索框 */}
-            <div className="relative w-80 shrink-0">
+            <div className="relative w-full md:w-80 shrink-0">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="搜索MCP..."
@@ -492,7 +474,7 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
         {/* 我的MCP：搜索框右对齐，与Tabs同行 */}
         {activeTab === 'my' && (
           <div className="flex justify-end mb-4">
-            <div className="relative w-80 shrink-0">
+            <div className="relative w-full md:w-80 shrink-0">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="搜索MCP..."

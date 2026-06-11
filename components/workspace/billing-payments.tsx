@@ -42,32 +42,32 @@ export function BillingPayments({ onBack }: BillingPaymentsProps) {
       </div>
 
       {/* 支付记录表格 */}
-      <div className="px-6">
-      <Card className="bg-card border rounded-lg">
-        <CardContent className="p-0">
-          <Table>
+      <div className="px-3 md:px-6">
+      <Card className="bg-card border rounded-lg overflow-hidden">
+        <CardContent className="p-0 overflow-x-auto">
+          <Table className="min-w-[500px]">
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="text-sm font-medium">订单号</TableHead>
-                <TableHead className="text-sm font-medium text-right">支付金额</TableHead>
-                <TableHead className="text-sm font-medium text-right">购买智点</TableHead>
-                <TableHead className="text-sm font-medium">支付时间</TableHead>
-                <TableHead className="text-sm font-medium">支付方式</TableHead>
+                <TableHead className="text-xs md:text-sm font-medium">订单号</TableHead>
+                <TableHead className="text-xs md:text-sm font-medium text-right">支付金额</TableHead>
+                <TableHead className="text-xs md:text-sm font-medium text-right">购买智点</TableHead>
+                <TableHead className="text-xs md:text-sm font-medium">支付时间</TableHead>
+                <TableHead className="text-xs md:text-sm font-medium">支付方式</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {mockPaymentRecords.map((record) => (
                 <TableRow key={record.id}>
-                  <TableCell className="text-sm font-medium text-foreground">
+                  <TableCell className="text-xs md:text-sm font-medium text-foreground">
                     {record.orderNo}
                   </TableCell>
-                  <TableCell className="text-sm text-right font-medium text-foreground">
+                  <TableCell className="text-xs md:text-sm text-right font-medium text-foreground">
                     {`¥${record.amount.toFixed(2)}`}
                   </TableCell>
-                  <TableCell className="text-sm text-right font-medium text-foreground">
+                  <TableCell className="text-xs md:text-sm text-right font-medium text-foreground">
                     {amountToPoints(record.amount).toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="text-xs md:text-sm text-muted-foreground">
                     {record.payTime}
                   </TableCell>
                   <TableCell>{getPayMethodBadge(record.payMethod)}</TableCell>

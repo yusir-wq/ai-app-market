@@ -5,10 +5,17 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ThinkingProcess } from './thinking-process'
 import { SearchResultsDrawer } from './search-results-drawer'
+import { ImagePreviewDialog } from '@/components/chat/image-preview-dialog'
 import { MarkdownContent } from '@/components/chat/markdown-content'
 import { cn } from '@/lib/utils'
 import { type Model, type Message, mockSearchResults, mockThinkingContent } from '@/lib/mock-data'
-import { Globe, Brain, Copy, RotateCcw, Reply, Check, ArrowUpRight, Sparkles } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { Globe, Brain, Copy, RotateCcw, Reply, Check, ArrowUpRight, Sparkles, Eye, Download, Image, Zap, RotateCw, Trash2 } from 'lucide-react'
 
 interface ModelResponseCardProps {
   model: Model
@@ -31,6 +38,9 @@ export function ModelResponseCard({
 }: ModelResponseCardProps) {
   const [copied, setCopied] = useState(false)
   const [searchDrawerOpen, setSearchDrawerOpen] = useState(false)
+  const [hoveredImgIdx, setHoveredImgIdx] = useState<number | null>(null)
+  const [previewImg, setPreviewImg] = useState<string | null>(null)
+  const [hoveredVidIdx, setHoveredVidIdx] = useState<number | null>(null)
 
   const searchResults = mockSearchResults[model.id] || []
   const thinkingContent = mockThinkingContent[model.id] || ''
@@ -104,23 +114,140 @@ export function ModelResponseCard({
 
           {/* 图片内容 */}
           {message.contentType === 'image' && message.images && message.images.length > 0 && (
-            <div className="grid grid-cols-2 gap-2">
-              {message.images.map((img, idx) => (
-                <div key={idx} className="relative rounded-lg overflow-hidden border border-border bg-muted">
-                  {img === 'expired' || message.isExpired ? (
-                    <div className="flex items-center justify-center h-32 text-xs text-muted-foreground">
-                      图片已过期
-                    </div>
-                  ) : (
-                    <img
-                      src={img}
-                      alt={`生成图片 ${idx + 1}`}
-                      className="w-full h-auto object-cover"
-                      loading="lazy"
-                    />
-                  )}
-                </div>
-              ))}
+            <div className="space-y-2">
+              <div className={`grid ${message.images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'} gap-3`}>
+                {message.images.map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="relative overflow-hidden rounded-lg bg-muted cursor-pointer group/img"
+                    onMouseEnter={() => setHoveredImgIdx(idx)}
+                    onMouseLeave={() => setHoveredImgIdx(null)}
+                    onClick={() => {
+                      if (img !== 'expired' && !message.isExpired) setPreviewImg(img)
+                    }}
+                  >
+                    {img === 'expired' || message.isExpired ? (
+                      <div className="flex items-center justify-center h-32 text-xs text-muted-foreground border border-dashed border-muted-foreground/30 rounded-lg">
+                        图片已失效
+                      </div>
+                    ) : (
+                      <>
+                        <img src={img} alt={`生成图片 ${idx + 1}`} className="w-full h-auto object-cover" loading="lazy" />
+                        <div className={`absolute inset-0 bg-black transition-opacity duration-200 ${hoveredImgIdx === idx ? 'opacity-40' : 'opacity-0'}`} />
+                        <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${hoveredImgIdx === idx ? 'opacity-100' : 'opacity-0'}`}>
+                          <TooltipProvider>
+                            <div className="flex gap-2 flex-wrap justify-center p-2">
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                    onClick={(e) => { e.stopPropagation(); setPreviewImg(img) }}
+                                  >
+                                    <Eye className="h-4 w-4" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="text-xs">查看图片</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      const link = document.createElement('a')
+                                      link.href = img
+                                      link.download = `image-${Date.now()}.jpg`
+                                      link.click()
+                                    }}
+                                  >
+                                    <Download className="h-4 w-4" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="text-xs">下载原图</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                    onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(img) }}
+                                  >
+                                    <Copy className="h-4 w-4" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="text-xs">复制链接</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                    onClick={(e) => { e.stopPropagation() }}
+                                  >
+                                    <Image className="h-4 w-4" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="text-xs">作为参考图</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                    onClick={(e) => { e.stopPropagation() }}
+                                  >
+                                    <Zap className="h-4 w-4" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="text-xs">使用提示词</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                    onClick={(e) => { e.stopPropagation(); onRegenerate?.(model) }}
+                                  >
+                                    <RotateCw className="h-4 w-4" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="text-xs">再次生成</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                    onClick={(e) => { e.stopPropagation() }}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="text-xs">删除</TooltipContent>
+                              </Tooltip>
+                            </div>
+                          </TooltipProvider>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {/* 有效期提示 */}
+              <p className="text-xs text-muted-foreground">
+                图片地址有效期为24小时，请及时
+                <button
+                  onClick={() => {
+                    message.images?.forEach((img, i) => {
+                      if (img !== 'expired') {
+                        const link = document.createElement('a')
+                        link.href = img
+                        link.download = `image-${Date.now()}-${i}.jpg`
+                        link.click()
+                      }
+                    })
+                  }}
+                  className="ml-1 mr-1 text-foreground hover:text-primary underline transition-colors"
+                >
+                  【下载图片】
+                </button>
+                到本地。
+              </p>
             </div>
           )}
 
@@ -128,18 +255,93 @@ export function ModelResponseCard({
           {message.contentType === 'video' && message.videos && message.videos.length > 0 && (
             <div className="space-y-2">
               {message.videos.map((vid, idx) => (
-                <div key={idx} className="relative rounded-lg overflow-hidden border border-border bg-muted">
+                <div
+                  key={idx}
+                  className="relative rounded-lg overflow-hidden border border-border bg-muted group/vid"
+                  onMouseEnter={() => setHoveredVidIdx(idx)}
+                  onMouseLeave={() => setHoveredVidIdx(null)}
+                >
                   {vid === 'expired' || message.isExpired ? (
-                    <div className="flex items-center justify-center h-32 text-xs text-muted-foreground">
-                      视频已过期
+                    <div className="flex items-center justify-center h-32 text-xs text-muted-foreground border border-dashed border-muted-foreground/30 rounded-lg">
+                      视频已失效
                     </div>
                   ) : (
-                    <video
-                      src={vid}
-                      controls
-                      className="w-full h-auto max-h-80"
-                      preload="metadata"
-                    />
+                    <>
+                      <video
+                        src={vid}
+                        controls
+                        className="w-full h-auto max-h-80"
+                        preload="metadata"
+                      />
+                      <div className={`absolute inset-0 bg-black transition-opacity duration-200 pointer-events-none ${hoveredVidIdx === idx ? 'opacity-40' : 'opacity-0'}`} />
+                      <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 pointer-events-none ${hoveredVidIdx === idx ? 'opacity-100' : 'opacity-0'}`}>
+                        <TooltipProvider>
+                          <div className="flex gap-2 flex-wrap justify-center p-2 pointer-events-auto">
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    const link = document.createElement('a')
+                                    link.href = vid
+                                    link.download = `video-${Date.now()}.mp4`
+                                    link.click()
+                                  }}
+                                >
+                                  <Download className="h-4 w-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom" className="text-xs">下载视频</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                  onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(vid) }}
+                                >
+                                  <Copy className="h-4 w-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom" className="text-xs">复制链接</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                  onClick={(e) => { e.stopPropagation() }}
+                                >
+                                  <Zap className="h-4 w-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom" className="text-xs">使用提示词</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                  onClick={(e) => { e.stopPropagation(); onRegenerate?.(model) }}
+                                >
+                                  <RotateCw className="h-4 w-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom" className="text-xs">再次生成</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-white transition-colors"
+                                  onClick={(e) => { e.stopPropagation() }}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom" className="text-xs">删除</TooltipContent>
+                            </Tooltip>
+                          </div>
+                        </TooltipProvider>
+                      </div>
+                    </>
                   )}
                 </div>
               ))}
@@ -149,6 +351,26 @@ export function ModelResponseCard({
                   {message.resolution && <span>分辨率: {message.resolution}</span>}
                 </div>
               )}
+              {/* 有效期提示 */}
+              <p className="text-xs text-muted-foreground">
+                视频地址有效期为24小时，请及时
+                <button
+                  onClick={() => {
+                    message.videos?.forEach((v, i) => {
+                      if (v !== 'expired') {
+                        const link = document.createElement('a')
+                        link.href = v
+                        link.download = `video-${Date.now()}-${i}.mp4`
+                        link.click()
+                      }
+                    })
+                  }}
+                  className="ml-1 mr-1 text-foreground hover:text-primary underline transition-colors"
+                >
+                  【下载视频】
+                </button>
+                到本地。
+              </p>
             </div>
           )}
 
@@ -223,6 +445,25 @@ export function ModelResponseCard({
         open={searchDrawerOpen}
         onOpenChange={setSearchDrawerOpen}
         results={searchResults}
+      />
+
+      {/* 图片预览弹窗 */}
+      <ImagePreviewDialog
+        open={!!previewImg}
+        image={previewImg}
+        onOpenChange={(open) => { if (!open) setPreviewImg(null) }}
+        onDownload={() => {
+          if (previewImg) {
+            const link = document.createElement('a')
+            link.href = previewImg
+            link.download = `image-${Date.now()}.jpg`
+            link.click()
+          }
+        }}
+        onCopyLink={() => {
+          if (previewImg) navigator.clipboard.writeText(previewImg)
+        }}
+        onRegenerate={() => onRegenerate?.(model)}
       />
     </>
   )

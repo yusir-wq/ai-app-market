@@ -7,6 +7,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip
 import { ModelMentionPopover } from './model-mention-popover'
 import { MCPServiceSelector } from './mcp-service-selector'
 import { AttachmentPreview, type UploadedFile, buildUploadedFiles } from './attachment-preview'
+import { ModelParamPopover } from './model-param-popover'
 import { type Model } from '@/lib/mock-data'
 import { ArrowUp, Paperclip, Upload, X, Info, Globe, Brain, Sparkles } from 'lucide-react'
 
@@ -310,54 +311,63 @@ export function InputArea({
               />
             )}
 
-            {/* MCP服务 */}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="inline-flex">
-                  <MCPServiceSelector iconOnly onNavigate={onNavigate} />
-                </span>
-              </TooltipTrigger>
-              <TooltipContent side="top">
-                <p>MCP服务</p>
-              </TooltipContent>
-            </Tooltip>
+            {/* MCP服务 - 仅聊天模型 */}
+            {!hasReference && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex">
+                    <MCPServiceSelector iconOnly onNavigate={onNavigate} />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  <p>MCP服务</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
 
-            {/* 分隔 */}
-            <div className="w-px h-4 bg-border/50 mx-1" />
+            {/* 图片/视频模型参数设置 */}
+            {hasReference && activeModel && (
+              <ModelParamPopover modelType={activeModel.type as 'image' | 'video'} />
+            )}
 
-            {/* 联网搜索 */}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={enableSearch ? 'default' : 'ghost'}
-                  size="icon-sm"
-                  className="h-8 w-8"
-                  onClick={onToggleSearch}
-                >
-                  <Globe className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="top">
-                <p>联网搜索</p>
-              </TooltipContent>
-            </Tooltip>
+            {/* 分隔 + 联网搜索 + 深度思考 - 仅聊天模型 */}
+            {!hasReference && (
+              <>
+                <div className="w-px h-4 bg-border/50 mx-1" />
 
-            {/* 深度思考 */}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={enableThinking ? 'default' : 'ghost'}
-                  size="icon-sm"
-                  className="h-8 w-8"
-                  onClick={onToggleThinking}
-                >
-                  <Brain className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="top">
-                <p>深度思考</p>
-              </TooltipContent>
-            </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={enableSearch ? 'default' : 'ghost'}
+                      size="icon-sm"
+                      className="h-8 w-8"
+                      onClick={onToggleSearch}
+                    >
+                      <Globe className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <p>联网搜索</p>
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={enableThinking ? 'default' : 'ghost'}
+                      size="icon-sm"
+                      className="h-8 w-8"
+                      onClick={onToggleThinking}
+                    >
+                      <Brain className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <p>深度思考</p>
+                  </TooltipContent>
+                </Tooltip>
+              </>
+            )}
           </div>
 
           <div className="flex items-center gap-2">

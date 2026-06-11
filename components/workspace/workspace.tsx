@@ -21,6 +21,7 @@ import { NavPanel } from './nav-panel'
 import { HomeContent } from './home-content'
 import { WorkspaceContent } from './workspace-content'
 import { InputArea } from './input-area'
+import { HomeInputArea } from './home-input-area'
 import { ModelResponseCard } from './model-response-card'
 import { InviteDialog } from './invite-dialog'
 import { LoginModal } from '@/components/auth/login-modal'
@@ -43,7 +44,7 @@ import {
   type Message,
   type Conversation,
 } from '@/lib/mock-data'
-import { Search, MoreHorizontal, Pencil, Trash2, ArrowUp, Globe, Brain, Menu } from 'lucide-react'
+import { Search, MoreHorizontal, Pencil, Trash2, Menu } from 'lucide-react'
 
 type ViewMode = 'home' | 'chat' | 'history-all' | 'category' | 'model-detail' | 'billing-usage' | 'billing-payments' | 'mcp-center'
 
@@ -597,16 +598,77 @@ export function Workspace() {
                 return (
                   <div key={pair.user.id} className="space-y-4">
                     {/* 用户消息 */}
-                    <div className="flex justify-end">
-                      <div className="max-w-[72%] rounded-lg bg-primary text-primary-foreground px-4 py-2.5">
-                        <p className="text-sm whitespace-pre-wrap">{pair.user.content}</p>
-                        {pair.user.modelIds && pair.user.modelIds.length > 0 && (
-                          <p className="text-[10px] opacity-70 mt-1">
-                            @ {pair.user.modelIds.map(id => mockModels.find(m => m.id === id)?.name).join(', ')}
-                          </p>
-                        )}
+                    {pair.user.contentType === 'image' || pair.user.contentType === 'video' ? (
+                      <div className="flex justify-end">
+                        <div className="max-w-[80%] w-fit">
+                          <p className="text-sm text-foreground mb-2">{pair.user.userPrompt}</p>
+                          {pair.user.parameters && (
+                            <div className="flex gap-2 flex-wrap mb-2">
+                              {pair.user.contentType === 'image' && (
+                                <>
+                                  {pair.user.parameters.ratio && (
+                                    <Badge variant="secondary" className="text-xs">{pair.user.parameters.ratio}</Badge>
+                                  )}
+                                  {pair.user.parameters.count && (
+                                    <Badge variant="secondary" className="text-xs">{pair.user.parameters.count}张</Badge>
+                                  )}
+                                  {pair.user.parameters.quality && (
+                                    <Badge variant="secondary" className="text-xs">{pair.user.parameters.quality}</Badge>
+                                  )}
+                                </>
+                              )}
+                              {pair.user.contentType === 'video' && (
+                                <>
+                                  {pair.user.parameters.duration && (
+                                    <Badge variant="secondary" className="text-xs">{pair.user.parameters.duration}s</Badge>
+                                  )}
+                                  {pair.user.parameters.ratio && (
+                                    <Badge variant="secondary" className="text-xs">{pair.user.parameters.ratio}</Badge>
+                                  )}
+                                  {pair.user.parameters.resolution && (
+                                    <Badge variant="secondary" className="text-xs">{pair.user.parameters.resolution}</Badge>
+                                  )}
+                                  {pair.user.parameters.count && (
+                                    <Badge variant="secondary" className="text-xs">{pair.user.parameters.count}个</Badge>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          )}
+                          {pair.user.referenceImages && pair.user.referenceImages.length > 0 && (
+                            <div className="flex gap-2">
+                              {pair.user.referenceImages.map((img: string, refIdx: number) => (
+                                <img key={refIdx} src={img} alt="ref" className="w-10 h-10 rounded object-cover" />
+                              ))}
+                            </div>
+                          )}
+                          {pair.user.referenceAssets && (
+                            <div className="flex gap-2 mt-2">
+                              {pair.user.referenceAssets.images?.map((img: string, refIdx: number) => (
+                                <img key={`img-${refIdx}`} src={img} alt="ref" className="w-10 h-10 rounded object-cover" />
+                              ))}
+                              {pair.user.referenceAssets.videos?.map((_vid: string, refIdx: number) => (
+                                <div key={`vid-${refIdx}`} className="w-10 h-10 rounded bg-muted flex items-center justify-center text-xs font-semibold">视</div>
+                              ))}
+                              {pair.user.referenceAssets.audios?.map((_aud: string, refIdx: number) => (
+                                <div key={`aud-${refIdx}`} className="w-10 h-10 rounded bg-muted flex items-center justify-center text-xs font-semibold">音</div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex justify-end">
+                        <div className="max-w-[72%] rounded-lg bg-primary text-primary-foreground px-4 py-2.5">
+                          <p className="text-sm whitespace-pre-wrap">{pair.user.content}</p>
+                          {pair.user.modelIds && pair.user.modelIds.length > 0 && (
+                            <p className="text-[10px] opacity-70 mt-1">
+                              @ {pair.user.modelIds.map(id => mockModels.find(m => m.id === id)?.name).join(', ')}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
 
                     {/* AI 回复卡片网格 */}
                     {pair.assistants.length > 0 && (
@@ -950,7 +1012,7 @@ export function Workspace() {
             {prompts.length > 0 && (
               <div className="mb-8">
                 <p className="text-xs text-muted-foreground mb-3 text-center font-medium">尝试这些话题</p>
-                <div className="space-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {prompts.map((prompt) => (
                     <button
                       key={prompt}
@@ -966,48 +1028,19 @@ export function Workspace() {
           </div>
         </div>
 
-        {/* 底部输入区 - 自由输入 */}
+        {/* 底部输入区 - 与首页共用组件 */}
         <div className="flex-shrink-0 border-t border-border bg-background">
           <div className="max-w-4xl mx-auto px-6 py-4">
-            <div className="bg-card rounded-lg border border-border shadow-sm p-3 flex items-end gap-2" style={{ backgroundColor: '#F7F8FB' }}>
-              <textarea
-                className="flex-1 border-0 shadow-none resize-none focus-visible:ring-0 focus:outline-none p-0 text-sm leading-relaxed bg-transparent overflow-y-auto py-1"
-                style={{ minHeight: '24px', maxHeight: '144px' }}
-                placeholder={`向 ${model.name} 提问...`}
-                rows={1}
-                onInput={(e) => {
-                  const el = e.target as HTMLTextAreaElement
-                  el.style.height = 'auto'
-                  el.style.height = `${Math.min(el.scrollHeight, 144)}px`
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault()
-                    const text = (e.target as HTMLTextAreaElement).value.trim()
-                    if (text) {
-                      handleStartChat(text)
-                      ;(e.target as HTMLTextAreaElement).value = ''
-                    }
-                  }
-                }}
-              />
-              <Button
-                size="icon-sm"
-                className="h-8 w-8 rounded-full shrink-0"
-                onClick={(e) => {
-                  const textarea = (e.target as HTMLElement).parentElement?.querySelector('textarea')
-                  if (textarea) {
-                    const text = textarea.value.trim()
-                    if (text) {
-                      handleStartChat(text)
-                      textarea.value = ''
-                    }
-                  }
-                }}
-              >
-                <ArrowUp className="h-5 w-5" />
-              </Button>
-            </div>
+            <HomeInputArea
+              model={model}
+              defaultModelIds={[model.id]}
+              onSend={(message) => handleStartChat(message)}
+              enableSearch={enableSearch}
+              enableThinking={enableThinking}
+              onToggleSearch={() => setEnableSearch(!enableSearch)}
+              onToggleThinking={() => setEnableThinking(!enableThinking)}
+              onNavigate={(page) => setViewMode(page as ViewMode)}
+            />
           </div>
         </div>
       </div>
@@ -1151,14 +1184,37 @@ function generateConversationMessages(conv: Conversation): Message[] {
     models = nonChatModels.slice(0, 1)
   }
 
-  const userMessage: Message = {
-    id: `hist-${conv.id}-user`,
-    role: 'user',
-    content: userContent,
-    contentType: 'text',
-    modelIds: models.map(m => m.id),
-    timestamp,
-  } as Message
+  const firstModel = models[0]
+  const effectiveModelIds = models.map(m => m.id)
+
+  // 根据模型类型生成不同的用户消息
+  const userMessage: Message = (() => {
+    const base = {
+      id: `hist-${conv.id}-user`,
+      role: 'user' as const,
+      modelIds: effectiveModelIds,
+      timestamp,
+    }
+    if (firstModel?.type === 'image') {
+      return {
+        ...base,
+        contentType: 'image',
+        userPrompt: userContent,
+        parameters: { ratio: '16:9', count: 2, quality: 'high', optimizePrompt: true },
+        referenceImages: ['https://placehold.co/120x120/e2e8f0/475569?text=Ref'],
+      } as Message
+    }
+    if (firstModel?.type === 'video') {
+      return {
+        ...base,
+        contentType: 'video',
+        userPrompt: userContent,
+        parameters: { duration: 5, ratio: '16:9', resolution: '1080p', count: 1, mode: 'quality' },
+        referenceAssets: { images: ['https://placehold.co/120x120/e2e8f0/475569?text=Ref'] },
+      } as Message
+    }
+    return { ...base, content: userContent, contentType: 'text' } as Message
+  })()
 
   const assistantMessages: Message[] = models.map((model, index) => {
     // 根据模型类型生成不同内容
