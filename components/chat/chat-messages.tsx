@@ -64,7 +64,7 @@ export function ChatMessages({ messages, model, isLoading, insufficientPoints }:
   const lastMessageId = messages[messages.length - 1]?.id
 
   return (
-    <div className="space-y-4 py-6">
+    <div className="space-y-6 py-6">
       {messages.map((message, index) => {
         const isLastMessage = message.id === lastMessageId
         const showInsufficientPoints = isLastMessage && insufficientPoints && model

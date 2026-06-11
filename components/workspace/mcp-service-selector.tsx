@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -11,15 +11,17 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useMCP } from '@/contexts/mcp-context'
-import { Wrench } from 'lucide-react'
+import { Puzzle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
 interface MCPServiceSelectorProps {
   onNavigate?: (page: string) => void
+  /** 是否为图标模式（工具栏内使用，仅显示图标，点击触发） */
+  iconOnly?: boolean
 }
 
-export function MCPServiceSelector({ onNavigate }: MCPServiceSelectorProps = {}) {
+export function MCPServiceSelector({ onNavigate, iconOnly = false }: MCPServiceSelectorProps) {
   const {
     userMCPServices,
     selectedMCPServices,
@@ -40,44 +42,48 @@ export function MCPServiceSelector({ onNavigate }: MCPServiceSelectorProps = {})
   const selectedCount = selectedMCPServices.length
   
   // 处理MCP总开关切换
-  const handleMCPToggle = (enabled: boolean) => {
+  const handleMCPToggle = useCallback((enabled: boolean) => {
     setMcpEnabled(enabled)
     toast.success(enabled ? 'MCP服务已启用' : 'MCP服务已停用')
-  }
+  }, [setMcpEnabled])
   
-  // 处理鼠标进入按钮
-  const handleMouseEnter = () => {
+  // 处理鼠标进入按钮（非 iconOnly 模式使用 hover）
+  const handleMouseEnter = useCallback(() => {
+    if (iconOnly) return
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current)
       closeTimerRef.current = null
     }
     setOpen(true)
-  }
+  }, [iconOnly])
   
   // 处理鼠标离开（延迟关闭）
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
+    if (iconOnly) return
     closeTimerRef.current = setTimeout(() => {
       setOpen(false)
     }, 200)
-  }
+  }, [iconOnly])
   
   // 处理鼠标进入弹窗内容（取消关闭）
-  const handleContentMouseEnter = () => {
+  const handleContentMouseEnter = useCallback(() => {
+    if (iconOnly) return
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current)
       closeTimerRef.current = null
     }
-  }
+  }, [iconOnly])
   
   // 处理鼠标离开弹窗内容
-  const handleContentMouseLeave = () => {
+  const handleContentMouseLeave = useCallback(() => {
+    if (iconOnly) return
     closeTimerRef.current = setTimeout(() => {
       setOpen(false)
     }, 200)
-  }
+  }, [iconOnly])
   
   // 处理服务选择
-  const handleServiceToggle = (serviceId: string) => {
+  const handleServiceToggle = useCallback((serviceId: string) => {
     // MCP未启用时不可操作
     if (!mcpEnabled) return
     
@@ -89,34 +95,50 @@ export function MCPServiceSelector({ onNavigate }: MCPServiceSelectorProps = {})
     } else {
       setSelectedMCPServices([...selectedMCPServices, service])
     }
-  }
+  }, [mcpEnabled, enabledServices, selectedMCPServices, setSelectedMCPServices])
   
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className={cn(
-            "gap-1.5 h-8 text-xs transition-all",
-            mcpEnabled && selectedCount > 0 && "border-primary bg-primary/5"
-          )}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <Wrench className="h-3.5 w-3.5" />
-          MCP服务
-          {mcpEnabled && selectedCount > 0 && (
-            <span className="ml-1 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
-              {selectedCount}
-            </span>
-          )}
-        </Button>
+        {iconOnly ? (
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className={cn(
+              "h-8 w-8",
+              mcpEnabled && selectedCount > 0 && "text-primary"
+            )}
+            onClick={() => setOpen(prev => !prev)}
+          >
+            <Puzzle className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className={cn(
+              "gap-1.5 h-8 text-xs transition-all",
+              mcpEnabled && selectedCount > 0 && "border-primary bg-primary/5"
+            )}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Puzzle className="h-3.5 w-3.5" />
+            MCP服务
+            {mcpEnabled && selectedCount > 0 && (
+              <span className="ml-1 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
+                {selectedCount}
+              </span>
+            )}
+          </Button>
+        )}
       </PopoverTrigger>
       
       <PopoverContent 
         className="w-72 p-0"
         align="start"
+        side="top"
+        sideOffset={8}
         onMouseEnter={handleContentMouseEnter}
         onMouseLeave={handleContentMouseLeave}
       >

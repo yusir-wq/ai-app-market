@@ -19,7 +19,7 @@ export function UserMessage({ message, isLastMessage }: UserMessageProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex items-end gap-2 max-w-md">
+      <div className="flex items-end gap-2 max-w-[72%]">
         {/* 操作按钮 */}
         {isHovered && (
           <div className="flex gap-1">
@@ -46,7 +46,7 @@ export function UserMessage({ message, isLastMessage }: UserMessageProps) {
 
         {/* 消息内容 */}
         <div className="flex flex-col items-end gap-1">
-          <div className="bg-primary text-primary-foreground rounded-2xl rounded-tr-sm px-4 py-2 break-words">
+          <div className="bg-primary text-primary-foreground rounded-lg rounded-br-sm px-4 py-2.5 break-words">
             <p className="text-sm">{message.content}</p>
           </div>
           <span className="text-xs text-muted-foreground px-2">

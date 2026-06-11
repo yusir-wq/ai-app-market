@@ -1,12 +1,21 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { AuthProvider } from '@/contexts/auth-context'
 import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'AI应用广场 - 大模型聚合平台',
@@ -38,7 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className="bg-background">
-      <body className="font-sans antialiased">
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <AuthProvider>
           {children}
           {process.env.NODE_ENV === 'production' && <Analytics />}
@@ -48,4 +57,3 @@ export default function RootLayout({
     </html>
   )
 }
-

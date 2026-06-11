@@ -113,7 +113,7 @@ export function MCPQuickCreateModal() {
 
             {/* 2. APIKey（可编辑） */}
             <div className="space-y-2">
-              <Label>输入此服务的APIKey</Label>
+              <Label>服务APIKey</Label>
               <Input
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}

@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
 import { mockPaymentRecords, type PaymentRecord } from '@/lib/mock-billing-data'
+import { cn } from '@/lib/utils'
 
 interface BillingPaymentsProps {
   onBack: () => void
@@ -37,20 +37,12 @@ export function BillingPayments({ onBack }: BillingPaymentsProps) {
     <div className="p-6 space-y-6">
       {/* 顶部标题栏 */}
       <div className="flex items-center justify-between">
-        <Button
-          variant="ghost"
-          className="gap-2 text-muted-foreground hover:text-foreground"
-          onClick={onBack}
-        >
-          <ArrowLeft className="h-4 w-4" />
-          返回工作台
-        </Button>
         <h1 className="text-lg font-semibold text-foreground">支付记录</h1>
         <div className="w-[100px]" />
       </div>
 
       {/* 支付记录表格 */}
-      <Card className="bg-card border rounded-xl">
+      <Card className="bg-card border rounded-lg">
         <CardContent className="p-0">
           <Table>
             <TableHeader>

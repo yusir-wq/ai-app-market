@@ -6,6 +6,41 @@ export interface Model {
   description: string
   logo: string
   addedAt: Date
+  // V1.2 新增字段
+  requiresReference: boolean
+  costPoints: number
+  supportedReferences?: ('content' | 'style' | 'character')[]
+  // 渐变色（参考图风格）
+  gradient: string
+}
+
+// V1.2 对话类型
+export interface Conversation {
+  id: string
+  title: string
+  preview: string
+  createdAt: Date
+  modelIds: string[]
+  messages: Message[]
+}
+
+// V1.2 搜索结果类型
+export interface SearchResult {
+  id: string
+  siteName: string
+  title: string
+  snippet: string
+  url: string
+}
+
+// V1.2 邀请记录类型
+export interface InviteRecord {
+  id: string
+  invitedUserId: string
+  invitedUserName: string
+  registeredAt: Date
+  rewardStatus: 'pending' | 'granted'
+  rewardPoints: number
 }
 
 // 历史对话类型
@@ -14,6 +49,7 @@ export interface ChatHistory {
   title: string
   modelId: string
   createdAt: Date
+  summary?: string
 }
 
 export type ChatHistories = Record<string, ChatHistory[]>
@@ -26,6 +62,9 @@ export const mockModels: Model[] = [
     description: '强大的大型语言模型，支持多轮对话、代码生成和复杂推理任务',
     logo: '🔮',
     addedAt: new Date('2024-12-15'),
+    requiresReference: false,
+    costPoints: 10,
+    gradient: 'from-violet-500 to-indigo-600',
   },
   {
     id: 'minimax-m25',
@@ -34,6 +73,9 @@ export const mockModels: Model[] = [
     description: '高性能对话模型，擅长创意写作和情感理解',
     logo: '💬',
     addedAt: new Date('2024-12-10'),
+    requiresReference: false,
+    costPoints: 8,
+    gradient: 'from-pink-400 to-rose-500',
   },
   {
     id: 'gpt-image-2',
@@ -42,6 +84,10 @@ export const mockModels: Model[] = [
     description: '先进的文生图模型，支持高质量图片生成和编辑',
     logo: '🎨',
     addedAt: new Date('2024-12-08'),
+    requiresReference: false,
+    costPoints: 50,
+    supportedReferences: ['content', 'style'],
+    gradient: 'from-amber-400 to-orange-500',
   },
   {
     id: 'qwen-image-max',
@@ -50,6 +96,10 @@ export const mockModels: Model[] = [
     description: '通义千问图像模型，支持中文场景理解和创意生成',
     logo: '🖼️',
     addedAt: new Date('2024-12-05'),
+    requiresReference: true,
+    costPoints: 80,
+    supportedReferences: ['content', 'style', 'character'],
+    gradient: 'from-blue-400 to-violet-500',
   },
   {
     id: 'glm-5-turbo',
@@ -58,6 +108,9 @@ export const mockModels: Model[] = [
     description: '智谱AI旗舰模型，中文能力卓越，推理速度快',
     logo: '⚡',
     addedAt: new Date('2024-12-01'),
+    requiresReference: false,
+    costPoints: 5,
+    gradient: 'from-sky-400 to-blue-500',
   },
   {
     id: 'claude-haiku-45',
@@ -66,6 +119,9 @@ export const mockModels: Model[] = [
     description: 'Anthropic轻量级模型，响应快速，适合日常对话',
     logo: '🌸',
     addedAt: new Date('2024-11-28'),
+    requiresReference: false,
+    costPoints: 6,
+    gradient: 'from-pink-300 to-purple-400',
   },
   {
     id: 'gemini-3-flash',
@@ -74,6 +130,9 @@ export const mockModels: Model[] = [
     description: 'Google多模态模型，支持视频理解和生成',
     logo: '✨',
     addedAt: new Date('2024-11-25'),
+    requiresReference: false,
+    costPoints: 100,
+    gradient: 'from-emerald-400 to-teal-500',
   },
 ]
 
@@ -95,6 +154,40 @@ export interface ChatMessage {
   timestamp: Date
   status?: 'sending' | 'success' | 'error'
   mcpContent?: MCPMessageContent
+}
+
+// V1.2 统一 Message 类型（兼容所有模型类型）
+export interface Message {
+  id: string
+  role: 'user' | 'assistant'
+  content?: string
+  contentType: 'text' | 'markdown' | 'code' | 'mcp' | 'image' | 'video'
+  codeLanguage?: string
+  timestamp: Date
+  status?: 'sending' | 'success' | 'error'
+  // MCP
+  mcpContent?: MCPMessageContent
+  // Image
+  userPrompt?: string
+  parameters?: any
+  referenceImages?: string[]
+  images?: string[]
+  isExpired?: boolean
+  referenceType?: 'content' | 'style' | 'character'
+  // Video
+  videos?: string[]
+  duration?: string
+  resolution?: string
+  referenceAssets?: { images?: string[]; videos?: string[]; audios?: string[] }
+  // V1.2 新增
+  modelId?: string
+  modelIds?: string[]
+  onlineSearch?: boolean
+  deepThinking?: boolean
+  thinkingContent?: string
+  searchResults?: SearchResult[]
+  responseTime?: number
+  costPoints?: number
 }
 
 export const mockChatMessages: Record<string, ChatMessage[]> = {
@@ -523,46 +616,46 @@ export const mockMCPMessages: Record<string, ChatMessage[]> = {
 
 export const mockChatHistories: Record<string, ChatHistory[]> = {
   'deepseek-v4-pro': [
-    { id: '1', title: '帮我写一个React组件', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-18 14:30') },
-    { id: '2', title: '解释一下量子计算的基本原理和量子纠缠现象', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-17 10:20') },
-    { id: '3', title: '如何优化数据库查询性能', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-16 16:45') },
-    { id: '4', title: '用Python实现快速排序算法并分析时间复杂度', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-15 09:00') },
-    { id: '5', title: '分析这段代码的复杂度', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-14 20:15') },
+    { id: '1', title: '帮我写一个React组件', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-18 14:30'), summary: '这是一个功能完整的用户列表组件，支持分页和搜索...' },
+    { id: '2', title: '解释一下量子计算的基本原理和量子纠缠现象', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-17 10:20'), summary: '量子计算利用量子比特的叠加态和纠缠态进行并行计算...' },
+    { id: '3', title: '如何优化数据库查询性能', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-16 16:45'), summary: '优化数据库查询可以从索引设计、查询重写、缓存策略等方面入手...' },
+    { id: '4', title: '用Python实现快速排序算法并分析时间复杂度', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-15 09:00'), summary: '快速排序是一种分治算法，平均时间复杂度为O(n log n)...' },
+    { id: '5', title: '分析这段代码的复杂度', modelId: 'deepseek-v4-pro', createdAt: new Date('2024-12-14 20:15'), summary: '从时间复杂度和空间复杂度两个维度进行了详细分析...' },
   ],
   'minimax-m25': [
-    { id: '6', title: '写一篇关于人工智能的科幻小说开头', modelId: 'minimax-m25', createdAt: new Date('2024-12-18 11:00') },
-    { id: '7', title: '帮我续写这个故事的结局', modelId: 'minimax-m25', createdAt: new Date('2024-12-17 15:30') },
-    { id: '8', title: '创作一首现代诗歌', modelId: 'minimax-m25', createdAt: new Date('2024-12-16 08:45') },
+    { id: '6', title: '写一篇关于人工智能的科幻小说开头', modelId: 'minimax-m25', createdAt: new Date('2024-12-18 11:00'), summary: '公元2147年，人类与AI共存的世界已经形成了微妙的平衡...' },
+    { id: '7', title: '帮我续写这个故事的结局', modelId: 'minimax-m25', createdAt: new Date('2024-12-17 15:30'), summary: '主角最终发现，真相远比想象中更加复杂和深刻...' },
+    { id: '8', title: '创作一首现代诗歌', modelId: 'minimax-m25', createdAt: new Date('2024-12-16 08:45'), summary: '在城市的钢筋森林中，我寻找着属于自己的那一片天空...' },
   ],
   'gpt-image-2': [
-    { id: '9', title: '生成一张赛博朋克风格的城市夜景图', modelId: 'gpt-image-2', createdAt: new Date('2024-12-18 16:20') },
-    { id: '10', title: '设计一个极简风格的科技公司Logo', modelId: 'gpt-image-2', createdAt: new Date('2024-12-17 12:00') },
-    { id: '11', title: '创作一幅水墨山水画', modelId: 'gpt-image-2', createdAt: new Date('2024-12-16 19:30') },
-    { id: '12', title: '生成产品宣传海报', modelId: 'gpt-image-2', createdAt: new Date('2024-12-15 14:15') },
-    { id: '13', title: '设计APP启动页插画', modelId: 'gpt-image-2', createdAt: new Date('2024-12-14 10:00') },
-    { id: '14', title: '创作3D渲染风格的未来城市场景', modelId: 'gpt-image-2', createdAt: new Date('2024-12-13 17:45') },
+    { id: '9', title: '生成一张赛博朋克风格的城市夜景图', modelId: 'gpt-image-2', createdAt: new Date('2024-12-18 16:20'), summary: '霓虹灯闪烁的未来城市，高楼林立，雨夜氛围浓郁...' },
+    { id: '10', title: '设计一个极简风格的科技公司Logo', modelId: 'gpt-image-2', createdAt: new Date('2024-12-17 12:00'), summary: '以几何图形为基础，采用蓝紫渐变色，体现科技感...' },
+    { id: '11', title: '创作一幅水墨山水画', modelId: 'gpt-image-2', createdAt: new Date('2024-12-16 19:30'), summary: '远山如黛，近水含烟，营造出静谧深远的意境...' },
+    { id: '12', title: '生成产品宣传海报', modelId: 'gpt-image-2', createdAt: new Date('2024-12-15 14:15'), summary: '以产品为核心，搭配动感光效和现代排版设计...' },
+    { id: '13', title: '设计APP启动页插画', modelId: 'gpt-image-2', createdAt: new Date('2024-12-14 10:00'), summary: '温暖的色调，简洁的构图，展现APP的核心功能...' },
+    { id: '14', title: '创作3D渲染风格的未来城市场景', modelId: 'gpt-image-2', createdAt: new Date('2024-12-13 17:45'), summary: '高精度的3D城市渲染，展现未来建筑和交通系统...' },
   ],
   'qwen-image-max': [
-    { id: '15', title: '生成中国风插画素材用于电商网站', modelId: 'qwen-image-max', createdAt: new Date('2024-12-18 09:30') },
-    { id: '16', title: '设计电商商品主图', modelId: 'qwen-image-max', createdAt: new Date('2024-12-17 14:00') },
+    { id: '15', title: '生成中国风插画素材用于电商网站', modelId: 'qwen-image-max', createdAt: new Date('2024-12-18 09:30'), summary: '融合传统国风元素与现代设计语言，适用于电商banner...' },
+    { id: '16', title: '设计电商商品主图', modelId: 'qwen-image-max', createdAt: new Date('2024-12-17 14:00'), summary: '突出产品质感，采用柔和的灯光和精致的构图...' },
   ],
   'glm-5-turbo': [
-    { id: '17', title: '翻译这篇技术文档并解释关键术语', modelId: 'glm-5-turbo', createdAt: new Date('2024-12-18 13:00') },
-    { id: '18', title: '帮我总结会议纪要并提取行动项', modelId: 'glm-5-turbo', createdAt: new Date('2024-12-17 09:45') },
-    { id: '19', title: '生成周报模板', modelId: 'glm-5-turbo', createdAt: new Date('2024-12-16 17:30') },
-    { id: '20', title: '优化这段文案的表达使其更具吸引力', modelId: 'glm-5-turbo', createdAt: new Date('2024-12-15 11:20') },
+    { id: '17', title: '翻译这篇技术文档并解释关键术语', modelId: 'glm-5-turbo', createdAt: new Date('2024-12-18 13:00'), summary: '已完成英译中，并对分布式系统相关的专业术语做了详细注释...' },
+    { id: '18', title: '帮我总结会议纪要并提取行动项', modelId: 'glm-5-turbo', createdAt: new Date('2024-12-17 09:45'), summary: '会议主要讨论了Q4产品路线图，提取了5个关键行动项...' },
+    { id: '19', title: '生成周报模板', modelId: 'glm-5-turbo', createdAt: new Date('2024-12-16 17:30'), summary: '创建了包含本周工作总结、数据分析和下周计划的模板...' },
+    { id: '20', title: '优化这段文案的表达使其更具吸引力', modelId: 'glm-5-turbo', createdAt: new Date('2024-12-15 11:20'), summary: '使用更具感染力的词汇和节奏感更强的句式进行了优化...' },
   ],
   'claude-haiku-45': [
-    { id: '21', title: '回答一个关于存在主义的哲学问题', modelId: 'claude-haiku-45', createdAt: new Date('2024-12-18 10:15') },
-    { id: '22', title: '讨论人工智能伦理和隐私保护的重要性', modelId: 'claude-haiku-45', createdAt: new Date('2024-12-17 16:00') },
-    { id: '23', title: '分析这本书的主题和象征意义', modelId: 'claude-haiku-45', createdAt: new Date('2024-12-16 12:30') },
+    { id: '21', title: '回答一个关于存在主义的哲学问题', modelId: 'claude-haiku-45', createdAt: new Date('2024-12-18 10:15'), summary: '从萨特、加缪和海德格尔的角度分析了存在先于本质...' },
+    { id: '22', title: '讨论人工智能伦理和隐私保护的重要性', modelId: 'claude-haiku-45', createdAt: new Date('2024-12-17 16:00'), summary: '从数据隐私、算法公平性和透明度三个维度进行了探讨...' },
+    { id: '23', title: '分析这本书的主题和象征意义', modelId: 'claude-haiku-45', createdAt: new Date('2024-12-16 12:30'), summary: '深入分析了作品中的核心隐喻和叙事结构...' },
   ],
   'gemini-3-flash': [
-    { id: '24', title: '生成产品宣传视频脚本和分镜描述', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-18 15:00') },
-    { id: '25', title: '创建短视频内容', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-17 11:30') },
-    { id: '26', title: '生成教程演示视频', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-16 14:45') },
-    { id: '27', title: '制作动画效果预览', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-15 10:00') },
-    { id: '28', title: '生成社交媒体短片用于抖音推广', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-14 16:30') },
+    { id: '24', title: '生成产品宣传视频脚本和分镜描述', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-18 15:00'), summary: '30秒产品宣传片脚本，包含8个分镜场景的详细描述...' },
+    { id: '25', title: '创建短视频内容', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-17 11:30'), summary: '15秒社交媒体短视频，节奏紧凑，视觉冲击力强...' },
+    { id: '26', title: '生成教程演示视频', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-16 14:45'), summary: '5分钟的软件操作教程，步骤清晰，配有字幕说明...' },
+    { id: '27', title: '制作动画效果预览', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-15 10:00'), summary: 'Logo动画的3个不同风格方案预览...' },
+    { id: '28', title: '生成社交媒体短片用于抖音推广', modelId: 'gemini-3-flash', createdAt: new Date('2024-12-14 16:30'), summary: '15秒竖版短视频，突出产品核心卖点和使用场景...' },
   ],
 }
 
@@ -815,3 +908,220 @@ export const mockVideoMessages: Record<string, Message[]> = {
 }
 
 // 图片模型失效状态 mock 数据 - 添加到 mockImageMessages 中
+
+
+// ========== V1.2 新增 Mock 数据 ==========
+
+// Mock 对话数据
+export const mockConversations: Conversation[] = [
+  {
+    id: 'conv-1',
+    title: '帮我写一个React组件',
+    preview: '这是一个功能完整的用户列表组件，支持分页和搜索...',
+    createdAt: new Date('2024-12-18 14:30'),
+    modelIds: ['deepseek-v4-pro'],
+    messages: [],
+  },
+  {
+    id: 'conv-2',
+    title: '解释量子计算的基本原理',
+    preview: '量子计算利用量子比特的叠加态和纠缠态进行并行计算...',
+    createdAt: new Date('2024-12-17 10:20'),
+    modelIds: ['deepseek-v4-pro', 'minimax-m25'],
+    messages: [],
+  },
+  {
+    id: 'conv-3',
+    title: '优化数据库查询性能',
+    preview: '优化数据库查询可以从索引设计、查询重写、缓存策略等方面入手...',
+    createdAt: new Date('2024-12-16 16:45'),
+    modelIds: ['glm-5-turbo'],
+    messages: [],
+  },
+  {
+    id: 'conv-4',
+    title: '创作科幻小说开头',
+    preview: '公元2147年，人类与AI共存的世界已经形成了微妙的平衡...',
+    createdAt: new Date('2024-12-18 11:00'),
+    modelIds: ['minimax-m25', 'claude-haiku-45'],
+    messages: [],
+  },
+  {
+    id: 'conv-5',
+    title: '生成赛博朋克风格城市夜景',
+    preview: '霓虹灯闪烁的未来城市，高楼林立，雨夜氛围浓郁...',
+    createdAt: new Date('2024-12-18 16:20'),
+    modelIds: ['gpt-image-2'],
+    messages: [],
+  },
+  {
+    id: 'conv-6',
+    title: '设计科技公司Logo',
+    preview: '以几何图形为基础，采用蓝紫渐变色，体现科技感...',
+    createdAt: new Date('2024-12-17 12:00'),
+    modelIds: ['gpt-image-2', 'qwen-image-max'],
+    messages: [],
+  },
+  {
+    id: 'conv-7',
+    title: '翻译技术文档',
+    preview: '已完成英译中，并对分布式系统相关的专业术语做了详细注释...',
+    createdAt: new Date('2024-12-18 13:00'),
+    modelIds: ['glm-5-turbo'],
+    messages: [],
+  },
+  {
+    id: 'conv-8',
+    title: '生成产品宣传视频脚本',
+    preview: '30秒产品宣传片脚本，包含8个分镜场景的详细描述...',
+    createdAt: new Date('2024-12-18 15:00'),
+    modelIds: ['gemini-3-flash'],
+    messages: [],
+  },
+  {
+    id: 'conv-9',
+    title: '讨论AI伦理和隐私保护',
+    preview: '从数据隐私、算法公平性和透明度三个维度进行了探讨...',
+    createdAt: new Date('2024-12-17 16:00'),
+    modelIds: ['claude-haiku-45', 'deepseek-v4-pro'],
+    messages: [],
+  },
+  {
+    id: 'conv-10',
+    title: '生成中国风插画素材',
+    preview: '融合传统国风元素与现代设计语言，适用于电商banner...',
+    createdAt: new Date('2024-12-18 09:30'),
+    modelIds: ['qwen-image-max'],
+    messages: [],
+  },
+]
+
+// Mock 搜索结果
+export const mockSearchResults: Record<string, SearchResult[]> = {
+  'deepseek-v4-pro': [
+    { id: 'sr-1', siteName: 'React 官方文档', title: 'React 组件最佳实践指南', snippet: '本文详细介绍 React 组件设计的最佳实践，包括组件拆分、状态管理、性能优化等方面的建议...', url: 'https://react.dev/docs/components' },
+    { id: 'sr-2', siteName: '掘金', title: 'React 性能优化完全指南（2024版）', snippet: '汇总了 React 应用性能优化的各种技巧，从虚拟列表到代码分割，全面提升应用响应速度...', url: 'https://juejin.cn/post/react-perf' },
+    { id: 'sr-3', siteName: 'GitHub', title: 'react-window - 虚拟化长列表库', snippet: 'react-window 是一个轻量级的 React 虚拟化库，用于高效渲染大型列表和表格数据...', url: 'https://github.com/bvaughn/react-window' },
+  ],
+  'minimax-m25': [
+    { id: 'sr-4', siteName: '知乎', title: '量子计算入门：从零开始理解量子比特', snippet: '量子计算利用量子力学原理进行信息处理，量子比特可以同时处于0和1的叠加态...', url: 'https://zhuanlan.zhihu.com/quantum-intro' },
+    { id: 'sr-5', siteName: 'Nature', title: 'Quantum Computing: Progress and Prospects', snippet: 'Recent advances in quantum computing hardware and algorithms show promising results...', url: 'https://nature.com/quantum-2024' },
+    { id: 'sr-6', siteName: 'IBM Quantum', title: 'What is Quantum Computing?', snippet: 'Quantum computing is a rapidly-emerging technology that harnesses the laws of quantum mechanics...', url: 'https://ibm.com/quantum/what-is' },
+    { id: 'sr-7', siteName: 'arXiv', title: 'A Survey on Quantum Machine Learning', snippet: 'This paper surveys the intersection of quantum computing and machine learning...', url: 'https://arxiv.org/abs/quantum-ml' },
+  ],
+  'glm-5-turbo': [
+    { id: 'sr-8', siteName: 'MySQL 官方文档', title: 'MySQL 8.0 查询优化指南', snippet: '详细介绍 MySQL 查询优化器的内部原理以及如何通过索引优化、查询重写提升性能...', url: 'https://dev.mysql.com/doc/optimization' },
+    { id: 'sr-9', siteName: 'Stack Overflow', title: 'Best practices for database query optimization', snippet: 'Community-driven discussion on database optimization techniques including indexing, caching...', url: 'https://stackoverflow.com/db-optimization' },
+    { id: 'sr-10', siteName: '阿里云开发者社区', title: '数据库性能调优实战：从慢查询到秒级响应', snippet: '分享真实项目中数据库性能调优的全过程，包括慢查询分析、索引设计、SQL改写等...', url: 'https://developer.aliyun.com/db-tuning' },
+  ],
+}
+
+// Mock 深度思考内容
+export const mockThinkingContent: Record<string, string> = {
+  'deepseek-v4-pro': `用户需要一个 React 用户列表组件，这是一个典型的前端组件开发问题。
+
+分析需求：
+1. 需要分页功能 → 涉及状态管理（currentPage, pageSize）
+2. 需要搜索功能 → 需要过滤逻辑
+3. 应该支持排序 → 可扩展的排序机制
+
+设计思路：
+- 使用 useState 管理分页和搜索状态
+- 使用 useMemo 优化过滤和排序计算
+- 分页逻辑：slice((currentPage - 1) * pageSize, currentPage * pageSize)
+- 搜索逻辑：filter + toLowerCase 实现不区分大小写
+
+综合考虑性能，对于大数据集可引入虚拟滚动。方案可行。`,
+
+  'minimax-m25': `需要解释量子计算的基本原理，受众可能是初学者。
+
+关键概念梳理：
+1. 量子比特（qubit）vs 经典比特
+2. 叠加态（superposition）
+3. 纠缠态（entanglement）
+4. 量子门操作
+
+表达策略：
+- 用比喻帮助理解（硬币旋转 vs 硬币正反面）
+- 避免过多数学公式
+- 突出量子计算的优势场景（因数分解、搜索算法）
+- 简要提及当前技术瓶颈
+
+思考角度：从经典计算的局限出发，引出量子计算如何突破这些局限。`,
+
+  'glm-5-turbo': `数据库查询优化是一个系统性问题。
+
+分析维度：
+1. 索引优化 — 最直接有效的手段
+   - 联合索引的最左前缀原则
+   - 覆盖索引减少回表
+2. 查询重写 — 避免低效写法
+   - 避免 SELECT *
+   - 合理使用 JOIN vs 子查询
+3. 缓存策略 — 减少数据库压力
+   - Redis 缓存热点数据
+   - 读写分离
+4. 架构层面 — 分库分表
+
+综合来看，80% 的性能问题可以通过索引优化解决。`,
+
+  'claude-haiku-45': `讨论 AI 伦理需要涵盖多个维度。
+
+核心议题：
+1. 数据隐私 — 训练数据的合法性和用户知情权
+2. 算法公平性 — 避免偏见和歧视
+3. 透明度 — 可解释 AI (XAI) 的重要性
+4. 责任归属 — AI 决策的责任划分
+5. 安全对齐 — 确保 AI 行为符合人类价值观
+
+现实案例：
+- 招聘算法中的性别偏见
+- 面部识别在不同人群中的准确率差异
+- 自动驾驶的伦理决策
+
+建议从技术、法律、社会三个层面平衡推进。`,
+}
+
+// Mock 邀请记录
+export const mockInviteRecords: InviteRecord[] = [
+  {
+    id: 'inv-1',
+    invitedUserId: 'user_zhang',
+    invitedUserName: '张小明',
+    registeredAt: new Date('2024-12-18'),
+    rewardStatus: 'granted',
+    rewardPoints: 500,
+  },
+  {
+    id: 'inv-2',
+    invitedUserId: 'user_li',
+    invitedUserName: '李华',
+    registeredAt: new Date('2024-12-15'),
+    rewardStatus: 'granted',
+    rewardPoints: 500,
+  },
+  {
+    id: 'inv-3',
+    invitedUserId: 'user_wang',
+    invitedUserName: '王芳',
+    registeredAt: new Date('2024-12-10'),
+    rewardStatus: 'granted',
+    rewardPoints: 500,
+  },
+  {
+    id: 'inv-4',
+    invitedUserId: 'user_chen',
+    invitedUserName: '陈伟',
+    registeredAt: new Date('2024-12-05'),
+    rewardStatus: 'pending',
+    rewardPoints: 500,
+  },
+  {
+    id: 'inv-5',
+    invitedUserId: 'user_zhao',
+    invitedUserName: '赵丽',
+    registeredAt: new Date('2024-11-28'),
+    rewardStatus: 'granted',
+    rewardPoints: 500,
+  },
+]

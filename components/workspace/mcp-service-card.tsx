@@ -27,7 +27,7 @@ export function MCPServiceCard({ service, status = 'not-configured', onClick }: 
     <div
       onClick={onClick}
       className={cn(
-        'p-3 rounded-xl cursor-pointer transition-colors',
+        'p-3 rounded-lg cursor-pointer transition-colors',
         'hover:bg-accent'
       )}
     >

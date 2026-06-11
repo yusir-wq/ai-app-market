@@ -5,7 +5,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { MCPToolResult } from '@/lib/mcp-data'
-import { ChevronDown, Wrench } from 'lucide-react'
+import { ChevronDown, Puzzle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface MCPToolResultPanelProps {
@@ -17,10 +17,10 @@ export function MCPToolResultPanel({ result }: MCPToolResultPanelProps) {
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <div className="bg-muted/30 rounded-xl border border-border">
+      <div className="bg-secondary rounded-lg border border-border">
         <CollapsibleTrigger className="w-full p-3 flex items-center justify-between cursor-pointer">
           <div className="flex items-center gap-2">
-            <Wrench className="h-4 w-4 text-muted-foreground" />
+            <Puzzle className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm font-medium">whois历史信息 : get_whois_history</span>
             <Badge 
               variant={result.status === 'success' ? 'default' : 'destructive'}
@@ -40,7 +40,7 @@ export function MCPToolResultPanel({ result }: MCPToolResultPanelProps) {
         <CollapsibleContent>
           <div className="px-3 pb-3 pt-0">
             <Separator className="mb-3" />
-            <pre className="text-xs bg-muted/50 rounded-lg p-3 overflow-auto max-h-[200px] font-mono">
+            <pre className="text-xs bg-secondary rounded-lg p-3 overflow-auto max-h-[200px] font-mono">
               {JSON.stringify(result.data, null, 2)}
             </pre>
           </div>

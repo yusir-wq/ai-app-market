@@ -43,7 +43,7 @@ export function MCPServiceDetailModal() {
         <div className="space-y-6 py-4">
           {/* 基本信息 */}
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center text-2xl shrink-0">
+            <div className="w-16 h-16 rounded-lg bg-secondary flex items-center justify-center text-2xl shrink-0">
               {detailService.icon}
             </div>
             <div className="flex-1 space-y-2">
@@ -56,7 +56,7 @@ export function MCPServiceDetailModal() {
           </div>
 
           {/* 服务能力说明 */}
-          <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+          <div className="bg-secondary rounded-lg p-4 space-y-2">
             <h4 className="text-sm font-medium">服务能力说明</h4>
             <p className="text-sm text-muted-foreground leading-relaxed">
               只要输入公司名称或统一社会信用代码，这个MCP工具就能帮你一键查询这家公司的工商信息——包括法人、注册资本、成立日期、经营范围、股东、高管、分支机构，甚至行政处罚和经营异常记录，一应俱全。查到了，详细资料马上呈现；查不到，也会明确提醒你，不会空手而归。

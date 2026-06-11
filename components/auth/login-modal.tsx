@@ -58,14 +58,14 @@ export function LoginModal() {
     <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
       <DialogContent className="sm:max-w-[400px] p-8">
         {/* 标题 */}
-        <h2 className="text-xl font-bold text-center text-gray-900 mb-8">
+        <h2 className="text-xl font-bold text-center text-foreground mb-8">
           手机验证码登录注册
         </h2>
 
         <div className="space-y-5">
           {/* 手机号输入 - +86前缀 + 输入框 */}
           <div className="flex gap-2">
-            <div className="flex items-center justify-center px-4 py-2 border border-gray-200 rounded-md bg-white text-gray-700 text-sm">
+            <div className="flex items-center justify-center px-4 py-2 border border-input rounded-md bg-background text-foreground text-sm">
               +86
             </div>
             <Input
@@ -75,7 +75,7 @@ export function LoginModal() {
               disabled={codeSent || isLoading}
               maxLength={11}
               type="tel"
-              className="flex-1 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+              className="flex-1 h-11"
             />
           </div>
 
@@ -88,12 +88,13 @@ export function LoginModal() {
               disabled={isLoading}
               maxLength={6}
               type="text"
-              className="flex-1 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+              className="flex-1 h-11"
             />
             <Button
               onClick={handleSendCode}
               disabled={isLoading || !phone || countdown > 0}
-              className="h-11 px-4 bg-blue-500 hover:bg-blue-600 text-white whitespace-nowrap"
+              size="lg"
+              className="px-4 whitespace-nowrap"
             >
               {countdown > 0 ? `${countdown}s` : '获取验证码'}
             </Button>
@@ -103,19 +104,20 @@ export function LoginModal() {
           <Button
             onClick={handleLogin}
             disabled={isLoading || !phone || !code}
-            className="w-full h-11 bg-blue-500 hover:bg-blue-600 text-white text-base font-medium mt-2"
+            size="lg"
+            className="w-full font-medium mt-2"
           >
             {isLoading ? '登录中...' : '登 录'}
           </Button>
 
           {/* 底部协议文字 */}
-          <p className="text-xs text-center text-gray-400 mt-6">
+          <p className="text-xs text-center text-muted-foreground mt-6">
             登录即代表同意
-            <a href="#" className="text-gray-500 hover:text-gray-600 underline">
+            <a href="#" className="text-foreground hover:text-primary underline">
               《隐私政策》
             </a>
             和
-            <a href="#" className="text-gray-500 hover:text-gray-600 underline">
+            <a href="#" className="text-foreground hover:text-primary underline">
               《服务协议》
             </a>
           </p>

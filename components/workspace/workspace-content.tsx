@@ -19,8 +19,8 @@ export function WorkspaceContent({ model, messages, isLoading, onSelectPrompt, i
     return (
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="text-center max-w-md">
-          <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-6">
-            <Sparkles className="h-8 w-8 text-muted-foreground" />
+          <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center mx-auto mb-6">
+            <Sparkles className="h-7 w-7 text-muted-foreground" />
           </div>
           <h2 className="text-xl font-semibold text-foreground mb-2">
             欢迎使用 AI 应用广场
@@ -42,7 +42,7 @@ export function WorkspaceContent({ model, messages, isLoading, onSelectPrompt, i
       <div className="flex-1 flex items-center justify-center p-6 overflow-auto">
         <div className="w-full max-w-2xl">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4 text-3xl">
+            <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center mx-auto mb-4 text-3xl">
               {model.logo}
             </div>
             <h2 className="text-xl font-semibold text-foreground mb-2">{model.name}</h2>
@@ -70,7 +70,7 @@ export function WorkspaceContent({ model, messages, isLoading, onSelectPrompt, i
                 <button
                   key={index}
                   onClick={() => onSelectPrompt(prompt)}
-                  className="p-4 rounded-xl border border-border bg-background hover:bg-accent transition-colors text-left"
+                  className="p-4 rounded-lg border border-border bg-card hover:bg-accent transition-colors text-left cursor-pointer"
                 >
                   <p className="text-sm text-foreground line-clamp-2">{prompt}</p>
                 </button>

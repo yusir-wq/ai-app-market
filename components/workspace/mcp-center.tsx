@@ -10,7 +10,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from '@/components/ui/pagination'
 import { useMCP } from '@/contexts/mcp-context'
 import { MCPService, PlatformMCPService, platformMCPServices, categories, MCPCategory } from '@/lib/mcp-data'
-import { ArrowLeft, Trash2, Plus, Search, ExternalLink, Pencil, MoreHorizontal, Loader2 } from 'lucide-react'
+import { Trash2, Plus, Search, ExternalLink, Pencil, MoreHorizontal, Loader2 } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -392,15 +392,9 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
   
   return (
     <div className="h-full flex flex-col bg-background">
-      {/* 头部：返回 + Tabs居中 + 按钮 */}
+      {/* 头部：Tabs居中 + 按钮 */}
       <div className="p-4 border-b">
         <div className="flex items-center justify-between">
-          {/* 左侧：返回工作台按钮 */}
-          <Button variant="ghost" size="sm" onClick={onBack} className="gap-1.5">
-            <ArrowLeft className="h-4 w-4" />
-            返回工作台
-          </Button>
-          
           {/* 中间：Tabs */}
           <Tabs 
             value={activeTab} 

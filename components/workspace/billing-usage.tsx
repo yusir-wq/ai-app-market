@@ -19,7 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { ArrowLeft, Wallet, Activity, CheckCircle, XCircle, Download, ChevronDown } from 'lucide-react'
+import { Wallet, Activity, CheckCircle, XCircle, Download, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   mockUsageRecords,
@@ -86,24 +86,16 @@ export function BillingUsage({ onBack }: BillingUsageProps) {
     <div className="p-6 space-y-6">
       {/* 顶部标题栏 */}
       <div className="flex items-center justify-between">
-        <Button
-          variant="ghost"
-          className="gap-2 text-muted-foreground hover:text-foreground"
-          onClick={onBack}
-        >
-          <ArrowLeft className="h-4 w-4" />
-          返回工作台
-        </Button>
         <h1 className="text-lg font-semibold text-foreground">消费记录</h1>
         <div className="w-[100px]" />
       </div>
 
       {/* 数据统计卡片区 */}
       <div className="grid grid-cols-4 gap-4">
-        <Card className="bg-card border rounded-xl">
+        <Card className="bg-card border rounded-lg">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-              <Wallet className="h-5 w-5 text-blue-600" />
+            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+              <Wallet className="h-5 w-5 text-primary" />
             </div>
             <div className="min-w-0">
               <p className="text-sm text-muted-foreground">总消耗智点</p>
@@ -114,7 +106,7 @@ export function BillingUsage({ onBack }: BillingUsageProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-card border rounded-xl">
+        <Card className="bg-card border rounded-lg">
           <CardContent className="p-4 flex items-center gap-3">
             <div className="h-10 w-10 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
               <Activity className="h-5 w-5 text-violet-600" />
@@ -128,7 +120,7 @@ export function BillingUsage({ onBack }: BillingUsageProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-card border rounded-xl">
+        <Card className="bg-card border rounded-lg">
           <CardContent className="p-4 flex items-center gap-3">
             <div className="h-10 w-10 rounded-lg bg-green-50 flex items-center justify-center shrink-0">
               <CheckCircle className="h-5 w-5 text-green-600" />
@@ -142,7 +134,7 @@ export function BillingUsage({ onBack }: BillingUsageProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-card border rounded-xl">
+        <Card className="bg-card border rounded-lg">
           <CardContent className="p-4 flex items-center gap-3">
             <div className="h-10 w-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
               <XCircle className="h-5 w-5 text-red-600" />
@@ -212,7 +204,7 @@ export function BillingUsage({ onBack }: BillingUsageProps) {
       </div>
 
       {/* 消费记录表格 */}
-      <Card className="bg-card border rounded-xl">
+      <Card className="bg-card border rounded-lg">
         <CardContent className="p-0">
           <Table>
             <TableHeader>

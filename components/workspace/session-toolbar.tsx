@@ -31,7 +31,7 @@ export function SessionToolbar({
       <Button
         size="sm"
         variant="outline"
-        className="h-8 px-3 py-1 text-xs rounded-full shadow-md hover:shadow-lg transition-shadow"
+        className="h-8 px-3 py-1 text-xs rounded-lg shadow-sm hover:shadow-md transition-all"
         onClick={onNewChat}
       >
         新建对话
@@ -41,7 +41,7 @@ export function SessionToolbar({
       <Button
         size="sm"
         variant="outline"
-        className="h-8 px-3 py-1 text-xs rounded-full shadow-md hover:shadow-lg transition-shadow"
+        className="h-8 px-3 py-1 text-xs rounded-lg shadow-sm hover:shadow-md transition-all"
         onClick={handleOpenHistory}
         disabled={!model}
       >

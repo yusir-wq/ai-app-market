@@ -40,7 +40,7 @@ export function StreamingMessage({ modelLogo, modelName, onStop }: StreamingMess
             <span className="text-xs text-muted-foreground">正在思考...</span>
           )}
         </div>
-        <div className="bg-muted/50 rounded-lg p-4 text-sm text-foreground leading-relaxed">
+        <div className="bg-secondary rounded-lg p-4 text-sm text-foreground leading-relaxed">
           <p>{displayedText}</p>
           {!isComplete && (
             <span className="inline-block w-1.5 h-5 bg-foreground ml-1 animate-pulse" />
