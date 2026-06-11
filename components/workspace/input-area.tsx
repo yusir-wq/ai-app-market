@@ -38,8 +38,7 @@ export function InputArea({
   onToggleSearch,
   onToggleThinking,
 }: InputAreaProps) {
-  const [uploadedImages, setUploadedImages] = useState<string[]>([])
-  const [uploadedVideos, setUploadedVideos] = useState<string[]>([])
+  const [uploadedReferences, setUploadedReferences] = useState<string[]>([])
   const [uploadedAttachments, setUploadedAttachments] = useState<UploadedFile[]>([])
   const [selectedMentionModels, setSelectedMentionModels] = useState<Model[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -69,8 +68,7 @@ export function InputArea({
     if (!inputValue.trim()) return
     onSendMessage(inputValue)
     onInputChange('')
-    setUploadedImages([])
-    setUploadedVideos([])
+    setUploadedReferences([])
     setUploadedAttachments([])
     setSelectedMentionModels([])
   }
@@ -78,19 +76,12 @@ export function InputArea({
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files) return
-    if (isImageModel) {
-      setUploadedImages(prev => [...prev, '/placeholder.jpg'])
-    } else if (isVideoModel) {
-      setUploadedVideos(prev => [...prev, '/placeholder.jpg'])
-    }
+    setUploadedReferences(prev => [...prev, '/placeholder.jpg'])
+    e.target.value = ''
   }
 
-  const removeUploadedImage = (index: number) => {
-    setUploadedImages(prev => prev.filter((_, i) => i !== index))
-  }
-
-  const removeUploadedVideo = (index: number) => {
-    setUploadedVideos(prev => prev.filter((_, i) => i !== index))
+  const removeUploadedReference = (index: number) => {
+    setUploadedReferences(prev => prev.filter((_, i) => i !== index))
   }
 
   // 切换 @提及 模型
@@ -133,19 +124,19 @@ export function InputArea({
   return (
     <div className="w-full max-w-4xl mx-auto px-6 py-4">
       <div className="rounded-lg border border-border shadow-sm" style={{ backgroundColor: '#F7F8FB' }}>
-        {/* 参考图上传区 - 图片/视频模型 */}
+        {/* 参考上传区 - 图片/视频模型 */}
         {hasReference && (
           <div className="px-4 pt-4">
-            {requiresReference && uploadedImages.length === 0 && (
+            {requiresReference && uploadedReferences.length === 0 && (
               <div className="p-3 rounded-lg border-2 border-dashed border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/20 mb-3">
                 <div className="flex items-start gap-2">
                   <Info className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
-                      {activeModel?.name} 需要上传参考图
+                      {activeModel?.name} 需要上传参考
                     </p>
                     <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">
-                      该模型必须上传参考图片才能生成。支持
+                      该模型必须上传参考素材才能生成。支持
                       {activeModel?.supportedReferences?.join('、') || '内容'}
                       参考。
                     </p>
@@ -155,15 +146,15 @@ export function InputArea({
             )}
 
             <div className="flex items-center gap-3 mb-3">
-              {uploadedImages.length > 0 && (
+              {uploadedReferences.length > 0 && (
                 <div className="flex gap-2 flex-wrap">
-                  {uploadedImages.map((img, idx) => (
+                  {uploadedReferences.map((ref, idx) => (
                     <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-border">
                       <div className="w-full h-full bg-secondary flex items-center justify-center text-xs text-muted-foreground">
                         #{idx + 1}
                       </div>
                       <button
-                        onClick={() => removeUploadedImage(idx)}
+                        onClick={() => removeUploadedReference(idx)}
                         className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-foreground/70 text-background flex items-center justify-center text-[10px]"
                       >
                         <X className="h-2.5 w-2.5" />
@@ -177,11 +168,9 @@ export function InputArea({
                 className="w-16 h-16 rounded-lg border-2 border-dashed border-border hover:border-primary/50 hover:bg-accent flex flex-col items-center justify-center gap-1 transition-colors shrink-0"
               >
                 <Upload className="h-4 w-4 text-muted-foreground" />
-                <span className="text-[10px] text-muted-foreground">
-                  {requiresReference ? '上传参考图' : '添加参考图'}
-                </span>
+                <span className="text-[10px] text-muted-foreground">上传参考</span>
               </button>
-              {uploadedImages.length > 0 && activeModel?.supportedReferences && (
+              {uploadedReferences.length > 0 && activeModel?.supportedReferences && (
                 <div className="flex gap-1.5">
                   {activeModel.supportedReferences.map(ref => (
                     <Badge key={ref} variant="outline" className="text-[10px] h-5">
@@ -192,42 +181,14 @@ export function InputArea({
               )}
             </div>
 
-            {isVideoModel && (
-              <div className="flex items-center gap-3 mb-3">
-                {uploadedVideos.length > 0 && (
-                  <div className="flex gap-2 flex-wrap">
-                    {uploadedVideos.map((vid, idx) => (
-                      <div key={idx} className="relative w-20 h-14 rounded-lg overflow-hidden border border-border">
-                        <div className="w-full h-full bg-secondary flex items-center justify-center text-xs text-muted-foreground">
-                          视频 #{idx + 1}
-                        </div>
-                        <button
-                          onClick={() => removeUploadedVideo(idx)}
-                          className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-foreground/70 text-background flex items-center justify-center text-[10px]"
-                        >
-                          <X className="h-2.5 w-2.5" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-20 h-14 rounded-lg border-2 border-dashed border-border hover:border-primary/50 hover:bg-accent flex flex-col items-center justify-center gap-0.5 transition-colors shrink-0"
-                >
-                  <Paperclip className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-[10px] text-muted-foreground">上传视频</span>
-                </button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept={isImageModel ? 'image/*' : 'video/*'}
-                  multiple
-                  className="hidden"
-                  onChange={handleFileUpload}
-                />
-              </div>
-            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept={isImageModel ? 'image/*' : 'video/*'}
+              multiple
+              className="hidden"
+              onChange={handleFileUpload}
+            />
           </div>
         )}
 
@@ -398,7 +359,7 @@ export function InputArea({
                   size="icon-sm"
                   className="h-8 w-8 rounded-full"
                   onClick={handleSend}
-                  disabled={!inputValue.trim() && uploadedImages.length === 0 && uploadedAttachments.length === 0}
+                  disabled={!inputValue.trim() && uploadedReferences.length === 0 && uploadedAttachments.length === 0}
                 >
                   <ArrowUp className="h-4 w-4" />
                 </Button>
