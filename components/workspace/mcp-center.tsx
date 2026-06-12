@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, forwardRef, useImperativeHandle } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -44,7 +44,13 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
 interface MCPCenterProps {
+  activeTab: 'my' | 'market'
+  onTabChange: (tab: 'my' | 'market') => void
   onBack: () => void
+}
+
+export interface MCPCenterHandle {
+  openContactModal: () => void
 }
 
 // 我的MCP服务卡片组件
@@ -254,7 +260,8 @@ function MCPMarketCard({
   )
 }
 
-export function MCPCenter({ onBack }: MCPCenterProps) {
+export const MCPCenter = forwardRef<MCPCenterHandle, MCPCenterProps>(
+  function MCPCenter({ activeTab, onTabChange, onBack }, ref) {
   const {
     userMCPServices,
     addService,
@@ -269,12 +276,18 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
     setShowDetailModal,
   } = useMCP()
   
-  // Tab状态
-  const [activeTab, setActiveTab] = useState<'my' | 'market'>('my')
+  
+  // 联系客服弹窗
+  const [showContactModal, setShowContactModal] = useState(false)
+
+  // 暴露 openContactModal 给父组件
+  useImperativeHandle(ref, () => ({
+    openContactModal: () => setShowContactModal(true),
+  }))
   
   // 分类筛选状态
   const [selectedCategory, setSelectedCategory] = useState<MCPCategory>('all')
-  
+
   // MCP市场搜索
   const [marketSearchQuery, setMarketSearchQuery] = useState('')
   
@@ -284,9 +297,6 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
   // 删除确认弹窗
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [serviceToDelete, setServiceToDelete] = useState<MCPService | null>(null)
-
-  // 联系客服弹窗
-  const [showContactModal, setShowContactModal] = useState(false)
   
   // 过滤MCP市场服务
   const filteredMarketServices = useMemo(() => {
@@ -392,50 +402,6 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
   
   return (
     <div className="h-full flex flex-col bg-background">
-      {/* 头部：Tabs居中 + 按钮 */}
-      <div className="pl-14 md:pl-4 pr-3 md:pr-4 pt-3 md:pt-4 pb-3 md:pb-4 border-b">
-        <div className="flex items-center justify-center md:justify-between">
-          {/* Tabs */}
-          <Tabs 
-            value={activeTab} 
-            onValueChange={(v) => setActiveTab(v as 'my' | 'market')}
-          >
-            <TabsList>
-              <TabsTrigger value="my">我的MCP</TabsTrigger>
-              <TabsTrigger value="market">MCP市场</TabsTrigger>
-            </TabsList>
-          </Tabs>
-          
-          {/* 右侧：提示文本 + 联系MCP客服 + 企业级MCP定制 */}
-          <div className="hidden md:flex items-center gap-2">
-            <span className="text-sm text-orange-500 font-medium shrink-0">MCP免费体验名额正在发放中...</span>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 shrink-0"
-              onClick={() => setShowContactModal(true)}
-            >
-              联系MCP客服
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 shrink-0 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-300 text-amber-700 hover:from-amber-100 hover:to-orange-100 hover:text-amber-800"
-              asChild
-            >
-              <a
-                href="https://www.chinaz.net/custom"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLink className="h-4 w-4" />
-                企业级MCP定制
-              </a>
-            </Button>
-          </div>
-        </div>
-      </div>
-      
       {/* 内容区域 */}
       <ScrollArea className="flex-1 px-3 md:px-4 py-4">
         {/* MCP市场：分类Tabs + 搜索框同一行 */}
@@ -507,7 +473,7 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
                 <Button
                   variant="link"
                   className="mt-2"
-                  onClick={() => setActiveTab('market')}
+                  onClick={() => onTabChange('market')}
                 >
                   前往MCP市场添加
                 </Button>
@@ -627,4 +593,4 @@ export function MCPCenter({ onBack }: MCPCenterProps) {
       </Dialog>
     </div>
   )
-}
+})

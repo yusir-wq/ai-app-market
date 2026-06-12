@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { Input } from '@/components/ui/input'
 import {
   Dialog,
@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { NavPanel } from './nav-panel'
 import { HomeContent } from './home-content'
 import { WorkspaceContent } from './workspace-content'
@@ -24,12 +26,14 @@ import { InputArea } from './input-area'
 import { HomeInputArea } from './home-input-area'
 import { ModelResponseCard } from './model-response-card'
 import { InviteDialog } from './invite-dialog'
+import { NewUserBenefitToast } from './new-user-benefit-toast'
 import { LoginModal } from '@/components/auth/login-modal'
 import { RechargeModal } from '@/components/auth/recharge-modal'
 import { BillingUsage } from './billing-usage'
 import { BillingPayments } from './billing-payments'
 import { CategoryPage } from './category-page'
 import { MCPCenter } from './mcp-center'
+import type { MCPCenterHandle } from './mcp-center'
 import { MCPQuickCreateModal } from './mcp-quick-create-modal'
 import { MCPQuickConfigModal } from './mcp-quick-config-modal'
 import { MCPServiceDetailModal } from './mcp-service-detail-modal'
@@ -45,12 +49,12 @@ import {
   type Message,
   type Conversation,
 } from '@/lib/mock-data'
-import { Search, MoreHorizontal, Pencil, Trash2, Menu, ArrowLeft } from 'lucide-react'
+import { Search, MoreHorizontal, Pencil, Trash2, Menu, ArrowLeft, ExternalLink } from 'lucide-react'
 
 type ViewMode = 'home' | 'chat' | 'history-all' | 'category' | 'model-detail' | 'billing-usage' | 'billing-payments' | 'mcp-center'
 
 export function Workspace() {
-  const { isLoggedIn, setShowLoginModal, user } = useAuth()
+  const { isLoggedIn, setShowLoginModal, setShowRechargeModal, user } = useAuth()
   const { mcpEnabled, selectedMCPServices } = useMCP()
   const [viewMode, setViewMode] = useState<ViewMode>('home')
   const [conversations, setConversations] = useState<Conversation[]>(mockConversations)
@@ -67,6 +71,8 @@ export function Workspace() {
   const [renameChatId, setRenameChatId] = useState<string | null>(null)
   const [renameNewTitle, setRenameNewTitle] = useState('')
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
+  const [showNewUserBenefitToast, setShowNewUserBenefitToast] = useState(false)
+  const [benefitToastDismissedUserId, setBenefitToastDismissedUserId] = useState<string | null>(null)
 
   // V1.2 多模型状态
   const [selectedModels, setSelectedModels] = useState<Model[]>([])
@@ -78,7 +84,73 @@ export function Workspace() {
   // 移动端导航面板状态
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
 
+  // MCP页面状态
+  const [mcpActiveTab, setMcpActiveTab] = useState<'my' | 'market'>('my')
+  const mcpCenterRef = useRef<MCPCenterHandle>(null)
+
+  // 智点
+  const points = user ? Math.floor(user.balance * 1000) : 0
+
+  // 通用导航条组件
+  const renderNavBar = () => (
+    <div className="hidden md:flex items-center shrink-0 h-14 px-4 border-b border-border bg-background">
+      {/* 左侧 Logo + 名称 */}
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+          <span className="text-primary-foreground font-bold text-sm">AI</span>
+        </div>
+        <span className="font-semibold text-sm text-foreground">AI应用广场</span>
+      </div>
+      {/* 右侧 */}
+      <div className="flex items-center gap-4 ml-auto">
+        {isLoggedIn && user ? (
+          <>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-muted-foreground">剩余智点:</span>
+              <span className="font-medium text-foreground">{points.toLocaleString()}</span>
+            </div>
+            <Button size="sm" variant="outline" onClick={() => setShowRechargeModal(true)}>
+              充值
+            </Button>
+            <div className="flex items-center gap-2">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={user.avatar} />
+                <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                  {user.id.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-sm text-foreground">{user.id}</span>
+            </div>
+          </>
+        ) : (
+          <Button onClick={() => setShowLoginModal(true)}>
+            登录
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+
   const activeConversation = conversations.find(c => c.id === activeConversationId)
+
+  useEffect(() => {
+    if (!isLoggedIn || !user?.id) {
+      setShowNewUserBenefitToast(false)
+      setBenefitToastDismissedUserId(null)
+      return
+    }
+
+    if (benefitToastDismissedUserId !== user.id) {
+      setShowNewUserBenefitToast(true)
+    }
+  }, [isLoggedIn, user?.id, benefitToastDismissedUserId])
+
+  const handleCloseNewUserBenefitToast = useCallback(() => {
+    setShowNewUserBenefitToast(false)
+    if (user?.id) {
+      setBenefitToastDismissedUserId(user.id)
+    }
+  }, [user?.id])
 
   // 新建对话
   const handleNewChat = useCallback(() => {
@@ -1071,22 +1143,29 @@ export function Workspace() {
   // ===== 消费记录页 =====
   const renderBillingUsage = () => (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {renderNavBar()}
       {/* 顶部栏 */}
-      <div className="flex items-center shrink-0 h-14 px-4 border-b border-border relative">
+      <div className="flex items-center shrink-0 h-14 pl-3 pr-4 md:px-4 border-b border-border relative">
+        <button
+          onClick={() => setIsMobileNavOpen(true)}
+          className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-accent transition-colors shrink-0"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
         <button
           onClick={() => setViewMode('home')}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
+          className="hidden md:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
         >
           <ArrowLeft className="h-4 w-4" />
           返回工作台
         </button>
-        <h2 className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-foreground">
+        <h2 className="absolute left-1/2 -translate-x-1/2 text-base md:text-lg font-semibold text-foreground">
           消费记录
         </h2>
       </div>
       <div className="flex-1 overflow-y-auto">
         <BillingUsage onBack={() => setViewMode('home')} />
-        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4 text-xs text-muted-foreground/60 py-6 px-4">
           <span>闽ICP备08105208号-3</span>
           <span>闽公网安备35020302000061号</span>
         </div>
@@ -1097,22 +1176,29 @@ export function Workspace() {
   // ===== 支付记录页 =====
   const renderBillingPayments = () => (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {renderNavBar()}
       {/* 顶部栏 */}
-      <div className="flex items-center shrink-0 h-14 px-4 border-b border-border relative">
+      <div className="flex items-center shrink-0 h-14 pl-3 pr-4 md:px-4 border-b border-border relative">
+        <button
+          onClick={() => setIsMobileNavOpen(true)}
+          className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-accent transition-colors shrink-0"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
         <button
           onClick={() => setViewMode('home')}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
+          className="hidden md:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
         >
           <ArrowLeft className="h-4 w-4" />
           返回工作台
         </button>
-        <h2 className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-foreground">
+        <h2 className="absolute left-1/2 -translate-x-1/2 text-base md:text-lg font-semibold text-foreground">
           支付记录
         </h2>
       </div>
       <div className="flex-1 overflow-y-auto">
         <BillingPayments onBack={() => setViewMode('home')} />
-        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4 text-xs text-muted-foreground/60 py-6 px-4">
           <span>闽ICP备08105208号-3</span>
           <span>闽公网安备35020302000061号</span>
         </div>
@@ -1123,21 +1209,69 @@ export function Workspace() {
   // ===== MCP服务中心 =====
   const renderMCPCenter = () => (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-      {/* 顶部栏 */}
-      <div className="flex items-center shrink-0 h-14 px-4 border-b border-border relative">
+      {renderNavBar()}
+      {/* 顶部栏：返回工作台 + Tabs居中 + 右侧按钮 */}
+      <div className="flex items-center shrink-0 h-14 pl-3 pr-4 md:px-4 border-b border-border gap-1 md:gap-2">
+        <button
+          onClick={() => setIsMobileNavOpen(true)}
+          className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-accent transition-colors shrink-0"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
         <button
           onClick={() => setViewMode('home')}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
+          className="hidden md:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
         >
           <ArrowLeft className="h-4 w-4" />
           返回工作台
         </button>
-        <h2 className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-foreground">
-          MCP服务中心
-        </h2>
+        {/* Tabs 居中 */}
+        <div className="flex-1 flex justify-center min-w-0">
+          <Tabs
+            value={mcpActiveTab}
+            onValueChange={(v) => setMcpActiveTab(v as 'my' | 'market')}
+          >
+            <TabsList>
+              <TabsTrigger value="my" className="text-xs md:text-sm">我的MCP</TabsTrigger>
+              <TabsTrigger value="market" className="text-xs md:text-sm">MCP市场</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+        {/* 右侧：提示文本 + 按钮（移动端隐藏） */}
+        <div className="hidden md:flex items-center gap-2 shrink-0">
+          <span className="text-sm text-orange-500 font-medium shrink-0">MCP免费体验名额正在发放中...</span>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5 shrink-0"
+            onClick={() => mcpCenterRef.current?.openContactModal()}
+          >
+            联系MCP客服
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5 shrink-0 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-300 text-amber-700 hover:from-amber-100 hover:to-orange-100 hover:text-amber-800"
+            asChild
+          >
+            <a
+              href="https://www.chinaz.net/custom"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ExternalLink className="h-4 w-4" />
+              企业级MCP定制
+            </a>
+          </Button>
+        </div>
       </div>
       <div className="flex-1 overflow-y-auto">
-        <MCPCenter onBack={() => setViewMode('home')} />
+        <MCPCenter
+          ref={mcpCenterRef}
+          activeTab={mcpActiveTab}
+          onTabChange={setMcpActiveTab}
+          onBack={() => setViewMode('home')}
+        />
         <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
           <span>闽ICP备08105208号-3</span>
           <span>闽公网安备35020302000061号</span>
@@ -1200,8 +1334,10 @@ export function Workspace() {
         >
           <Menu className="h-4 w-4" />
         </button>
+          </>
+        )}
 
-        {/* 移动端导航面板遮罩 */}
+        {/* 移动端导航面板遮罩（所有视图通用） */}
         <div
           className={`md:hidden fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${isMobileNavOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           onClick={() => setIsMobileNavOpen(false)}
@@ -1222,12 +1358,11 @@ export function Workspace() {
             conversations={conversations}
           />
         </div>
-          </>
-        )}
 
         <LoginModal />
         <RechargeModal />
         <InviteDialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen} userId={user?.id} />
+        <NewUserBenefitToast open={showNewUserBenefitToast} onClose={handleCloseNewUserBenefitToast} />
         <MCPQuickCreateModal />
         <MCPQuickConfigModal />
         <MCPServiceDetailModal />

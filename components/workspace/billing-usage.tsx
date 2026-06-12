@@ -84,14 +84,8 @@ export function BillingUsage({ onBack }: BillingUsageProps) {
 
   return (
     <div className="py-6 space-y-6">
-      {/* 顶部标题栏 */}
-      <div className="flex items-center justify-between pl-14 md:pl-6 pr-6">
-        <h1 className="text-lg font-semibold text-foreground">消费记录</h1>
-        <div className="w-[100px]" />
-      </div>
-
       {/* 数据统计卡片区 */}
-      <div className="px-6 space-y-6">
+      <div className="px-3 md:px-6 space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
         <Card className="bg-card border rounded-lg">
           <CardContent className="p-3 md:p-4 flex items-center gap-2 md:gap-3">

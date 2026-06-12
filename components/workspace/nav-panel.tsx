@@ -267,12 +267,12 @@ export function NavPanel({
       {/* 搜索对话按钮 */}
       <div className="px-3 pb-3">
         <Button
-          variant="outline"
+          variant="ghost"
           size="sm"
-          className="w-full justify-start gap-2 text-muted-foreground hover:text-sidebar-foreground border-sidebar-border"
+          className="w-full justify-start gap-2 text-muted-foreground hover:text-sidebar-foreground"
           onClick={handleSearchClick}
         >
-          <Search className="h-3.5 w-3.5" />
+          <Search className="h-4 w-4" />
           搜索对话
         </Button>
       </div>
@@ -318,17 +318,19 @@ export function NavPanel({
                         </div>
                       ) : (
                         <>
-                          <p className="text-xs font-medium text-sidebar-foreground truncate">
-                            {conv.title}
-                          </p>
+                          <div className="flex items-center gap-1.5">
+                            <p className="text-sm font-medium text-sidebar-foreground truncate flex-1 min-w-0">
+                              {conv.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground/60 shrink-0">
+                              {formatTime(conv.createdAt)}
+                            </p>
+                          </div>
                           {conv.preview && (
-                            <p className="text-[11px] text-muted-foreground truncate mt-0.5">
+                            <p className="text-[13px] text-muted-foreground truncate mt-0.5">
                               {conv.preview}
                             </p>
                           )}
-                          <p className="text-[10px] text-muted-foreground/60 mt-1">
-                            {formatTime(conv.createdAt)}
-                          </p>
                         </>
                       )}
                     </div>
@@ -405,7 +407,7 @@ export function NavPanel({
           onClick={onOpenInvite}
         >
           <UserPlus className="h-3.5 w-3.5" />
-          <span className="text-xs">邀请好友</span>
+          <span className="text-xs truncate">邀请好友  |  你与好友都拿奖励</span>
         </Button>
       </div>
 
