@@ -45,7 +45,7 @@ import {
   type Message,
   type Conversation,
 } from '@/lib/mock-data'
-import { Search, MoreHorizontal, Pencil, Trash2, Menu } from 'lucide-react'
+import { Search, MoreHorizontal, Pencil, Trash2, Menu, ArrowLeft } from 'lucide-react'
 
 type ViewMode = 'home' | 'chat' | 'history-all' | 'category' | 'model-detail' | 'billing-usage' | 'billing-payments' | 'mcp-center'
 
@@ -1071,8 +1071,21 @@ export function Workspace() {
   // ===== 消费记录页 =====
   const renderBillingUsage = () => (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {/* 顶部栏 */}
+      <div className="flex items-center shrink-0 h-14 px-4 border-b border-border relative">
+        <button
+          onClick={() => setViewMode('home')}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          返回工作台
+        </button>
+        <h2 className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-foreground">
+          消费记录
+        </h2>
+      </div>
       <div className="flex-1 overflow-y-auto">
-        <BillingUsage onBack={() => {}} />
+        <BillingUsage onBack={() => setViewMode('home')} />
         <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
           <span>闽ICP备08105208号-3</span>
           <span>闽公网安备35020302000061号</span>
@@ -1084,8 +1097,21 @@ export function Workspace() {
   // ===== 支付记录页 =====
   const renderBillingPayments = () => (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {/* 顶部栏 */}
+      <div className="flex items-center shrink-0 h-14 px-4 border-b border-border relative">
+        <button
+          onClick={() => setViewMode('home')}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          返回工作台
+        </button>
+        <h2 className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-foreground">
+          支付记录
+        </h2>
+      </div>
       <div className="flex-1 overflow-y-auto">
-        <BillingPayments onBack={() => {}} />
+        <BillingPayments onBack={() => setViewMode('home')} />
         <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
           <span>闽ICP备08105208号-3</span>
           <span>闽公网安备35020302000061号</span>
@@ -1097,8 +1123,21 @@ export function Workspace() {
   // ===== MCP服务中心 =====
   const renderMCPCenter = () => (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {/* 顶部栏 */}
+      <div className="flex items-center shrink-0 h-14 px-4 border-b border-border relative">
+        <button
+          onClick={() => setViewMode('home')}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          返回工作台
+        </button>
+        <h2 className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-foreground">
+          MCP服务中心
+        </h2>
+      </div>
       <div className="flex-1 overflow-y-auto">
-        <MCPCenter onBack={() => {}} />
+        <MCPCenter onBack={() => setViewMode('home')} />
         <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
           <span>闽ICP备08105208号-3</span>
           <span>闽公网安备35020302000061号</span>
@@ -1111,8 +1150,10 @@ export function Workspace() {
 
 
   // ===== 默认工作台 =====
+  const isStandaloneView = viewMode === 'billing-usage' || viewMode === 'billing-payments' || viewMode === 'mcp-center'
   return (
     <div className="h-screen flex bg-background overflow-hidden">
+        {!isStandaloneView && (
         <div className="hidden md:flex">
           <NavPanel
             isCollapsed={isNavCollapsed}
@@ -1127,6 +1168,7 @@ export function Workspace() {
             conversations={conversations}
           />
         </div>
+        )}
 
         {viewMode === 'home' && (
           <HomeContent
@@ -1149,6 +1191,8 @@ export function Workspace() {
         {viewMode === 'billing-payments' && renderBillingPayments()}
         {viewMode === 'mcp-center' && renderMCPCenter()}
 
+        {!isStandaloneView && (
+          <>
         {/* 移动端汉堡按钮 - 全局固定，浮动在所有视图左上角 */}
         <button
           className={`md:hidden fixed top-4 left-4 z-[60] w-9 h-9 flex items-center justify-center rounded-lg bg-background/95 backdrop-blur-sm border border-border shadow-sm hover:bg-accent transition-all duration-300 ${isMobileNavOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
@@ -1178,6 +1222,8 @@ export function Workspace() {
             conversations={conversations}
           />
         </div>
+          </>
+        )}
 
         <LoginModal />
         <RechargeModal />
@@ -1191,16 +1237,17 @@ export function Workspace() {
 
 // Mock AI 回复生成器
 function getMockResponse(model: Model, userMessage: string): string {
+  const shortMsg = userMessage.slice(0, 30)
   const responses: Record<string, (msg: string) => string> = {
-    'deepseek-v4-pro': (msg) => `## 关于 "${msg}" 的分析\n\n基于深度推理模型的分析如下：\n\n### 核心要点\n1. 首先分析问题的关键需求\n2. 从多个维度进行逻辑推演\n3. 给出最优解决方案\n\n> 这是 DeepSeek V4 Pro 的典型回复风格，侧重逻辑推理和结构化输出。`,
-    'minimax-m25': (msg) => `收到您的问题：「${msg}」\n\n让我从创意的角度来思考这个问题…\n\n这让我想到一个有趣的角度。从情感和故事性出发，我们可以这样来理解：每个问题背后都隐藏着一个等待被发现的叙事。\n\n所以我的建议是，不妨换一个视角，把这个问题看作一次探索的起点。`,
-    'glm-5-turbo': (msg) => `针对「${msg}」这个问题，我从以下角度进行分析：\n\n**技术层面**\n- 首先需要明确问题的技术边界\n- 然后选择合适的方法论\n- 最后给出可落地的方案\n\n**总结**\n综合来看，这个问题的关键在于找到效率与质量的最佳平衡点。`,
-    'claude-haiku-45': (msg) => `好的，让我来思考「${msg}」这个问题。\n\n从多个角度来看：\n\n1. **安全性考虑** — 我们需要确保方案符合伦理和安全标准\n2. **实用性评估** — 方案需要在实践中可操作\n3. **用户体验** — 最终产出应该对用户友好\n\n希望这些思考对你有所帮助！`,
+    'deepseek-v4-pro': (msg) => `## 关于 "${msg}" 的分析\n\n基于深度推理模型的分析如下：\n\n### 核心要点\n1. 首先分析问题的关键需求\n2. 从多个维度进行逻辑推演\n3. 给出最优解决方案\n\n### 详细分析\n\nReact 是一个由 Meta 维护的用于构建用户界面的 JavaScript 库。自 2013 年开源以来，React 已经成为前端开发领域最受欢迎的框架之一。\n\n**虚拟 DOM 机制**\n\nReact 的核心创新在于其虚拟 DOM（Virtual DOM）机制。当状态发生变化时，React 不会直接操作真实的 DOM 树，而是先在内存中构建一个轻量级的虚拟 DOM 树，然后通过 Diff 算法计算新旧虚拟 DOM 之间的差异，最后批量更新真实 DOM。\n\n这种机制带来了两个显著优势：\n\n1. **性能优化**：批量更新避免了频繁的重排和重绘，显著提升页面渲染性能。\n2. **跨平台能力**：虚拟 DOM 是平台无关的 JavaScript 对象，使得 React Native 等框架可以将相同的组件模型渲染到 iOS、Android 等原生平台。\n\n**组件化架构**\n\nReact 采用组件化的开发模式。每个组件封装了自己的结构（JSX）、样式（CSS-in-JS 或 CSS Modules）和行为（Hooks/生命周期），可以像搭积木一样组合成复杂的用户界面。\n\n从 React 16.8 开始引入的 Hooks 彻底改变了组件的编写方式。开发者可以使用 useState、useEffect、useMemo 等 Hook 在函数组件中管理状态和副作用，代码更加简洁和可复用。\n\n**生态系统**\n\n围绕 React 建立的生态系统非常庞大，包括：\n- Next.js / Remix 等服务端渲染框架\n- Redux / Zustand / Jotai 等状态管理库\n- React Router 路由管理\n- React Query / SWR 数据请求\n- shadcn/ui / Ant Design 等 UI 组件库\n\n> 这是 DeepSeek V4 Pro 的典型回复风格，侧重逻辑推理和结构化输出。`,
+    'minimax-m25': (msg) => `收到您的问题：「${msg}」\n\n让我从创意的角度来思考这个问题…\n\n这让我想到一个有趣的角度。从情感和故事性出发，我们可以这样来理解：每个问题背后都隐藏着一个等待被发现的叙事。\n\n### 创意思考方法论\n\n创意思考并非凭空而来的灵感闪现，而是一套可以学习和训练的系统化方法。以下是我总结的几个核心维度：\n\n**1. 发散思维（Divergent Thinking）**\n\n发散思维是创意的起点。面对一个问题，不要急于寻找唯一正确答案，而是尽可能多地生成不同的可能性。常见的发散思维技巧包括：\n- 头脑风暴（Brainstorming）：不加评判地快速生成大量想法\n- SCAMPER 法：替代、合并、调整、修改、他用、消除、重排\n- 随机词法：用一个随机词汇作为起点，强制建立关联\n\n**2. 跨界联想（Cross-domain Association）**\n\n许多突破性的创意来自于将不同领域的知识进行跨界组合。例如：\n- 仿生学：从自然界生物的结构和功能中获得工程设计灵感\n- 设计思维：将设计师的共情和迭代方法引入商业和管理\n- 游戏化：将游戏机制应用于教育、健康等非游戏场景\n\n**3. 约束驱动（Constraint-driven Creativity）**\n\n约束并非创意的敌人，恰恰相反，合理的约束常常能激发更有创造力的解决方案。Twitter 的 140 字限制催生了简洁有力的表达方式，俳句的 5-7-5 音节格式造就了独特的诗意美感。\n\n**4. 迭代精炼（Iterative Refinement）**\n\n伟大的创意很少一次性诞生。它们通常经历了一个\"粗糙原型 → 获得反馈 → 修改完善\"的迭代循环。这个过程需要勇气接受批评，也需要判断力分辨哪些反馈值得采纳。\n\n所以我的建议是，不妨换一个视角，把这个问题看作一次探索的起点。`,
+    'glm-5-turbo': (msg) => `针对「${msg}」这个问题，我从以下角度进行分析：\n\n**技术层面**\n- 首先需要明确问题的技术边界\n- 然后选择合适的方法论\n- 最后给出可落地的方案\n\n**架构设计**\n\n一个优秀的软件架构应该遵循以下原则：\n\n1. **单一职责原则（SRP）**：每个模块只负责一个功能领域，降低耦合度。\n2. **开闭原则（OCP）**：对扩展开放，对修改关闭。通过抽象和多态实现功能扩展而不修改现有代码。\n3. **依赖倒置（DIP）**：高层模块不应依赖低层模块，二者都应依赖抽象。\n\n在实际项目中，我们推荐采用分层架构：\n- 表示层（Presentation Layer）：负责 UI 渲染和用户交互\n- 业务逻辑层（Business Logic Layer）：处理核心业务规则\n- 数据访问层（Data Access Layer）：封装数据库操作\n\n**数据流管理**\n\n对于复杂的单页应用，状态管理是一个关键挑战。推荐方案包括：\n- 小型项目：React Context + useReducer\n- 中型项目：Zustand 或 Jotai\n- 大型项目：Redux Toolkit + RTK Query\n\n**性能优化**\n\n常见的前端性能优化策略：\n- 代码分割（Code Splitting）：使用 React.lazy 和 Suspense\n- 虚拟列表（Virtual List）：使用 react-window 处理长列表\n- 缓存策略：Service Worker + HTTP 缓存 + 应用层缓存\n- 图片优化：WebP 格式、懒加载、CDN 分发\n\n**总结**\n\n综合来看，这个问题的关键在于找到效率与质量的最佳平衡点。技术选型不是追求最新最热，而是选择最适合当前团队能力和业务需求的方案。`,
+    'claude-haiku-45': (msg) => `好的，让我来思考「${msg}」这个问题。\n\n从多个角度来看：\n\n1. **安全性考虑** — 我们需要确保方案符合伦理和安全标准\n2. **实用性评估** — 方案需要在实践中可操作\n3. **用户体验** — 最终产出应该对用户友好\n\n### 深入分析\n\n在人工智能快速发展的今天，我们需要在技术创新和责任伦理之间找到平衡点。以下是我的一些深入思考：\n\n**AI 治理框架**\n\n一个健全的 AI 治理框架应该包含以下层次：\n\n- 数据治理：确保训练数据的质量、多样性和隐私合规\n- 模型治理：建立模型评估、审计和可解释性标准\n- 应用治理：定义 AI 系统的使用边界和责任归属\n- 持续监控：部署后持续监测模型性能和偏差\n\n**实践建议**\n\n对于正在开发 AI 产品的团队，我建议：\n\n1. 从项目初期就嵌入伦理审查环节\n2. 建立多元化的评估指标体系\n3. 保持与用户的开放沟通渠道\n4. 定期进行红队测试和安全审计\n\n希望这些思考对你有所帮助！`,
   }
 
   const fn = responses[model.id]
   if (fn) return fn(userMessage)
-  return `这是 ${model.name} 对"${userMessage.slice(0, 30)}..."的回复。`
+  return `这是 ${model.name} 对"${shortMsg}..."的回复。`
 }
 
 // 根据 conversation 生成 mock 对话消息

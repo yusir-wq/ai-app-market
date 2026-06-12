@@ -126,38 +126,46 @@ export function InputArea({
       <div className="rounded-lg border border-border shadow-sm" style={{ backgroundColor: '#F7F8FB' }}>
         {/* 参考上传区 - 图片/视频模型 */}
         {hasReference && (
-          <div className="px-4 pt-4">
+          <>
             {requiresReference && uploadedReferences.length === 0 && (
-              <div className="p-3 rounded-lg border-2 border-dashed border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/20 mb-3">
-                <div className="flex items-start gap-2">
-                  <Info className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
-                      {activeModel?.name} 需要上传参考
-                    </p>
-                    <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">
-                      该模型必须上传参考素材才能生成。支持
-                      {activeModel?.supportedReferences?.join('、') || '内容'}
-                      参考。
-                    </p>
+              <div className="px-4 pt-4">
+                <div className="p-3 rounded-lg border-2 border-dashed border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/20">
+                  <div className="flex items-start gap-2">
+                    <Info className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                        {activeModel?.name} 需要上传参考
+                      </p>
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">
+                        该模型必须上传参考素材才能生成。支持
+                        {activeModel?.supportedReferences?.join('、') || '内容'}
+                        参考。
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             )}
+          </>
+        )}
 
-            <div className="flex items-center gap-3 mb-3">
+        {/* 文本输入区 */}
+        <div className={`p-4 ${hasReference ? 'flex items-start gap-3' : ''}`}>
+          {/* 参考上传区 - 左侧 */}
+          {hasReference && (
+            <div className="shrink-0 flex items-start gap-2">
               {uploadedReferences.length > 0 && (
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-1 flex-wrap">
                   {uploadedReferences.map((ref, idx) => (
-                    <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-border">
+                    <div key={idx} className="relative w-12 h-12 rounded-lg overflow-hidden border border-border">
                       <div className="w-full h-full bg-secondary flex items-center justify-center text-xs text-muted-foreground">
                         #{idx + 1}
                       </div>
                       <button
                         onClick={() => removeUploadedReference(idx)}
-                        className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-foreground/70 text-background flex items-center justify-center text-[10px]"
+                        className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-foreground/70 text-background flex items-center justify-center text-[10px]"
                       >
-                        <X className="h-2.5 w-2.5" />
+                        <X className="h-2 w-2" />
                       </button>
                     </div>
                   ))}
@@ -165,35 +173,15 @@ export function InputArea({
               )}
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-16 h-16 rounded-lg border-2 border-dashed border-border hover:border-primary/50 hover:bg-accent flex flex-col items-center justify-center gap-1 transition-colors shrink-0"
+                className="w-12 h-12 rounded-lg border-2 border-dashed border-border hover:border-primary/50 hover:bg-accent flex flex-col items-center justify-center gap-0.5 transition-colors shrink-0"
               >
-                <Upload className="h-4 w-4 text-muted-foreground" />
-                <span className="text-[10px] text-muted-foreground">上传参考</span>
+                <Upload className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-[9px] text-muted-foreground leading-none">参考</span>
               </button>
-              {uploadedReferences.length > 0 && activeModel?.supportedReferences && (
-                <div className="flex gap-1.5">
-                  {activeModel.supportedReferences.map(ref => (
-                    <Badge key={ref} variant="outline" className="text-[10px] h-5">
-                      {ref === 'content' ? '内容参考' : ref === 'style' ? '风格参考' : '角色参考'}
-                    </Badge>
-                  ))}
-                </div>
-              )}
             </div>
+          )}
 
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept={isImageModel ? 'image/*' : 'video/*'}
-              multiple
-              className="hidden"
-              onChange={handleFileUpload}
-            />
-          </div>
-        )}
-
-        {/* 文本输入区 */}
-        <div className="p-4">
+          <div className={hasReference ? 'flex-1 min-w-0' : ''}>
           {/* @提及 模型 Pills */}
           {selectedMentionModels.length > 0 && (
             <div className="flex items-center gap-1.5 mb-3 overflow-x-auto scrollbar-hide flex-nowrap">
@@ -235,7 +223,28 @@ export function InputArea({
               }
             }}
           />
+          </div>
+
+          {/* 图片/视频模型支持标签 */}
+          {hasReference && uploadedReferences.length > 0 && activeModel?.supportedReferences && (
+            <div className="shrink-0 flex gap-1 pt-0.5">
+              {activeModel.supportedReferences.map(ref => (
+                <Badge key={ref} variant="outline" className="text-[10px] h-5">
+                  {ref === 'content' ? '内容参考' : ref === 'style' ? '风格参考' : '角色参考'}
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept={isImageModel ? 'image/*' : 'video/*'}
+          multiple
+          className="hidden"
+          onChange={handleFileUpload}
+        />
 
         {/* 底部操作栏 */}
         <div className="flex items-center justify-between px-4 py-2.5 border-t border-border/50">

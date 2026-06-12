@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ThinkingProcess } from './thinking-process'
@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Globe, Brain, Copy, RotateCcw, Reply, Check, ArrowUpRight, Sparkles, Eye, Download, Image, Zap, RotateCw, Trash2, Puzzle } from 'lucide-react'
+import { Globe, Brain, Copy, RotateCcw, Reply, Check, ArrowUpRight, Sparkles, Eye, Download, Image, Zap, RotateCw, Trash2, Puzzle, ChevronDown, ChevronUp } from 'lucide-react'
 
 interface ModelResponseCardProps {
   model: Model
@@ -42,6 +42,17 @@ export function ModelResponseCard({
   const [hoveredImgIdx, setHoveredImgIdx] = useState<number | null>(null)
   const [previewImg, setPreviewImg] = useState<string | null>(null)
   const [hoveredVidIdx, setHoveredVidIdx] = useState<number | null>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [contentOverflows, setContentOverflows] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  // 检测内容是否超过 350px
+  useEffect(() => {
+    const el = contentRef.current
+    if (!el) return
+    // 用 scrollHeight 检测真实高度
+    setContentOverflows(el.scrollHeight > 350)
+  }, [message.content, message.contentType])
 
   const searchResults = mockSearchResults[model.id] || []
   const thinkingContent = (() => {
@@ -401,11 +412,21 @@ export function ModelResponseCard({
 
           {/* 文本回复内容 */}
           {message.contentType !== 'image' && message.contentType !== 'video' && message.contentType !== 'mcp' && (
-            <div className="text-sm text-foreground leading-relaxed">
+            <div
+              ref={contentRef}
+              className={cn(
+                'text-sm text-foreground leading-relaxed relative',
+                !expanded && contentOverflows && 'max-h-[350px] overflow-hidden'
+              )}
+            >
               {message.contentType === 'markdown' ? (
                 <MarkdownContent content={message.content || ''} />
               ) : (
                 <p>{message.content}</p>
+              )}
+              {/* 折叠渐变遮罩 */}
+              {!expanded && contentOverflows && (
+                <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-card to-transparent pointer-events-none" />
               )}
             </div>
           )}
@@ -427,6 +448,26 @@ export function ModelResponseCard({
 
         {/* 操作栏 */}
         <div className="flex items-center gap-1 px-3 py-2 border-t border-border bg-secondary/20">
+          {contentOverflows && message.contentType !== 'image' && message.contentType !== 'video' && message.contentType !== 'mcp' && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 text-xs text-muted-foreground hover:text-foreground gap-1"
+              onClick={() => setExpanded(!expanded)}
+            >
+              {expanded ? (
+                <>
+                  <ChevronUp className="h-3.5 w-3.5" />
+                  收起
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="h-3.5 w-3.5" />
+                  展开
+                </>
+              )}
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="icon-sm"
