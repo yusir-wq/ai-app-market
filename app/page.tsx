@@ -1,5 +1,10 @@
+import { MCPProvider } from '@/contexts/mcp-context'
 import { Workspace } from '@/components/workspace/workspace'
 
 export default function Home() {
-  return <Workspace />
+  return (
+    <MCPProvider>
+      <Workspace />
+    </MCPProvider>
+  )
 }

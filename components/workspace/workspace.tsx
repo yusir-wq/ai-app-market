@@ -34,7 +34,8 @@ import { MCPQuickCreateModal } from './mcp-quick-create-modal'
 import { MCPQuickConfigModal } from './mcp-quick-config-modal'
 import { MCPServiceDetailModal } from './mcp-service-detail-modal'
 import { useAuth } from '@/contexts/auth-context'
-import { MCPProvider } from '@/contexts/mcp-context'
+import { useMCP } from '@/contexts/mcp-context'
+import { mockMCPMessages } from '@/lib/mcp-data'
 import {
   mockModels,
   mockConversations,
@@ -50,6 +51,7 @@ type ViewMode = 'home' | 'chat' | 'history-all' | 'category' | 'model-detail' | 
 
 export function Workspace() {
   const { isLoggedIn, setShowLoginModal, user } = useAuth()
+  const { mcpEnabled, selectedMCPServices } = useMCP()
   const [viewMode, setViewMode] = useState<ViewMode>('home')
   const [conversations, setConversations] = useState<Conversation[]>(mockConversations)
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
@@ -167,6 +169,7 @@ export function Workspace() {
     setReplyModel(null)
 
     const timestamp = new Date()
+    const isMCPActive = mcpEnabled && selectedMCPServices.length > 0
     const userMessage: Message = {
       id: `msg-${Date.now()}`,
       role: 'user',
@@ -176,6 +179,7 @@ export function Workspace() {
       timestamp,
       onlineSearch: enableSearch,
       deepThinking: enableThinking,
+      isMCPEnabled: isMCPActive,
     } as Message
 
     const newMessages = [userMessage]
@@ -202,17 +206,20 @@ export function Workspace() {
       const responseTime = 800 + index * 1200 + Math.random() * 1500
 
       setTimeout(() => {
+        const mcpContent = isMCPActive ? (mockMCPMessages['mcp-conversation-2'] || Object.values(mockMCPMessages)[0]) : undefined
         const aiMessage: Message = {
           id: `msg-${Date.now()}-ai-${model.id}`,
           role: 'assistant',
-          content: getMockResponse(model, message),
-          contentType: effectiveModels.length > 1 ? 'text' : 'markdown',
+          content: isMCPActive ? (mcpContent?.finalResponse || getMockResponse(model, message)) : getMockResponse(model, message),
+          contentType: isMCPActive ? 'mcp' : (effectiveModels.length > 1 ? 'text' : 'markdown'),
           modelId: model.id,
           onlineSearch: enableSearch,
           deepThinking: enableThinking,
+          isMCPEnabled: isMCPActive,
+          mcpContent: isMCPActive ? mcpContent : undefined,
           timestamp: new Date(),
           responseTime,
-          costPoints: model.costPoints,
+          costPoints: isMCPActive ? 12 : model.costPoints,
           status: 'success',
         } as Message
 
@@ -235,7 +242,7 @@ export function Workspace() {
         })
       }, delay)
     })
-  }, [isLoggedIn, setShowLoginModal, enableSearch, enableThinking])
+  }, [isLoggedIn, setShowLoginModal, enableSearch, enableThinking, mcpEnabled, selectedMCPServices])
 
   // V1.2 从首页选择模型
   const handleSelectModelFromHome = useCallback((model: Model) => {
@@ -273,6 +280,7 @@ export function Workspace() {
     }
 
     // 文本消息
+    const isMCPActive = mcpEnabled && selectedMCPServices.length > 0
     const userMessage: Message = {
       id: `msg-${Date.now()}`,
       role: 'user',
@@ -281,6 +289,7 @@ export function Workspace() {
       modelIds,
       onlineSearch: enableSearch,
       deepThinking: enableThinking,
+      isMCPEnabled: isMCPActive,
       timestamp,
     } as Message
 
@@ -298,17 +307,20 @@ export function Workspace() {
       const responseTime = 800 + index * 1200 + Math.random() * 1500
 
       setTimeout(() => {
+        const mcpContent = isMCPActive ? (mockMCPMessages['mcp-conversation-2'] || Object.values(mockMCPMessages)[0]) : undefined
         const aiMessage: Message = {
           id: `msg-${Date.now()}-ai-${model.id}`,
           role: 'assistant',
-          content: getMockResponse(model, message),
-          contentType: targetModels.length > 1 ? 'text' : 'markdown',
+          content: isMCPActive ? (mcpContent?.finalResponse || getMockResponse(model, message)) : getMockResponse(model, message),
+          contentType: isMCPActive ? 'mcp' : (targetModels.length > 1 ? 'text' : 'markdown'),
           modelId: model.id,
           onlineSearch: enableSearch,
           deepThinking: enableThinking,
+          isMCPEnabled: isMCPActive,
+          mcpContent: isMCPActive ? mcpContent : undefined,
           timestamp: new Date(),
           responseTime,
-          costPoints: model.costPoints,
+          costPoints: isMCPActive ? 12 : model.costPoints,
           status: 'success',
         } as Message
 
@@ -325,7 +337,7 @@ export function Workspace() {
         })
       }, delay)
     })
-  }, [isLoggedIn, setShowLoginModal, selectedModels, replyModel, enableSearch, enableThinking])
+  }, [isLoggedIn, setShowLoginModal, selectedModels, replyModel, enableSearch, enableThinking, mcpEnabled, selectedMCPServices])
 
   const handleImageSend = (message: string, model: Model, timestamp: Date, modelIds: string[]) => {
     const userMessage: Message = {
@@ -544,9 +556,7 @@ export function Workspace() {
         <div className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-border shrink-0">
           {replyModel ? (
             <>
-              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-base">
-                {replyModel.logo}
-              </div>
+              <div className="text-lg flex-shrink-0">{replyModel.logo}</div>
               <div className="flex-1">
                 <h2 className="text-sm font-semibold text-foreground">{replyModel.name}</h2>
                 <p className="text-xs text-muted-foreground">
@@ -566,14 +576,9 @@ export function Workspace() {
             </>
           ) : (
             <>
-              <div className="flex -space-x-2">
+              <div className="flex items-center gap-1.5">
                 {selectedModels.slice(0, 4).map(m => (
-                  <div
-                    key={m.id}
-                    className="w-8 h-8 rounded-lg bg-muted border-2 border-background flex items-center justify-center text-sm"
-                  >
-                    {m.logo}
-                  </div>
+                  <span key={m.id} className="text-base">{m.logo}</span>
                 ))}
               </div>
               <div className="flex-1">
@@ -721,9 +726,10 @@ export function Workspace() {
               />
             )}
           </div>
+
         </div>
 
-        {/* 底部输入区 */}
+        {/* 底部输入区 - 对话 */}
         <div className="flex-shrink-0 border-t border-border bg-background">
           <InputArea
             model={replyModel || selectedModels[0] || null}
@@ -738,6 +744,12 @@ export function Workspace() {
             onToggleSearch={() => setEnableSearch(!enableSearch)}
             onToggleThinking={() => setEnableThinking(!enableThinking)}
           />
+        </div>
+
+        {/* 备案信息 */}
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-4">
+          <span>闽ICP备08105208号-3</span>
+          <span>闽公网安备35020302000061号</span>
         </div>
       </div>
     )
@@ -853,6 +865,12 @@ export function Workspace() {
               )}
             </div>
           </div>
+
+          {/* 备案信息 */}
+          <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 pt-4">
+            <span>闽ICP备08105208号-3</span>
+            <span>闽公网安备35020302000061号</span>
+          </div>
         </div>
         <Dialog open={renameDialogOpen} onOpenChange={setRenameDialogOpen}>
           <DialogContent className="sm:max-w-md">
@@ -966,9 +984,7 @@ export function Workspace() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* 标题栏 */}
         <div className="flex items-center gap-3 pl-12 md:pl-6 pr-6 py-4 border-b border-border shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-lg shrink-0">
-            {model.logo}
-          </div>
+          <div className="text-xl flex-shrink-0">{model.logo}</div>
           <h2 className="text-lg font-semibold text-foreground">{model.name}</h2>
         </div>
 
@@ -976,9 +992,7 @@ export function Workspace() {
           <div className="max-w-2xl mx-auto p-6 pt-12">
             {/* 模型头像和信息 */}
             <div className="text-center mb-8">
-              <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center text-4xl mx-auto mb-5">
-                {model.logo}
-              </div>
+              <div className="text-5xl mx-auto mb-5">{model.logo}</div>
               <h2 className="text-2xl font-bold text-foreground mb-2">{model.name}</h2>
               <p className="text-sm text-muted-foreground mb-3 max-w-md mx-auto leading-relaxed">
                 {model.description}
@@ -1026,6 +1040,7 @@ export function Workspace() {
               </div>
             )}
           </div>
+
         </div>
 
         {/* 底部输入区 - 与首页共用组件 */}
@@ -1043,6 +1058,12 @@ export function Workspace() {
             />
           </div>
         </div>
+
+        {/* 备案信息 */}
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-4">
+          <span>闽ICP备08105208号-3</span>
+          <span>闽公网安备35020302000061号</span>
+        </div>
       </div>
     )
   }
@@ -1052,6 +1073,10 @@ export function Workspace() {
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
       <div className="flex-1 overflow-y-auto">
         <BillingUsage onBack={() => {}} />
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
+          <span>闽ICP备08105208号-3</span>
+          <span>闽公网安备35020302000061号</span>
+        </div>
       </div>
     </div>
   )
@@ -1061,6 +1086,10 @@ export function Workspace() {
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
       <div className="flex-1 overflow-y-auto">
         <BillingPayments onBack={() => {}} />
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
+          <span>闽ICP备08105208号-3</span>
+          <span>闽公网安备35020302000061号</span>
+        </div>
       </div>
     </div>
   )
@@ -1070,6 +1099,10 @@ export function Workspace() {
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
       <div className="flex-1 overflow-y-auto">
         <MCPCenter onBack={() => {}} />
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 py-6">
+          <span>闽ICP备08105208号-3</span>
+          <span>闽公网安备35020302000061号</span>
+        </div>
       </div>
     </div>
   )
@@ -1079,8 +1112,7 @@ export function Workspace() {
 
   // ===== 默认工作台 =====
   return (
-    <MCPProvider>
-      <div className="h-screen flex bg-background overflow-hidden">
+    <div className="h-screen flex bg-background overflow-hidden">
         <div className="hidden md:flex">
           <NavPanel
             isCollapsed={isNavCollapsed}
@@ -1154,7 +1186,6 @@ export function Workspace() {
         <MCPQuickConfigModal />
         <MCPServiceDetailModal />
       </div>
-    </MCPProvider>
   )
 }
 

@@ -95,11 +95,6 @@ export function RechargeModal() {
     }, 1500)
   }
 
-  // 返回选择界面
-  const handleBack = () => {
-    setPaymentStatus('idle')
-  }
-
   const canConfirm = finalAmount >= MIN_AMOUNT && finalAmount <= MAX_AMOUNT
 
   return (
@@ -206,15 +201,6 @@ export function RechargeModal() {
                 ) : (
                   '模拟支付完成'
                 )}
-              </Button>
-              <Button
-                onClick={handleBack}
-                variant="outline"
-                disabled={isLoading}
-                size="lg"
-                className="w-full"
-              >
-                返回修改
               </Button>
             </div>
           </div>

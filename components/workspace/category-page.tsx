@@ -97,6 +97,12 @@ export function CategoryPage({ initialTab, onSelectModel }: CategoryPageProps) {
             </div>
           )}
         </div>
+
+        {/* 备案信息 */}
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60 pt-4">
+          <span>闽ICP备08105208号-3</span>
+          <span>闽公网安备35020302000061号</span>
+        </div>
       </div>
     </div>
   )

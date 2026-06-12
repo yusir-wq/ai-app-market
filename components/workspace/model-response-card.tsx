@@ -7,6 +7,7 @@ import { ThinkingProcess } from './thinking-process'
 import { SearchResultsDrawer } from './search-results-drawer'
 import { ImagePreviewDialog } from '@/components/chat/image-preview-dialog'
 import { MarkdownContent } from '@/components/chat/markdown-content'
+import { MCPMessageView } from '@/components/workspace/mcp-message-view'
 import { cn } from '@/lib/utils'
 import { type Model, type Message, mockSearchResults, mockThinkingContent } from '@/lib/mock-data'
 import {
@@ -15,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Globe, Brain, Copy, RotateCcw, Reply, Check, ArrowUpRight, Sparkles, Eye, Download, Image, Zap, RotateCw, Trash2 } from 'lucide-react'
+import { Globe, Brain, Copy, RotateCcw, Reply, Check, ArrowUpRight, Sparkles, Eye, Download, Image, Zap, RotateCw, Trash2, Puzzle } from 'lucide-react'
 
 interface ModelResponseCardProps {
   model: Model
@@ -43,7 +44,22 @@ export function ModelResponseCard({
   const [hoveredVidIdx, setHoveredVidIdx] = useState<number | null>(null)
 
   const searchResults = mockSearchResults[model.id] || []
-  const thinkingContent = mockThinkingContent[model.id] || ''
+  const thinkingContent = (() => {
+    const base = mockThinkingContent[model.id] || ''
+    // MCP 思考过程合并
+    if (message.contentType === 'mcp' && message.mcpContent) {
+      const parts: string[] = []
+      if (message.mcpContent.thinkingProcess?.length) {
+        parts.push(message.mcpContent.thinkingProcess.map(t => t.content).join('\n'))
+      }
+      if (message.mcpContent.organizedInfo) {
+        parts.push(message.mcpContent.organizedInfo)
+      }
+      if (parts.length > 0) return parts.join('\n\n')
+    }
+    return base
+  })()
+  const hasThinking = !!(deepThinking && thinkingContent) || (message.contentType === 'mcp' && message.mcpContent && (message.mcpContent.thinkingProcess?.length || message.mcpContent.organizedInfo))
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content || '')
@@ -57,9 +73,7 @@ export function ModelResponseCard({
         {/* 模型卡片头部 */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30 gap-2">
           <div className="flex items-center gap-2.5 min-w-0 flex-1">
-            <div className="w-7 h-7 rounded-lg bg-background border border-border flex items-center justify-center text-sm shrink-0">
-              {model.logo}
-            </div>
+            <div className="text-lg flex-shrink-0">{model.logo}</div>
             <div className="min-w-0">
               <span className="text-sm font-semibold text-foreground truncate block">{model.name}</span>
               <div className="flex items-center gap-1.5 mt-0.5">
@@ -73,6 +87,12 @@ export function ModelResponseCard({
                   <Badge variant="secondary" className="text-[10px] h-4 px-1.5 gap-1 bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 border-purple-200 dark:border-purple-800">
                     <Brain className="h-2.5 w-2.5" />
                     深度思考
+                  </Badge>
+                )}
+                {(message.isMCPEnabled || message.contentType === 'mcp') && (
+                  <Badge variant="secondary" className="text-[10px] h-4 px-1.5 gap-1 bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border-orange-200 dark:border-orange-800">
+                    <Puzzle className="h-2.5 w-2.5" />
+                    MCP
                   </Badge>
                 )}
               </div>
@@ -108,7 +128,7 @@ export function ModelResponseCard({
         {/* 模型卡片内容 */}
         <div className="px-4 py-3">
           {/* 深度思考过程 */}
-          {deepThinking && thinkingContent && (
+          {hasThinking && (
             <ThinkingProcess content={thinkingContent} />
           )}
 
@@ -374,8 +394,13 @@ export function ModelResponseCard({
             </div>
           )}
 
+          {/* MCP 工具调用过程 */}
+          {message.contentType === 'mcp' && message.mcpContent && (
+            <MCPMessageView content={message.mcpContent} />
+          )}
+
           {/* 文本回复内容 */}
-          {message.contentType !== 'image' && message.contentType !== 'video' && (
+          {message.contentType !== 'image' && message.contentType !== 'video' && message.contentType !== 'mcp' && (
             <div className="text-sm text-foreground leading-relaxed">
               {message.contentType === 'markdown' ? (
                 <MarkdownContent content={message.content || ''} />
