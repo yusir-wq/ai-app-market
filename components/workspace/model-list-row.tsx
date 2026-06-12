@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef, useState, useCallback } from 'react'
-import { Button } from '@/components/ui/button'
 import { type Model } from '@/lib/mock-data'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -10,7 +9,6 @@ interface ModelListRowProps {
   icon: React.ReactNode
   models: Model[]
   onSelectModel: (model: Model) => void
-  onViewAll: () => void
   compact?: boolean
 }
 
@@ -19,7 +17,6 @@ export function ModelListRow({
   icon,
   models,
   onSelectModel,
-  onViewAll,
   compact = false,
 }: ModelListRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -46,25 +43,15 @@ export function ModelListRow({
   return (
     <div className="w-full">
       {/* 标题栏 */}
-      <div className="flex items-center justify-between mb-4 px-1">
+      <div className="flex items-center mb-4 px-1">
         <div className="flex items-center gap-2">
           {icon}
           <h3 className="text-sm font-semibold text-foreground">{title}</h3>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-xs text-muted-foreground hover:text-primary gap-1 h-7"
-          onClick={onViewAll}
-        >
-          查看全部
-          <ChevronRight className="h-3 w-3" />
-        </Button>
       </div>
 
       {/* 滚动区域 */}
       <div className="relative group">
-        {/* 左箭头 */}
         {canScrollLeft && (
           <button
             onClick={() => scroll('left')}
@@ -74,7 +61,6 @@ export function ModelListRow({
           </button>
         )}
 
-        {/* 模型列表 - 彩色大卡片风格 */}
         <div
           ref={scrollRef}
           className="flex gap-0 overflow-x-auto pb-2 scrollbar-hide"
@@ -90,7 +76,6 @@ export function ModelListRow({
               }`}
               style={{ scrollSnapAlign: 'start' }}
             >
-              {/* 彩色渐变图标区域 */}
               <div className={`rounded-xl bg-gradient-to-br ${model.gradient} flex items-center justify-center text-white ${compact ? 'w-12 h-12 text-xl' : 'w-14 h-14 text-2xl'} shadow-sm`}>
                 {model.logo}
               </div>
@@ -108,7 +93,6 @@ export function ModelListRow({
           ))}
         </div>
 
-        {/* 右箭头 */}
         {canScrollRight && (
           <button
             onClick={() => scroll('right')}

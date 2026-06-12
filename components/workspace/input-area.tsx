@@ -88,9 +88,12 @@ export function InputArea({
   const handleToggleMentionModel = useCallback((model: Model) => {
     setSelectedMentionModels(prev => {
       const isSelected = prev.some(m => m.id === model.id)
-      return isSelected
-        ? prev.filter(m => m.id !== model.id)
-        : [...prev, model]
+      if (isSelected) return prev.filter(m => m.id !== model.id)
+      // 图片/视频模型：单选替换
+      if (model.type === 'image' || model.type === 'video') {
+        return [model]
+      }
+      return [...prev, model]
     })
   }, [])
 
@@ -273,13 +276,29 @@ export function InputArea({
               </>
             )}
 
-            {/* 提及模型 - 仅聊天模型支持 */}
-            {!hasReference && (
-              <ModelMentionPopover
-                selectedModels={selectedMentionModels}
-                onToggleModel={handleToggleMentionModel}
-              />
-            )}
+            {/* 提及模型 */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="inline-flex">
+                  {hasReference && activeModel ? (
+                    <ModelMentionPopover
+                      selectedModels={selectedMentionModels}
+                      onToggleModel={handleToggleMentionModel}
+                      filterType={activeModel.type as 'image' | 'video'}
+                      maxModels={1}
+                    />
+                  ) : (
+                    <ModelMentionPopover
+                      selectedModels={selectedMentionModels}
+                      onToggleModel={handleToggleMentionModel}
+                    />
+                  )}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                <p>提及模型</p>
+              </TooltipContent>
+            </Tooltip>
 
             {/* MCP服务 - 仅聊天模型 */}
             {!hasReference && (

@@ -31,7 +31,6 @@ import { LoginModal } from '@/components/auth/login-modal'
 import { RechargeModal } from '@/components/auth/recharge-modal'
 import { BillingUsage } from './billing-usage'
 import { BillingPayments } from './billing-payments'
-import { CategoryPage } from './category-page'
 import { MCPCenter } from './mcp-center'
 import type { MCPCenterHandle } from './mcp-center'
 import { MCPQuickCreateModal } from './mcp-quick-create-modal'
@@ -51,7 +50,7 @@ import {
 } from '@/lib/mock-data'
 import { Search, MoreHorizontal, Pencil, Trash2, Menu, ArrowLeft, ExternalLink } from 'lucide-react'
 
-type ViewMode = 'home' | 'chat' | 'history-all' | 'category' | 'model-detail' | 'billing-usage' | 'billing-payments' | 'mcp-center'
+type ViewMode = 'home' | 'chat' | 'history-all' | 'model-detail' | 'billing-usage' | 'billing-payments' | 'mcp-center'
 
 export function Workspace() {
   const { isLoggedIn, setShowLoginModal, setShowRechargeModal, user } = useAuth()
@@ -62,7 +61,6 @@ export function Workspace() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [inputValue, setInputValue] = useState('')
-  const [categoryFilter, setCategoryFilter] = useState<string>('chat')
   const [isNavCollapsed, setIsNavCollapsed] = useState(false)
   const [historySearchQuery, setHistorySearchQuery] = useState('')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -199,12 +197,6 @@ export function Workspace() {
     }
     setViewMode('history-all')
   }, [isLoggedIn, setShowLoginModal])
-
-  // 查看分类
-  const handleViewCategory = useCallback((category: string) => {
-    setCategoryFilter(category)
-    setViewMode('category')
-  }, [])
 
   // 折叠导航面板
   const handleToggleNavCollapse = useCallback(() => {
@@ -626,42 +618,24 @@ export function Workspace() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* 对话标题栏 */}
         <div className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-border shrink-0">
-          {replyModel ? (
-            <>
-              <div className="text-lg flex-shrink-0">{replyModel.logo}</div>
-              <div className="flex-1">
-                <h2 className="text-sm font-semibold text-foreground">{replyModel.name}</h2>
-                <p className="text-xs text-muted-foreground">
-                  {replyModel.type === 'chat' ? '单模型对话模式' : '1个模型'}
-                </p>
-              </div>
-              {replyModel.type === 'chat' && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs text-muted-foreground"
-                  onClick={() => setReplyModel(null)}
-                >
-                  切换回多模型
-                </Button>
-              )}
-            </>
-          ) : (
-            <>
-              <div className="flex items-center gap-1.5">
-                {selectedModels.slice(0, 4).map(m => (
-                  <span key={m.id} className="text-base">{m.logo}</span>
-                ))}
-              </div>
-              <div className="flex-1">
-                <h2 className="text-sm font-semibold text-foreground">
-                  {selectedModels.map(m => m.name).join('、')}
-                </h2>
-                <p className="text-xs text-muted-foreground">
-                  {selectedModels.length === 1 ? '1个模型' : `多模型对话 · ${selectedModels.length} 个模型`}
-                </p>
-              </div>
-            </>
+          <div className="text-lg flex-shrink-0">{replyModel?.logo || selectedModels[0]?.logo || '💬'}</div>
+          <div className="flex-1">
+            <h2 className="text-sm font-semibold text-foreground truncate max-w-[400px]">
+              {activeConversation?.title || '新对话'}
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              {selectedModels.length === 1 ? '1个模型' : `多模型对话 · ${selectedModels.length} 个模型`}
+            </p>
+          </div>
+          {replyModel?.type === 'chat' && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs text-muted-foreground"
+              onClick={() => setReplyModel(null)}
+            >
+              切换回多模型
+            </Button>
           )}
         </div>
 
@@ -969,30 +943,6 @@ export function Workspace() {
       </div>
     )
   }
-
-  // ===== 分类页 =====
-  const renderCategoryPage = () => (
-    <CategoryPage
-      initialTab={categoryFilter}
-      onSelectModel={(model) => {
-        setSelectedModels([model])
-        setReplyModel(null)
-        setViewMode('chat')
-        setMessages([])
-        const convId = `conv-${Date.now()}`
-        const newConv: Conversation = {
-          id: convId,
-          title: `与 ${model.name} 的新对话`,
-          preview: '',
-          createdAt: new Date(),
-          modelIds: [model.id],
-          messages: [],
-        }
-        setActiveConversationId(convId)
-        setConversations(prev => [newConv, ...prev])
-      }}
-    />
-  )
 
   // ===== 模型详情页 / 单模型对话启动器 =====
   const renderModelDetail = () => {
@@ -1308,8 +1258,6 @@ export function Workspace() {
           <HomeContent
             onSendMessage={handleHomeSendMessage}
             onSelectModel={handleSelectModelFromHome}
-            onViewCategory={handleViewCategory}
-            onViewAllHistory={handleViewAll}
             onToggleSearch={() => setEnableSearch(!enableSearch)}
             onToggleThinking={() => setEnableThinking(!enableThinking)}
             enableSearch={enableSearch}
@@ -1319,7 +1267,6 @@ export function Workspace() {
 
         {viewMode === 'chat' && selectedModels.length > 0 && renderChatContent()}
         {viewMode === 'history-all' && renderHistoryAll()}
-        {viewMode === 'category' && renderCategoryPage()}
         {viewMode === 'model-detail' && selectedModels.length > 0 && renderModelDetail()}
         {viewMode === 'billing-usage' && renderBillingUsage()}
         {viewMode === 'billing-payments' && renderBillingPayments()}

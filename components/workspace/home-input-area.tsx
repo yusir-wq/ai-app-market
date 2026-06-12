@@ -26,7 +26,7 @@ interface HomeInputAreaProps {
   enableThinking: boolean
   onToggleSearch: () => void
   onToggleThinking: () => void
-  onNavigate: (page: string) => void
+  onNavigate?: (page: string) => void
 }
 
 const LINE_HEIGHT = 24
@@ -198,8 +198,8 @@ export function HomeInputArea({
 
         {/* 文本输入区 */}
         <div className={hasReference ? 'flex-1 min-w-0' : ''}>
-          {/* @提及 模型 Pills - 仅非参考模式 */}
-          {!hasReference && selectedMentionModels.length > 0 && (
+          {/* @提及 模型 Pills */}
+          {selectedMentionModels.length > 0 && (
             <div className="flex items-center gap-1.5 mb-3 overflow-x-auto scrollbar-hide flex-nowrap">
               {selectedMentionModels.map(m => (
                 <div
@@ -267,9 +267,26 @@ export function HomeInputArea({
 
       <div className="flex items-center justify-between px-4 py-2.5 border-t border-border/50">
         <div className="flex items-center gap-1">
-          {/* 图片/视频模型：仅参数设置 */}
+          {/* 图片/视频模型：参数设置 + @提及 */}
           {hasReference ? (
-            <ModelParamPopover modelType={model!.type as 'image' | 'video'} />
+            <>
+              <ModelParamPopover modelType={model!.type as 'image' | 'video'} />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex">
+                    <ModelMentionPopover
+                      selectedModels={selectedMentionModels}
+                      onToggleModel={handleToggleMentionModel}
+                      filterType={model!.type as 'image' | 'video'}
+                      maxModels={1}
+                    />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  <p>提及模型</p>
+                </TooltipContent>
+              </Tooltip>
+            </>
           ) : (
             <>
               <Tooltip>
@@ -296,10 +313,19 @@ export function HomeInputArea({
                 onChange={handleFileUpload}
               />
 
-              <ModelMentionPopover
-                selectedModels={selectedMentionModels}
-                onToggleModel={handleToggleMentionModel}
-              />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex">
+                    <ModelMentionPopover
+                      selectedModels={selectedMentionModels}
+                      onToggleModel={handleToggleMentionModel}
+                    />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  <p>提及模型</p>
+                </TooltipContent>
+              </Tooltip>
 
               <Tooltip>
                 <TooltipTrigger asChild>

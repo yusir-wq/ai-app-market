@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { mockModels, type Model } from '@/lib/mock-data'
-import { Search, X } from 'lucide-react'
+import { Search, X, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const categoryTabs = [
@@ -50,12 +50,12 @@ export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSe
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] p-0 gap-0" showCloseButton={false}>
+      <DialogContent className="sm:max-w-[560px] p-0 gap-0" showCloseButton={false}>
         <DialogTitle className="sr-only">搜索模型</DialogTitle>
 
         {/* 标题栏 + 关闭按钮 */}
-        <div className="flex items-center justify-between px-4 pt-4 pb-2">
-          <h3 className="text-sm font-semibold text-foreground">搜索模型</h3>
+        <div className="flex items-center justify-between px-5 pt-4 pb-3">
+          <h3 className="text-base font-semibold text-foreground">搜索模型</h3>
           <Button
             variant="ghost"
             size="icon-sm"
@@ -67,21 +67,21 @@ export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSe
         </div>
 
         {/* 搜索框 */}
-        <div className="px-4 pb-2">
+        <div className="px-5 pb-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="搜索模型..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-9 text-sm border-border"
+              className="pl-9 h-10 text-sm border-border"
               autoFocus
             />
           </div>
         </div>
 
         {/* 分类 Tabs */}
-        <div className="flex items-center gap-1 px-4 pt-1 pb-2 border-b border-border/50">
+        <div className="flex items-center gap-1 px-5 pt-1 pb-3 border-b border-border/50">
           {categoryTabs.map(tab => (
             <button
               key={tab.id}
@@ -99,7 +99,7 @@ export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSe
         </div>
 
         {/* 模型列表 */}
-        <ScrollArea className="h-[420px]">
+        <ScrollArea className="h-[440px]">
           <div className="p-2 space-y-0.5">
             {filteredModels.length > 0 ? (
               filteredModels.map(model => (
@@ -108,7 +108,7 @@ export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSe
                   onClick={() => handleSelect(model)}
                   className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors w-full text-left cursor-pointer"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-lg shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-xl shrink-0">
                     {model.logo}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -123,8 +123,12 @@ export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSe
                         {{ chat: '聊天', image: '图片', video: '视频' }[model.type]}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                       {model.description}
+                    </p>
+                    <p className="flex items-center gap-1 text-xs text-muted-foreground mt-1.5">
+                      <Sparkles className="h-3 w-3" />
+                      单次预计消耗 {model.costPoints} 智点
                     </p>
                   </div>
                 </button>

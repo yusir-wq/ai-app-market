@@ -19,35 +19,47 @@ interface ModelMentionPopoverProps {
   selectedModels: Model[]
   onToggleModel: (model: Model) => void
   maxModels?: number
+  /** 限定模型类型，不传则显示全部 */
+  filterType?: Model['type']
 }
 
 export function ModelMentionPopover({
   selectedModels,
   onToggleModel,
   maxModels = 4,
+  filterType,
 }: ModelMentionPopoverProps) {
   const [open, setOpen] = useState(false)
 
-  // 按类别排序：聊天 → 图片 → 视频
-  const sortedModels = useMemo(
-    () => [...mockModels].sort((a, b) => typeOrder[a.type] - typeOrder[b.type]),
-    []
-  )
+  // 按类别排序 + 按类型过滤
+  const sortedModels = useMemo(() => {
+    let result = filterType
+      ? mockModels.filter(m => m.type === filterType)
+      : [...mockModels]
+    return result.sort((a, b) => typeOrder[a.type] - typeOrder[b.type])
+  }, [filterType])
 
+  const isSingleSelect = maxModels === 1
   const selectedCount = selectedModels.length
   const isMaxReached = selectedCount >= maxModels
 
   const handleToggle = (model: Model) => {
     const isSelected = selectedModels.some(m => m.id === model.id)
+
+    // 单选模式：已选中同一模型不做任何操作；切换其他模型则替换
+    if (isSingleSelect) {
+      if (isSelected) return // 单击已选中的，不取消
+      onToggleModel(model)
+      setOpen(false)
+      return
+    }
+
+    // 多选模式
     if (!isSelected && isMaxReached) {
       toast.warning('选择模型已达上限')
       return
     }
     onToggleModel(model)
-    // 选中图片或视频模型时，立即隐藏气泡卡片
-    if (!isSelected && model.type !== 'chat') {
-      setOpen(false)
-    }
   }
 
   return (
@@ -73,7 +85,10 @@ export function ModelMentionPopover({
         {/* 标题 */}
         <div className="p-3 border-b flex items-center justify-between">
           <p className="text-sm font-medium">
-            选择模型（{selectedCount}/{maxModels}）
+            {isSingleSelect
+              ? `选择${filterType === 'image' ? '图片' : filterType === 'video' ? '视频' : ''}模型`
+              : `选择模型（${selectedCount}/${maxModels}）`
+            }
           </p>
         </div>
 
@@ -86,20 +101,27 @@ export function ModelMentionPopover({
               return (
                 <div
                   key={model.id}
-                  className="flex items-start gap-3 p-2.5 rounded-lg transition-all hover:bg-muted/50 cursor-pointer"
+                  className={cn(
+                    'flex items-start gap-3 p-2.5 rounded-lg transition-all cursor-pointer',
+                    isSelected && isSingleSelect
+                      ? 'bg-primary/5 ring-1 ring-primary/30'
+                      : 'hover:bg-muted/50'
+                  )}
                   onClick={() => handleToggle(model)}
                 >
-                  <Checkbox
-                    checked={isSelected}
-                    className="mt-0.5 shrink-0"
-                  />
+                  {!isSingleSelect && (
+                    <Checkbox
+                      checked={isSelected}
+                      className="mt-0.5 shrink-0"
+                    />
+                  )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="text-base shrink-0">{model.logo}</span>
                       <span className="text-sm font-medium truncate">
                         {model.name}
                       </span>
-                      <BadgeType type={model.type} />
+                      {!filterType && <BadgeType type={model.type} />}
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                       {model.description}
@@ -114,7 +136,10 @@ export function ModelMentionPopover({
         {/* 底部提示 */}
         <div className="p-3 border-t">
           <p className="text-xs text-muted-foreground">
-            选中后即可在输入框中 @ 提及模型，最多选择 {maxModels} 个
+            {isSingleSelect
+              ? `仅支持选择1个${filterType === 'image' ? '图片' : '视频'}模型`
+              : `选中后即可在输入框中 @ 提及模型，最多选择 ${maxModels} 个`
+            }
           </p>
         </div>
       </PopoverContent>

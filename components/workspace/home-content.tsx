@@ -12,8 +12,6 @@ const recommendedModelIds = ['deepseek-v4-pro', 'gpt-image-2', 'doubao-seedance-
 interface HomeContentProps {
   onSendMessage: (message: string, modelIds: string[]) => void
   onSelectModel: (model: Model) => void
-  onViewCategory: (category: string) => void
-  onViewAllHistory: () => void
   onToggleSearch: () => void
   onToggleThinking: () => void
   enableSearch: boolean
@@ -23,8 +21,6 @@ interface HomeContentProps {
 export function HomeContent({
   onSendMessage,
   onSelectModel,
-  onViewCategory,
-  onViewAllHistory,
   onToggleSearch,
   onToggleThinking,
   enableSearch,
@@ -81,7 +77,6 @@ export function HomeContent({
             enableThinking={enableThinking}
             onToggleSearch={onToggleSearch}
             onToggleThinking={onToggleThinking}
-            onNavigate={onViewAllHistory}
           />
         </div>
 
@@ -91,7 +86,6 @@ export function HomeContent({
             icon={<MessageSquare className="h-4 w-4 text-blue-500" />}
             models={chatModels}
             onSelectModel={onSelectModel}
-            onViewAll={() => onViewCategory('chat')}
             compact
           />
           <ModelListRow
@@ -99,7 +93,6 @@ export function HomeContent({
             icon={<Image className="h-4 w-4 text-green-500" />}
             models={imageModels}
             onSelectModel={onSelectModel}
-            onViewAll={() => onViewCategory('image')}
             compact
           />
           <ModelListRow
@@ -107,7 +100,6 @@ export function HomeContent({
             icon={<Video className="h-4 w-4 text-purple-500" />}
             models={videoModels}
             onSelectModel={onSelectModel}
-            onViewAll={() => onViewCategory('video')}
             compact
           />
         </div>
