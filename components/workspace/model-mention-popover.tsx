@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import {
   Popover,
   PopoverContent,
@@ -44,11 +45,12 @@ export function ModelMentionPopover({
   const isMaxReached = selectedCount >= maxModels
 
   const handleToggle = (model: Model) => {
+    if (model.disabled) return
     const isSelected = selectedModels.some(m => m.id === model.id)
 
     // 单选模式：已选中同一模型不做任何操作；切换其他模型则替换
     if (isSingleSelect) {
-      if (isSelected) return // 单击已选中的，不取消
+      if (isSelected) return
       onToggleModel(model)
       setOpen(false)
       return
@@ -98,20 +100,22 @@ export function ModelMentionPopover({
             {sortedModels.map((model) => {
               const isSelected = selectedModels.some(m => m.id === model.id)
 
-              return (
+              const item = (
                 <div
                   key={model.id}
                   className={cn(
-                    'flex items-start gap-3 p-2.5 rounded-lg transition-all cursor-pointer',
-                    isSelected && isSingleSelect
-                      ? 'bg-primary/5 ring-1 ring-primary/30'
-                      : 'hover:bg-muted/50'
+                    'flex items-start gap-3 p-2.5 rounded-lg transition-all',
+                    model.disabled
+                      ? 'opacity-40 cursor-not-allowed'
+                      : 'cursor-pointer hover:bg-muted/50',
+                    isSelected && isSingleSelect && !model.disabled && 'bg-primary/5 ring-1 ring-primary/30'
                   )}
                   onClick={() => handleToggle(model)}
                 >
                   {!isSingleSelect && (
                     <Checkbox
                       checked={isSelected}
+                      disabled={model.disabled}
                       className="mt-0.5 shrink-0"
                     />
                   )}
@@ -129,6 +133,21 @@ export function ModelMentionPopover({
                   </div>
                 </div>
               )
+
+              if (model.disabled && model.disabledReason) {
+                return (
+                  <Tooltip key={model.id}>
+                    <TooltipTrigger asChild>
+                      {item}
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      <p>{model.disabledReason}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )
+              }
+
+              return item
             })}
           </div>
         </ScrollArea>

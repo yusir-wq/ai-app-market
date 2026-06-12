@@ -95,7 +95,7 @@ export function InviteDialog({ open, onOpenChange, userId = 'user_demo' }: Invit
                     </span>
                     {link.shared ? (
                       <span className="shrink-0 rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
-                        已分享
+                        已邀请
                       </span>
                     ) : (
                       <Button

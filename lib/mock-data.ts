@@ -12,6 +12,9 @@ export interface Model {
   supportedReferences?: ('content' | 'style' | 'character')[]
   // 渐变色（参考图风格）
   gradient: string
+  // 禁用状态
+  disabled?: boolean
+  disabledReason?: string
 }
 
 // V1.2 对话类型
@@ -65,6 +68,19 @@ export const mockModels: Model[] = [
     requiresReference: false,
     costPoints: 10,
     gradient: 'from-violet-500 to-indigo-600',
+  },
+  {
+    id: 'deepseek-chat',
+    name: 'deepseek-chat',
+    type: 'chat',
+    description: '擅长通用对话、知识问答和复杂代码生成，具有极高的性价比和响应速度。',
+    logo: '💎',
+    addedAt: new Date('2025-06-01'),
+    requiresReference: false,
+    costPoints: 5,
+    gradient: 'from-gray-400 to-gray-500',
+    disabled: true,
+    disabledReason: '此模型不支持图片理解',
   },
   {
     id: 'minimax-m25',
