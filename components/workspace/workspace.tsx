@@ -541,7 +541,7 @@ export function Workspace() {
     return (
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* 对话标题栏 */}
-        <div className="flex items-center gap-3 pl-14 md:pl-6 pr-6 py-3 border-b border-border shrink-0">
+        <div className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-border shrink-0">
           {replyModel ? (
             <>
               <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-base">
@@ -590,7 +590,7 @@ export function Workspace() {
 
         {/* 消息内容区 */}
         <div className="flex-1 overflow-y-auto">
-          <div className="max-w-4xl mx-auto px-6 py-6 space-y-8">
+          <div className="px-5 py-6 space-y-8">
             {pairedMessages.length > 0 ? (
               pairedMessages.map((pair, idx) => {
                 const nModels = pair.assistants.length || selectedModels.length
