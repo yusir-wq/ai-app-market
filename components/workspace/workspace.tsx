@@ -308,8 +308,8 @@ export function Workspace() {
     })
   }, [isLoggedIn, setShowLoginModal, enableSearch, enableThinking, mcpEnabled, selectedMCPServices])
 
-  // V1.2 从首页选择模型
-  const handleSelectModelFromHome = useCallback((model: Model) => {
+  // V1.2 从首页模型列表跳转模型详情页
+  const handleNavigateToModel = useCallback((model: Model) => {
     setSelectedModels([model])
     setReplyModel(null)
     setViewMode('model-detail')
@@ -718,6 +718,14 @@ export function Workspace() {
                             </p>
                           )}
                         </div>
+                      </div>
+                    )}
+
+                    {/* 多模型加载提示 */}
+                    {isLoading && selectedModels.length > 1 && pair.assistants.length < selectedModels.length && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground px-1 mb-2">
+                        <div className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                        正在调取多个模型回复...
                       </div>
                     )}
 
@@ -1257,7 +1265,7 @@ export function Workspace() {
         {viewMode === 'home' && (
           <HomeContent
             onSendMessage={handleHomeSendMessage}
-            onSelectModel={handleSelectModelFromHome}
+            onNavigateToModel={handleNavigateToModel}
             onToggleSearch={() => setEnableSearch(!enableSearch)}
             onToggleThinking={() => setEnableThinking(!enableThinking)}
             enableSearch={enableSearch}

@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from 'react'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { type Model } from '@/lib/mock-data'
+import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface ModelListRowProps {
@@ -10,6 +11,7 @@ interface ModelListRowProps {
   icon: React.ReactNode
   models: Model[]
   onSelectModel: (model: Model) => void
+  activeModel?: Model | null
   compact?: boolean
 }
 
@@ -18,6 +20,7 @@ export function ModelListRow({
   icon,
   models,
   onSelectModel,
+  activeModel,
   compact = false,
 }: ModelListRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -69,23 +72,31 @@ export function ModelListRow({
           onScroll={updateScrollButtons}
         >
           {models.map((model) => {
+            const isActive = activeModel?.id === model.id
+
             const card = (
               <button
                 key={model.id}
                 onClick={() => !model.disabled && onSelectModel(model)}
                 disabled={model.disabled}
-                className={`flex flex-col items-center gap-3 p-2 rounded-xl border transition-all shrink-0 scroll-snap-align-start ${
+                className={cn(
+                  'flex flex-col items-center gap-3 p-2 rounded-xl border transition-all shrink-0 scroll-snap-align-start',
                   model.disabled
                     ? 'border-transparent bg-muted/40 opacity-50 cursor-not-allowed'
-                    : 'border-transparent bg-card hover:border-border hover:shadow-md'
-                } ${compact ? 'w-[140px]' : 'w-[170px]'}`}
-                style={{ scrollSnapAlign: 'start' }}
+                    : isActive
+                      ? 'border-primary bg-primary/5 shadow-sm'
+                      : 'border-transparent bg-card hover:border-border hover:shadow-md'
+                )}
+                style={{ scrollSnapAlign: 'start', width: compact ? 140 : 170 }}
               >
                 <div className={`rounded-xl bg-gradient-to-br ${model.gradient} flex items-center justify-center text-white ${compact ? 'w-12 h-12 text-xl' : 'w-14 h-14 text-2xl'} shadow-sm`}>
                   {model.logo}
                 </div>
                 <div className="flex flex-col items-center gap-0.5 w-full">
-                  <span className="text-sm font-medium text-foreground line-clamp-2 text-center w-full">
+                  <span className={cn(
+                    'text-sm font-medium line-clamp-2 text-center w-full',
+                    isActive ? 'text-primary' : 'text-foreground'
+                  )}>
                     {model.name}
                   </span>
                   {!compact && (

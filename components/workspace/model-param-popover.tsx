@@ -78,9 +78,34 @@ const VIDEO_MODES = [
 ]
 
 interface ModelParamPopoverProps {
-  modelType: 'image' | 'video'
+  modelType: 'chat' | 'image' | 'video'
   value?: ImageParams | VideoParams
   onChange?: (params: ImageParams | VideoParams) => void
+  // ---- 聊天模型参数 ----
+  enableSearch?: boolean
+  enableThinking?: boolean
+  onToggleSearch?: () => void
+  onToggleThinking?: () => void
+}
+
+function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: () => void }) {
+  return (
+    <button
+      type="button"
+      className={cn(
+        'relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer',
+        checked ? 'bg-primary' : 'bg-muted-foreground/20'
+      )}
+      onClick={onChange}
+    >
+      <span
+        className={cn(
+          'inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform',
+          checked ? 'translate-x-[18px]' : 'translate-x-[3px]'
+        )}
+      />
+    </button>
+  )
 }
 
 function ChipGroup<T extends string | number>({
@@ -117,6 +142,10 @@ export function ModelParamPopover({
   modelType,
   value,
   onChange,
+  enableSearch,
+  enableThinking,
+  onToggleSearch,
+  onToggleThinking,
 }: ModelParamPopoverProps) {
   const [imageParams, setImageParams] = useState<ImageParams>(
     (value as ImageParams) || DEFAULT_IMAGE_PARAMS
@@ -125,6 +154,7 @@ export function ModelParamPopover({
     (value as VideoParams) || DEFAULT_VIDEO_PARAMS
   )
 
+  const isChat = modelType === 'chat'
   const isImage = modelType === 'image'
 
   const updateImageParams = (partial: Partial<ImageParams>) => {
@@ -139,13 +169,20 @@ export function ModelParamPopover({
     onChange?.(next)
   }
 
+  // 按钮高亮：聊天模式有任一开关打开时高亮
+  const hasChatActive = isChat && (enableSearch || enableThinking)
+
   return (
     <Popover>
       <Tooltip>
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
-            <Button variant="ghost" size="icon-sm" className="h-8 w-8">
-              <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className={cn('h-8 w-8', hasChatActive && 'text-primary')}
+            >
+              <SlidersHorizontal className="h-4 w-4" />
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
@@ -159,7 +196,27 @@ export function ModelParamPopover({
         sideOffset={8}
         className="w-64 p-4"
       >
-        {isImage ? (
+        {isChat ? (
+          <>
+            {/* 联网搜索 */}
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-medium text-foreground">联网搜索</p>
+              <ToggleSwitch
+                checked={enableSearch || false}
+                onChange={() => onToggleSearch?.()}
+              />
+            </div>
+
+            {/* 深度思考 */}
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-medium text-foreground">深度思考</p>
+              <ToggleSwitch
+                checked={enableThinking || false}
+                onChange={() => onToggleThinking?.()}
+              />
+            </div>
+          </>
+        ) : isImage ? (
           <>
             {/* 宽高比 */}
             <div className="mb-4">
@@ -194,23 +251,12 @@ export function ModelParamPopover({
             {/* 优化提示词 */}
             <div className="flex items-center justify-between">
               <p className="text-xs font-medium text-foreground">优化提示词</p>
-              <button
-                type="button"
-                className={cn(
-                  'relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer',
-                  imageParams.optimizePrompt ? 'bg-primary' : 'bg-muted-foreground/20'
-                )}
-                onClick={() =>
+              <ToggleSwitch
+                checked={imageParams.optimizePrompt}
+                onChange={() =>
                   updateImageParams({ optimizePrompt: !imageParams.optimizePrompt })
                 }
-              >
-                <span
-                  className={cn(
-                    'inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform',
-                    imageParams.optimizePrompt ? 'translate-x-[18px]' : 'translate-x-[3px]'
-                  )}
-                />
-              </button>
+              />
             </div>
           </>
         ) : (

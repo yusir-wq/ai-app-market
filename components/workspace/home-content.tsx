@@ -6,12 +6,13 @@ import { ModelSearchDialog } from './model-search-dialog'
 import { HomeInputArea } from './home-input-area'
 import { mockModels, type Model } from '@/lib/mock-data'
 import { Sparkles, MessageSquare, Image, Video, Search } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const recommendedModelIds = ['deepseek-v4-pro', 'gpt-image-2', 'doubao-seedance-2-0-260128']
 
 interface HomeContentProps {
   onSendMessage: (message: string, modelIds: string[]) => void
-  onSelectModel: (model: Model) => void
+  onNavigateToModel: (model: Model) => void
   onToggleSearch: () => void
   onToggleThinking: () => void
   enableSearch: boolean
@@ -20,13 +21,14 @@ interface HomeContentProps {
 
 export function HomeContent({
   onSendMessage,
-  onSelectModel,
+  onNavigateToModel,
   onToggleSearch,
   onToggleThinking,
   enableSearch,
   enableThinking,
 }: HomeContentProps) {
   const [searchDialogOpen, setSearchDialogOpen] = useState(false)
+  const [activeHomeModel, setActiveHomeModel] = useState<Model | null>(null)
 
   const chatModels = useMemo(() => mockModels.filter(m => m.type === 'chat'), [])
   const imageModels = useMemo(() => mockModels.filter(m => m.type === 'image'), [])
@@ -37,6 +39,11 @@ export function HomeContent({
   )
 
   const chatModelIds = useMemo(() => chatModels.map(m => m.id), [chatModels])
+
+  // 推荐模型栏：toggle 选中态，不跳转
+  const handleSelectHomeModel = (model: Model) => {
+    setActiveHomeModel(prev => prev?.id === model.id ? null : model)
+  }
 
   return (
     <div className="flex-1 flex flex-col items-center min-w-0 overflow-y-auto bg-background">
@@ -50,16 +57,25 @@ export function HomeContent({
 
         {/* 推荐模型栏 */}
         <div className="w-full flex items-center justify-start md:justify-center gap-2 mb-4 shrink-0 overflow-x-auto scrollbar-hide">
-          {recommendedModels.map(model => (
-            <button
-              key={model.id}
-              onClick={() => onSelectModel(model)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border hover:border-primary/30 hover:bg-accent text-sm transition-colors cursor-pointer whitespace-nowrap shrink-0"
-            >
-              <span>{model.logo}</span>
-              <span className="text-foreground">{model.name}</span>
-            </button>
-          ))}
+          {recommendedModels.map(model => {
+            const isActive = activeHomeModel?.id === model.id
+            return (
+              <button
+                key={model.id}
+                disabled={model.disabled}
+                onClick={() => handleSelectHomeModel(model)}
+                className={cn(
+                  'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm transition-colors cursor-pointer whitespace-nowrap shrink-0',
+                  isActive
+                    ? 'border-primary bg-primary/5 text-primary'
+                    : 'border-border hover:border-primary/30 hover:bg-accent text-foreground'
+                )}
+              >
+                <span>{model.logo}</span>
+                <span>{model.name}</span>
+              </button>
+            )
+          })}
           <button
             onClick={() => setSearchDialogOpen(true)}
             className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border hover:border-primary/30 hover:bg-accent transition-colors cursor-pointer shrink-0"
@@ -71,7 +87,8 @@ export function HomeContent({
         {/* 共享输入区 */}
         <div className="w-full mb-6 shrink-0">
           <HomeInputArea
-            defaultModelIds={chatModelIds}
+            model={activeHomeModel}
+            defaultModelIds={activeHomeModel ? [activeHomeModel.id] : chatModelIds}
             onSend={(message, modelIds) => onSendMessage(message, modelIds)}
             enableSearch={enableSearch}
             enableThinking={enableThinking}
@@ -85,21 +102,21 @@ export function HomeContent({
             title="聊天模型"
             icon={<MessageSquare className="h-4 w-4 text-blue-500" />}
             models={chatModels}
-            onSelectModel={onSelectModel}
+            onSelectModel={onNavigateToModel}
             compact
           />
           <ModelListRow
             title="图片模型"
             icon={<Image className="h-4 w-4 text-green-500" />}
             models={imageModels}
-            onSelectModel={onSelectModel}
+            onSelectModel={onNavigateToModel}
             compact
           />
           <ModelListRow
             title="视频模型"
             icon={<Video className="h-4 w-4 text-purple-500" />}
             models={videoModels}
-            onSelectModel={onSelectModel}
+            onSelectModel={onNavigateToModel}
             compact
           />
         </div>
@@ -115,7 +132,7 @@ export function HomeContent({
       <ModelSearchDialog
         open={searchDialogOpen}
         onOpenChange={setSearchDialogOpen}
-        onSelectModel={onSelectModel}
+        onSelectModel={onNavigateToModel}
       />
     </div>
   )

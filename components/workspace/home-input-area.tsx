@@ -10,7 +10,7 @@ import { AttachmentPreview, type UploadedFile, buildUploadedFiles } from './atta
 import { ModelParamPopover } from './model-param-popover'
 import { mockModels, type Model } from '@/lib/mock-data'
 import { useAuth } from '@/contexts/auth-context'
-import { ArrowUp, Globe, Brain, Paperclip, Sparkles, X, Upload, Info } from 'lucide-react'
+import { ArrowUp, Paperclip, Sparkles, X, Upload, Info } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface HomeInputAreaProps {
@@ -340,42 +340,24 @@ export function HomeInputArea({
 
               <div className="w-px h-4 bg-border/50 mx-1" />
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant={enableSearch ? 'default' : 'ghost'}
-                    size="icon-sm"
-                    className="h-8 w-8"
-                    onClick={onToggleSearch}
-                  >
-                    <Globe className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top">
-                  <p>联网搜索</p>
-                </TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant={enableThinking ? 'default' : 'ghost'}
-                    size="icon-sm"
-                    className="h-8 w-8"
-                    onClick={onToggleThinking}
-                  >
-                    <Brain className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top">
-                  <p>深度思考</p>
-                </TooltipContent>
-              </Tooltip>
+              <ModelParamPopover
+                modelType="chat"
+                enableSearch={enableSearch}
+                enableThinking={enableThinking}
+                onToggleSearch={onToggleSearch}
+                onToggleThinking={onToggleThinking}
+              />
             </>
           )}
         </div>
 
         <div className="flex items-center gap-2">
+          {model && selectedMentionModels.length === 0 && (
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground mr-2">
+              <span>{model.logo}</span>
+              <span>{model.name}</span>
+            </div>
+          )}
           {!hasReference && modelCount > 0 && (
             <span className="flex items-center gap-1 text-xs text-muted-foreground">
               <Sparkles className="h-3.5 w-3.5" />

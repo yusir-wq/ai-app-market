@@ -9,7 +9,7 @@ import { MCPServiceSelector } from './mcp-service-selector'
 import { AttachmentPreview, type UploadedFile, buildUploadedFiles } from './attachment-preview'
 import { ModelParamPopover } from './model-param-popover'
 import { type Model } from '@/lib/mock-data'
-import { ArrowUp, Paperclip, Upload, X, Info, Globe, Brain, Sparkles } from 'lucide-react'
+import { ArrowUp, Paperclip, Upload, X, Info, Sparkles } from 'lucide-react'
 
 interface InputAreaProps {
   model: Model | null
@@ -319,49 +319,25 @@ export function InputArea({
               <ModelParamPopover modelType={activeModel.type as 'image' | 'video'} />
             )}
 
-            {/* 分隔 + 联网搜索 + 深度思考 - 仅聊天模型 */}
+            {/* 分隔 + 参数设置 - 仅聊天模型 */}
             {!hasReference && (
               <>
                 <div className="w-px h-4 bg-border/50 mx-1" />
 
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant={enableSearch ? 'default' : 'ghost'}
-                      size="icon-sm"
-                      className="h-8 w-8"
-                      onClick={onToggleSearch}
-                    >
-                      <Globe className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>联网搜索</p>
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant={enableThinking ? 'default' : 'ghost'}
-                      size="icon-sm"
-                      className="h-8 w-8"
-                      onClick={onToggleThinking}
-                    >
-                      <Brain className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>深度思考</p>
-                  </TooltipContent>
-                </Tooltip>
+                <ModelParamPopover
+                  modelType="chat"
+                  enableSearch={enableSearch}
+                  enableThinking={enableThinking}
+                  onToggleSearch={onToggleSearch}
+                  onToggleThinking={onToggleThinking}
+                />
               </>
             )}
           </div>
 
           <div className="flex items-center gap-2">
             {/* 模型信息 */}
-            {activeModel && (
+            {activeModel && selectedMentionModels.length === 0 && (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground mr-2">
                 <span>{activeModel.logo}</span>
                 <span>{activeModel.name}</span>
