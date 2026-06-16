@@ -352,17 +352,17 @@ export function HomeInputArea({
         </div>
 
         <div className="flex items-center gap-2">
-          {model && selectedMentionModels.length === 0 && (
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground mr-2">
-              <span>{model.logo}</span>
-              <span>{model.name}</span>
-            </div>
-          )}
           {!hasReference && modelCount > 0 && (
-            <span className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Sparkles className="h-3.5 w-3.5" />
-              {totalCost}
-            </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="text-xs text-muted-foreground cursor-help">
+                  单次预计消耗 ≈ {totalCost} 智点
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                <p>具体消耗以实际使用为准</p>
+              </TooltipContent>
+            </Tooltip>
           )}
           <Tooltip>
             <TooltipTrigger asChild>

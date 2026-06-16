@@ -9,7 +9,7 @@ import { MCPServiceSelector } from './mcp-service-selector'
 import { AttachmentPreview, type UploadedFile, buildUploadedFiles } from './attachment-preview'
 import { ModelParamPopover } from './model-param-popover'
 import { type Model } from '@/lib/mock-data'
-import { ArrowUp, Paperclip, Upload, X, Info, Sparkles } from 'lucide-react'
+import { ArrowUp, Paperclip, Upload, X, Info } from 'lucide-react'
 
 interface InputAreaProps {
   model: Model | null
@@ -336,25 +336,18 @@ export function InputArea({
           </div>
 
           <div className="flex items-center gap-2">
-            {/* 模型信息 */}
-            {activeModel && selectedMentionModels.length === 0 && (
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mr-2">
-                <span>{activeModel.logo}</span>
-                <span>{activeModel.name}</span>
-              </div>
-            )}
-            {hasReference && activeModel && (
-              <span className="text-xs text-muted-foreground mr-2">
-                消耗 {activeModel.costPoints} 智点
-              </span>
-            )}
-
             {/* @提及模型消耗 */}
-            {!hasReference && selectedMentionModels.length > 0 && (
-              <span className="flex items-center gap-1 text-xs text-muted-foreground mr-2">
-                <Sparkles className="h-3.5 w-3.5" />
-                {selectedMentionModels.length * 10}
-              </span>
+            {selectedMentionModels.length > 0 && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="text-xs text-muted-foreground mr-2 cursor-help">
+                    单次预计消耗≈{selectedMentionModels.reduce((sum, m) => sum + m.costPoints, 0)}智点
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  <p>具体消耗以实际使用为准</p>
+                </TooltipContent>
+              </Tooltip>
             )}
 
             <Tooltip>

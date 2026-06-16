@@ -1027,15 +1027,6 @@ export function Workspace() {
               <p className="text-sm text-muted-foreground mb-3 max-w-md mx-auto leading-relaxed">
                 {model.description}
               </p>
-              {/* 类型标签 */}
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Badge variant="secondary" className="text-[10px]">
-                  {model.type === 'chat' ? '聊天' : model.type === 'image' ? '图片' : '视频'}
-                </Badge>
-                <span className="text-xs text-muted-foreground">
-                  单次消耗 <span className="font-medium text-foreground">{model.costPoints}</span> 智点
-                </span>
-              </div>
               {/* 能力标签 */}
               {capabilities.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 justify-center">
