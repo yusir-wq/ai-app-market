@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Globe, Brain, Copy, RotateCcw, Reply, Check, ArrowUpRight, Sparkles, Eye, Download, Image, Zap, RotateCw, Trash2, Puzzle, ChevronDown, ChevronUp } from 'lucide-react'
+import { Globe, Brain, Copy, RotateCcw, Reply, Check, ArrowUpRight, Sparkles, Eye, Download, Image, Zap, RotateCw, Trash2, Puzzle, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react'
 
 interface ModelResponseCardProps {
   model: Model
@@ -26,6 +26,19 @@ interface ModelResponseCardProps {
   onReply?: (model: Model) => void
   onRegenerate?: (model: Model) => void
   isLastInGroup?: boolean
+}
+
+function getCapabilityWarnings(model: Model, onlineSearch?: boolean, deepThinking?: boolean, isMCPEnabled?: boolean): string[] {
+  const warnings: string[] = []
+  if (model.type !== 'chat') {
+    if (onlineSearch) warnings.push('联网模式')
+    if (deepThinking) warnings.push('深度思考')
+    if (isMCPEnabled) warnings.push('调用MCP')
+  } else if (model.disabled) {
+    if (onlineSearch) warnings.push('联网模式')
+    if (deepThinking) warnings.push('深度思考')
+  }
+  return warnings
 }
 
 export function ModelResponseCard({
@@ -71,6 +84,10 @@ export function ModelResponseCard({
     return base
   })()
   const hasThinking = !!(deepThinking && thinkingContent) || (message.contentType === 'mcp' && message.mcpContent && (message.mcpContent.thinkingProcess?.length || message.mcpContent.organizedInfo))
+  // Claude Haiku 4.5 不支持深度思考，隐藏折叠面板
+  const shouldShowThinking = hasThinking && model.id !== 'claude-haiku-45'
+
+  const warnings = getCapabilityWarnings(model, onlineSearch, deepThinking, message.isMCPEnabled)
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content || '')
@@ -138,8 +155,23 @@ export function ModelResponseCard({
 
         {/* 模型卡片内容 */}
         <div className="px-4 py-3">
+          {/* 能力限制提示 */}
+          {warnings.length > 0 && (
+            <div className="flex items-start gap-2 mb-3 px-3 py-2 rounded-lg border border-amber-200 dark:border-amber-800/50 bg-amber-50/50 dark:bg-amber-900/10 text-amber-700 dark:text-amber-400 text-xs leading-relaxed">
+              <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
+              <span>
+                因模型能力限制，本次回复不支持
+                {warnings.map((w, i) => (
+                  <span key={w}>
+                    {i > 0 && i === warnings.length - 1 ? ' / ' : i > 0 ? '、' : ''}
+                    <span className="font-semibold">{w}</span>
+                  </span>
+                ))}
+              </span>
+            </div>
+          )}
           {/* 深度思考过程 */}
-          {hasThinking && (
+          {shouldShowThinking && (
             <ThinkingProcess content={thinkingContent} />
           )}
 
