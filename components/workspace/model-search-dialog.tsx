@@ -21,9 +21,11 @@ interface ModelSearchDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onSelectModel: (model: Model) => void
+  /** 无视 disabled 状态，所有模型正常可选 */
+  showDisabled?: boolean
 }
 
-export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSearchDialogProps) {
+export function ModelSearchDialog({ open, onOpenChange, onSelectModel, showDisabled }: ModelSearchDialogProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState<string>('all')
 
@@ -43,7 +45,7 @@ export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSe
   }, [searchQuery, activeTab])
 
   const handleSelect = (model: Model) => {
-    if (model.disabled) return
+    if (model.disabled && !showDisabled) return
     onSelectModel(model)
     onOpenChange(false)
     setSearchQuery('')
@@ -105,14 +107,15 @@ export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSe
           <div className="p-2 space-y-0.5">
             {filteredModels.length > 0 ? (
               filteredModels.map(model => {
+                const isDisabled = model.disabled && !showDisabled
                 const btn = (
                   <button
                     key={model.id}
-                    disabled={model.disabled}
+                    disabled={isDisabled}
                     onClick={() => handleSelect(model)}
                     className={cn(
                       'flex items-start gap-3 p-3 rounded-lg transition-colors w-full text-left',
-                      model.disabled
+                      isDisabled
                         ? 'opacity-40 cursor-not-allowed'
                         : 'hover:bg-muted/50 cursor-pointer'
                     )}
@@ -143,7 +146,7 @@ export function ModelSearchDialog({ open, onOpenChange, onSelectModel }: ModelSe
                   </button>
                 )
 
-                if (model.disabled && model.disabledReason) {
+                if (isDisabled && model.disabledReason) {
                   return (
                     <Tooltip key={model.id}>
                       <TooltipTrigger asChild>

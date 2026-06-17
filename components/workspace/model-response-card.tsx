@@ -34,9 +34,13 @@ function getCapabilityWarnings(model: Model, onlineSearch?: boolean, deepThinkin
     if (onlineSearch) warnings.push('联网模式')
     if (deepThinking) warnings.push('深度思考')
     if (isMCPEnabled) warnings.push('调用MCP')
-  } else if (model.disabled) {
+  } else if (model.disabledReason) {
     if (onlineSearch) warnings.push('联网模式')
     if (deepThinking) warnings.push('深度思考')
+    // deepseek-chat 永久不支持图片理解
+    if (model.id === 'deepseek-chat') {
+      warnings.push('图片理解')
+    }
   }
   return warnings
 }

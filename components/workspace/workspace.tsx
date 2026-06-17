@@ -879,8 +879,13 @@ export function Workspace() {
                         handleSelectConversation(conv.id)
                       }}
                     >
-                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-lg shrink-0">
+                      <div className={`relative w-10 h-10 rounded-lg bg-gradient-to-br ${firstModel?.gradient || 'from-violet-500 to-indigo-600'} flex items-center justify-center text-white text-lg shadow-sm shrink-0`}>
                         {firstModel?.logo || '💬'}
+                        {conv.modelIds.length > 1 && (
+                          <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center ring-2 ring-background">
+                            {conv.modelIds.length}
+                          </span>
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground truncate">{conv.title}</p>

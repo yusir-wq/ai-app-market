@@ -296,8 +296,13 @@ export function NavPanel({
                     onClick={() => onSelectConversation(conv.id)}
                   >
                     {/* 模型图标 */}
-                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${firstModel?.gradient || 'from-violet-500 to-indigo-600'} flex items-center justify-center text-white text-sm shadow-sm shrink-0 mt-0.5`}>
+                    <div className={`relative w-7 h-7 rounded-lg bg-gradient-to-br ${firstModel?.gradient || 'from-violet-500 to-indigo-600'} flex items-center justify-center text-white text-sm shadow-sm shrink-0 mt-0.5`}>
                       {firstModel?.logo || '💬'}
+                      {conv.modelIds.length > 1 && (
+                        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-primary text-primary-foreground text-[9px] font-bold flex items-center justify-center ring-2 ring-sidebar">
+                          {conv.modelIds.length}
+                        </span>
+                      )}
                     </div>
                     
                     {/* 中间内容 */}

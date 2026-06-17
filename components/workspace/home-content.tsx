@@ -104,6 +104,7 @@ export function HomeContent({
             models={chatModels}
             onSelectModel={onNavigateToModel}
             compact
+            showDisabled
           />
           <ModelListRow
             title="图片模型"
@@ -111,6 +112,7 @@ export function HomeContent({
             models={imageModels}
             onSelectModel={onNavigateToModel}
             compact
+            showDisabled
           />
           <ModelListRow
             title="视频模型"
@@ -118,6 +120,7 @@ export function HomeContent({
             models={videoModels}
             onSelectModel={onNavigateToModel}
             compact
+            showDisabled
           />
         </div>
       </div>
@@ -133,6 +136,7 @@ export function HomeContent({
         open={searchDialogOpen}
         onOpenChange={setSearchDialogOpen}
         onSelectModel={onNavigateToModel}
+        showDisabled
       />
     </div>
   )

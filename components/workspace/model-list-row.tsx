@@ -13,6 +13,8 @@ interface ModelListRowProps {
   onSelectModel: (model: Model) => void
   activeModel?: Model | null
   compact?: boolean
+  /** 显示 disabled 模型为正常状态（首页和搜索弹窗） */
+  showDisabled?: boolean
 }
 
 export function ModelListRow({
@@ -22,6 +24,7 @@ export function ModelListRow({
   onSelectModel,
   activeModel,
   compact = false,
+  showDisabled,
 }: ModelListRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
@@ -72,16 +75,17 @@ export function ModelListRow({
           onScroll={updateScrollButtons}
         >
           {models.map((model) => {
+            const isDisabled = model.disabled && !showDisabled
             const isActive = activeModel?.id === model.id
 
             const card = (
               <button
                 key={model.id}
-                onClick={() => !model.disabled && onSelectModel(model)}
-                disabled={model.disabled}
+                onClick={() => !isDisabled && onSelectModel(model)}
+                disabled={isDisabled}
                 className={cn(
                   'flex flex-col items-center gap-3 p-2 rounded-xl border transition-all shrink-0 scroll-snap-align-start',
-                  model.disabled
+                  isDisabled
                     ? 'border-transparent bg-muted/40 opacity-50 cursor-not-allowed'
                     : isActive
                       ? 'border-primary bg-primary/5 shadow-sm'
@@ -108,7 +112,7 @@ export function ModelListRow({
               </button>
             )
 
-            if (model.disabled && model.disabledReason) {
+            if (isDisabled && model.disabledReason) {
               return (
                 <Tooltip key={model.id}>
                   <TooltipTrigger asChild>

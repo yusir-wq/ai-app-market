@@ -79,7 +79,6 @@ export const mockModels: Model[] = [
     requiresReference: false,
     costPoints: 5,
     gradient: 'from-gray-400 to-gray-500',
-    disabled: true,
     disabledReason: '此模型不支持图片理解',
   },
   {
@@ -138,7 +137,6 @@ export const mockModels: Model[] = [
     requiresReference: false,
     costPoints: 6,
     gradient: 'from-pink-300 to-purple-400',
-    disabled: true,
     disabledReason: '此模型不支持联网模式和深度思考',
   },
   {
