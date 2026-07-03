@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { ModelListRow } from './model-list-row'
+import { ModelListRow, ModelCard } from './model-list-row'
 import { ModelSearchDialog } from './model-search-dialog'
 import { HomeInputArea } from './home-input-area'
 import { mockModels, type Model } from '@/lib/mock-data'
-import { Sparkles, MessageSquare, Image, Video, Search } from 'lucide-react'
+import { Sparkles, MessageSquare, Image, Video, Search, LayoutGrid } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 const recommendedModelIds = ['deepseek-v4-pro', 'gpt-image-2', 'doubao-seedance-2-0-260128']
 
@@ -97,31 +98,80 @@ export function HomeContent({
           />
         </div>
 
-        <div className="w-full space-y-6 shrink-0">
-          <ModelListRow
-            title="聊天模型"
-            icon={<MessageSquare className="h-4 w-4 text-blue-500" />}
-            models={chatModels}
-            onSelectModel={onNavigateToModel}
-            compact
-            showDisabled
-          />
-          <ModelListRow
-            title="图片模型"
-            icon={<Image className="h-4 w-4 text-green-500" />}
-            models={imageModels}
-            onSelectModel={onNavigateToModel}
-            compact
-            showDisabled
-          />
-          <ModelListRow
-            title="视频模型"
-            icon={<Video className="h-4 w-4 text-purple-500" />}
-            models={videoModels}
-            onSelectModel={onNavigateToModel}
-            compact
-            showDisabled
-          />
+        {/* 模型列表 Tabs 切换 */}
+        <div className="w-full shrink-0">
+          <Tabs defaultValue="all" className="w-full">
+            <TabsList className="mx-auto">
+              <TabsTrigger value="all" className="gap-1.5">
+                <LayoutGrid className="h-3.5 w-3.5" />
+                全部
+              </TabsTrigger>
+              <TabsTrigger value="chat" className="gap-1.5">
+                <MessageSquare className="h-3.5 w-3.5" />
+                聊天
+              </TabsTrigger>
+              <TabsTrigger value="image" className="gap-1.5">
+                <Image className="h-3.5 w-3.5" />
+                图片
+              </TabsTrigger>
+              <TabsTrigger value="video" className="gap-1.5">
+                <Video className="h-3.5 w-3.5" />
+                视频
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="all">
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                {mockModels.map(model => (
+                  <div key={model.id} className="flex justify-center">
+                    <ModelCard
+                      model={model}
+                      onSelectModel={onNavigateToModel}
+                      compact
+                      showDisabled
+                      className="w-full"
+                    />
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="chat">
+              <div className="mt-4">
+                <ModelListRow
+                  models={chatModels}
+                  onSelectModel={onNavigateToModel}
+                  compact
+                  showDisabled
+                  showTitle={false}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="image">
+              <div className="mt-4">
+                <ModelListRow
+                  models={imageModels}
+                  onSelectModel={onNavigateToModel}
+                  compact
+                  showDisabled
+                  showTitle={false}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="video">
+              <div className="mt-4">
+                <ModelListRow
+                  models={videoModels}
+                  onSelectModel={onNavigateToModel}
+                  compact
+                  showDisabled
+                  showTitle={false}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 

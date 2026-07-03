@@ -6,15 +6,85 @@ import { type Model } from '@/lib/mock-data'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
+interface ModelCardProps {
+  model: Model
+  onSelectModel: (model: Model) => void
+  activeModel?: Model | null
+  compact?: boolean
+  showDisabled?: boolean
+  className?: string
+}
+
+export function ModelCard({
+  model,
+  onSelectModel,
+  activeModel,
+  compact = false,
+  showDisabled,
+  className,
+}: ModelCardProps) {
+  const isDisabled = model.disabled && !showDisabled
+  const isActive = activeModel?.id === model.id
+
+  const card = (
+    <button
+      onClick={() => !isDisabled && onSelectModel(model)}
+      disabled={isDisabled}
+      className={cn(
+        'flex flex-col items-center gap-3 p-2 rounded-xl border transition-all',
+        compact ? 'w-[140px]' : 'w-[170px]',
+        isDisabled
+          ? 'border-transparent bg-muted/40 opacity-50 cursor-not-allowed'
+          : isActive
+            ? 'border-primary bg-primary/5 shadow-sm'
+            : 'border-transparent bg-card hover:border-border hover:shadow-md',
+        className
+      )}
+    >
+      <div className={`rounded-xl bg-gradient-to-br ${model.gradient} flex items-center justify-center text-white ${compact ? 'w-12 h-12 text-xl' : 'w-14 h-14 text-2xl'} shadow-sm`}>
+        {model.logo}
+      </div>
+      <div className="flex flex-col items-center gap-0.5 w-full">
+        <span className={cn(
+          'text-sm font-medium line-clamp-2 text-center w-full',
+          isActive ? 'text-primary' : 'text-foreground'
+        )}>
+          {model.name}
+        </span>
+        {!compact && (
+          <span className="text-[11px] text-muted-foreground truncate w-full text-center leading-tight">
+            {model.description.slice(0, 20)}...
+          </span>
+        )}
+      </div>
+    </button>
+  )
+
+  if (isDisabled && model.disabledReason) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          {card}
+        </TooltipTrigger>
+        <TooltipContent side="top">
+          <p>{model.disabledReason}</p>
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
+
+  return card
+}
+
 interface ModelListRowProps {
-  title: string
-  icon: React.ReactNode
+  title?: string
+  icon?: React.ReactNode
   models: Model[]
   onSelectModel: (model: Model) => void
   activeModel?: Model | null
   compact?: boolean
-  /** 显示 disabled 模型为正常状态（首页和搜索弹窗） */
   showDisabled?: boolean
+  showTitle?: boolean
 }
 
 export function ModelListRow({
@@ -25,6 +95,7 @@ export function ModelListRow({
   activeModel,
   compact = false,
   showDisabled,
+  showTitle = true,
 }: ModelListRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
@@ -50,12 +121,14 @@ export function ModelListRow({
   return (
     <div className="w-full">
       {/* 标题栏 */}
-      <div className="flex items-center mb-4 px-1">
-        <div className="flex items-center gap-2">
-          {icon}
-          <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      {showTitle && title && (
+        <div className="flex items-center mb-4 px-1">
+          <div className="flex items-center gap-2">
+            {icon}
+            <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 滚动区域 */}
       <div className="relative group">
@@ -74,59 +147,17 @@ export function ModelListRow({
           style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}
           onScroll={updateScrollButtons}
         >
-          {models.map((model) => {
-            const isDisabled = model.disabled && !showDisabled
-            const isActive = activeModel?.id === model.id
-
-            const card = (
-              <button
-                key={model.id}
-                onClick={() => !isDisabled && onSelectModel(model)}
-                disabled={isDisabled}
-                className={cn(
-                  'flex flex-col items-center gap-3 p-2 rounded-xl border transition-all shrink-0 scroll-snap-align-start',
-                  isDisabled
-                    ? 'border-transparent bg-muted/40 opacity-50 cursor-not-allowed'
-                    : isActive
-                      ? 'border-primary bg-primary/5 shadow-sm'
-                      : 'border-transparent bg-card hover:border-border hover:shadow-md'
-                )}
-                style={{ scrollSnapAlign: 'start', width: compact ? 140 : 170 }}
-              >
-                <div className={`rounded-xl bg-gradient-to-br ${model.gradient} flex items-center justify-center text-white ${compact ? 'w-12 h-12 text-xl' : 'w-14 h-14 text-2xl'} shadow-sm`}>
-                  {model.logo}
-                </div>
-                <div className="flex flex-col items-center gap-0.5 w-full">
-                  <span className={cn(
-                    'text-sm font-medium line-clamp-2 text-center w-full',
-                    isActive ? 'text-primary' : 'text-foreground'
-                  )}>
-                    {model.name}
-                  </span>
-                  {!compact && (
-                    <span className="text-[11px] text-muted-foreground truncate w-full text-center leading-tight">
-                      {model.description.slice(0, 20)}...
-                    </span>
-                  )}
-                </div>
-              </button>
-            )
-
-            if (isDisabled && model.disabledReason) {
-              return (
-                <Tooltip key={model.id}>
-                  <TooltipTrigger asChild>
-                    {card}
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>{model.disabledReason}</p>
-                  </TooltipContent>
-                </Tooltip>
-              )
-            }
-
-            return card
-          })}
+          {models.map((model) => (
+            <ModelCard
+              key={model.id}
+              model={model}
+              onSelectModel={onSelectModel}
+              activeModel={activeModel}
+              compact={compact}
+              showDisabled={showDisabled}
+              className="shrink-0 scroll-snap-align-start"
+            />
+          ))}
         </div>
 
         {canScrollRight && (
