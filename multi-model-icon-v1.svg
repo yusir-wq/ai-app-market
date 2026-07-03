@@ -1,0 +1,10 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 连接线 -->
+  <line x1="10.5" y1="9.5" x2="17.5" y2="9.5" stroke="#575CE9" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  <line x1="8" y1="16" x2="14" y2="11" stroke="#575CE9" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  <line x1="20" y1="16" x2="14" y2="11" stroke="#575CE9" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  <!-- 三个圆点呈三角形聚合 -->
+  <circle cx="14" cy="7" r="3.5" fill="#575CE9"/>
+  <circle cx="8" cy="18" r="3.5" fill="#575CE9"/>
+  <circle cx="20" cy="18" r="3.5" fill="#575CE9"/>
+</svg>
