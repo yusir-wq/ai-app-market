@@ -7,6 +7,9 @@ const nextConfig = {
     unoptimized: true,
   },
   allowedDevOrigins: ['192.168.0.51', 'localhost'],
+  turbopack: {
+    root: process.cwd(),
+  },
 }
 
 export default nextConfig
