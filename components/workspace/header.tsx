@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { LogOut, Copy, Receipt, CreditCard, Wrench } from 'lucide-react'
+import { LogOut, Copy, Receipt, CreditCard } from 'lucide-react'
 import { useAuth } from '@/contexts/auth-context'
 
 interface HeaderProps {
@@ -97,14 +97,6 @@ export function Header({ onNavigate }: HeaderProps) {
                 </div>
                 <DropdownMenuSeparator />
                 {/* 菜单项 */}
-                {/* MCP服务选项 - 新增 */}
-                <DropdownMenuItem
-                  className="gap-2 cursor-pointer"
-                  onClick={() => onNavigate?.('mcp-center')}
-                >
-                  <Wrench className="h-4 w-4" />
-                  MCP服务
-                </DropdownMenuItem>
                 <DropdownMenuItem
                   className="gap-2 cursor-pointer"
                   onClick={() => onNavigate?.('billing-usage')}

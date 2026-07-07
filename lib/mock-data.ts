@@ -77,24 +77,15 @@ export const mockModels: Model[] = [
   },
 ]
 
-// MCP消息内容类型
-export interface MCPMessageContent {
-  thinkingProcess?: { id: string; content: string; timestamp: Date }[]
-  toolResults?: { id: string; toolCallId: string; status: 'success' | 'error'; data: unknown; timestamp: Date }[]
-  organizedInfo?: string
-  finalResponse: string
-}
-
 // Mock 聊天消息数据
 export interface ChatMessage {
   id: string
   role: 'user' | 'assistant'
   content: string
-  contentType: 'text' | 'markdown' | 'code' | 'mcp'
+  contentType: 'text' | 'markdown' | 'code'
   codeLanguage?: string
   timestamp: Date
   status?: 'sending' | 'success' | 'error'
-  mcpContent?: MCPMessageContent
 }
 
 export const mockChatMessages: Record<string, ChatMessage[]> = {
@@ -409,114 +400,6 @@ emitter.emit('login', { name: 'Alice' })
       contentType: 'code',
       codeLanguage: 'javascript',
       timestamp: new Date('2024-12-18 16:15'),
-    },
-  ],
-}
-
-// MiniMax-M2.5 MCP对话mock数据 - 展示WHOIS历史查询过程
-export const mockMCPMessages: Record<string, ChatMessage[]> = {
-  'minimax-m25': [
-    {
-      id: 'mcp-msg-1',
-      role: 'user',
-      content: '帮我查询一下 chinaz.com 的 Whois 历史信息',
-      contentType: 'text',
-      timestamp: new Date('2024-12-18 14:30'),
-    },
-    {
-      id: 'mcp-msg-2',
-      role: 'assistant',
-      content: '已成功查询到 chinaz.com 的 Whois 历史信息！',
-      contentType: 'mcp',
-      timestamp: new Date('2024-12-18 14:30:05'),
-      mcpContent: {
-        thinkingProcess: [
-          {
-            id: 'think-1',
-            content: '用户想要查询域名 chinaz.com 的 Whois 历史信息。这是一个需要调用外部工具的请求。\n\n我需要使用 whois历史信息 工具来获取这些信息。该工具可以帮助查询域名的历史Whois记录，包括注册信息、到期时间变更历史等。\n\n让我调用这个工具来获取相关信息。',
-            timestamp: new Date('2024-12-18 14:30:02'),
-          },
-        ],
-        toolResults: [
-          {
-            id: 'tool-result-1',
-            toolCallId: 'tool-call-1',
-            status: 'success',
-            data: {
-              StateCode: 1,
-              Reason: '成功',
-              TotalCount: 38,
-              List: [
-                {
-                  Domain: 'chinaz.com',
-                  Registrar: 'DNSPod, Inc.',
-                  CreatedDate: '2005-04-05',
-                  UpdatedDate: '2024-03-15',
-                  ExpirationDate: '2032-04-05',
-                  RegistrantName: '隗微',
-                  RegistrantOrganization: '',
-                  RegistrantCountry: 'CN',
-                  RegistrantEmail: 'domain@dnspod.com',
-                },
-                {
-                  Domain: 'chinaz.com',
-                  Registrar: 'DNSPod, Inc.',
-                  CreatedDate: '2005-04-05',
-                  UpdatedDate: '2023-02-20',
-                  ExpirationDate: '2024-04-05',
-                  RegistrantName: '隗微',
-                  RegistrantOrganization: '',
-                  RegistrantCountry: 'CN',
-                  RegistrantEmail: 'domain@dnspod.com',
-                },
-                {
-                  Domain: 'chinaz.com',
-                  Registrar: 'eName Technology Co.,Ltd.',
-                  CreatedDate: '2005-04-05',
-                  UpdatedDate: '2022-06-10',
-                  ExpirationDate: '2023-04-05',
-                  RegistrantName: '隗微',
-                  RegistrantOrganization: '',
-                  RegistrantCountry: 'CN',
-                  RegistrantEmail: 'domain@dnspod.com',
-                },
-              ],
-            },
-            timestamp: new Date('2024-12-18 14:30:03'),
-          },
-        ],
-        organizedInfo: `📊 **chinaz.com Whois 历史查询结果**
-
-共查询到 **38** 条历史记录，以下是部分重要变更记录：
-
-**📅 最新注册信息**
-- 注册商: DNSPod, Inc.
-- 创建日期: 2005-04-05
-- 到期日期: 2032-04-05（已续费至 2032年）
-- 注册人: 隗微
-- 国家/地区: 中国
-
-**🔄 主要变更记录**
-1. **2022年6月**：注册商从 eName 转入 DNSPod
-2. **2023年2月**：域名到期时间更新
-3. **2024年3月**：最新一次信息更新
-
-**📌 域名年龄**: 约 19 年（2005年注册）`,
-        finalResponse: `已成功查询到 **chinaz.com** 的 Whois 历史信息！
-
-根据查询结果，该域名共有 **38** 条历史变更记录，主要信息如下：
-
-**基本信息**
-- 注册时间：2005年4月5日
-- 最新到期时间：2032年4月5日
-- 注册商：DNSPod, Inc.（2022年6月从 eName 转入）
-- 注册人：隗微（中国）
-
-**历史变更**
-该域名的注册商曾在2022年发生过变更，从 eName Technology Co.,Ltd. 转入 DNSPod, Inc.。此外，域名的到期时间在2023年2月进行过一次更新，最近一次信息更新是在2024年3月15日。
-
-作为国内知名的站长工具平台，chinaz.com（站长之家）自2005年注册至今已有约19年的历史，是国内资历较老的互联网品牌之一。`,
-      },
     },
   ],
 }

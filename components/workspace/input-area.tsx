@@ -10,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { MCPServiceSelector } from './mcp-service-selector'
 import type { Model } from '@/lib/mock-data'
 import {
   Send,
@@ -48,10 +47,9 @@ interface InputAreaProps {
   onSendMessage?: (message: string, params?: ImageParams | VideoParams, referenceAssets?: any) => void
   inputValue?: string
   onInputChange?: (value: string) => void
-  onNavigate?: (page: string) => void
 }
 
-export function InputArea({ model, onSendMessage, inputValue: externalValue, onInputChange, onNavigate }: InputAreaProps) {
+export function InputArea({ model, onSendMessage, inputValue: externalValue, onInputChange }: InputAreaProps) {
   const { isLoggedIn, setShowLoginModal } = useAuth()
   const [localInputValue, setLocalInputValue] = useState('')
   const [enableSearch, setEnableSearch] = useState(true)
@@ -122,9 +120,6 @@ export function InputArea({ model, onSendMessage, inputValue: externalValue, onI
       {/* 聊天模型参数栏 - 添加 px-[20%] 边距 */}
       {showChatParams && (
         <div className="px-[20%] flex items-center gap-2">
-          {/* MCP服务按钮 - 新增 */}
-          <MCPServiceSelector onNavigate={onNavigate} />
-          
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -175,7 +170,6 @@ export function InputArea({ model, onSendMessage, inputValue: externalValue, onI
       {showVideoParams && (
         <div className="px-[20%] space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
-            
             <Select value={videoParams.duration.toString()} onValueChange={(dur: any) => setVideoParams({ ...videoParams, duration: parseInt(dur) })}>
               <SelectTrigger className="w-[100px] h-8 text-xs">
                 <SelectValue placeholder="时长" />
@@ -430,7 +424,6 @@ export function InputArea({ model, onSendMessage, inputValue: externalValue, onI
       {showImageParams && (
         <div className="px-[20%] space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
-            
             <Select value={imageParams.ratio} onValueChange={(ratio: any) => setImageParams({ ...imageParams, ratio })}>
               <SelectTrigger className="w-[100px] h-8 text-xs">
                 <SelectValue placeholder="比例" />

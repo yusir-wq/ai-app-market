@@ -11,20 +11,15 @@ import { LoginModal } from '@/components/auth/login-modal'
 import { RechargeModal } from '@/components/auth/recharge-modal'
 import { BillingUsage } from './billing-usage'
 import { BillingPayments } from './billing-payments'
-import { MCPCenter } from './mcp-center'
-import { MCPQuickCreateModal } from './mcp-quick-create-modal'
-import { MCPQuickConfigModal } from './mcp-quick-config-modal'
-import { MCPServiceDetailModal } from './mcp-service-detail-modal'
 import { useAuth } from '@/contexts/auth-context'
-import { MCPProvider, useMCP } from '@/contexts/mcp-context'
-import { mockModels, mockChatMessages, mockImageMessages, mockVideoMessages, mockChatHistories, mockMCPMessages, type Model, type Message } from '@/lib/mock-data'
+import { mockModels, mockChatMessages, mockImageMessages, mockVideoMessages, mockChatHistories, type Model, type Message } from '@/lib/mock-data'
 
 export function Workspace() {
   const { isLoggedIn, setShowLoginModal } = useAuth()
   const [selectedModel, setSelectedModel] = useState<Model | null>(mockModels[0])
   const [isHistoryDrawerOpen, setIsHistoryDrawerOpen] = useState(false)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
-  const [messages, setMessages] = useState<Message[]>(mockMCPMessages[mockModels[0].id] || mockChatMessages[mockModels[0].id] || [])
+  const [messages, setMessages] = useState<Message[]>(mockChatMessages[mockModels[0].id] || [])
   const [isLoading, setIsLoading] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [currentPage, setCurrentPage] = useState<string | null>(null)
@@ -212,8 +207,7 @@ export function Workspace() {
     } else if (model.type === 'video') {
       setMessages(mockVideoMessages[model.id] || [])
     } else {
-      // 对于 minimax-m25，使用 MCP 消息
-      setMessages(mockMCPMessages[model.id] || mockChatMessages[model.id] || [])
+      setMessages(mockChatMessages[model.id] || [])
     }
     setInputValue('')
   }
@@ -221,129 +215,93 @@ export function Workspace() {
   // 如果在子页面，渲染对应页面
   if (currentPage === 'billing-usage') {
     return (
-      <MCPProvider>
-        <div className="h-screen flex flex-col bg-background">
-          <Header onNavigate={handleNavigate} />
-          <div className="flex-1 pt-[60px] overflow-y-auto">
-            <BillingUsage onBack={handleBackToWorkspace} />
-          </div>
-          <LoginModal />
-          <RechargeModal />
-          <MCPQuickCreateModal />
-          <MCPQuickConfigModal />
-          <MCPServiceDetailModal />
+      <div className="h-screen flex flex-col bg-background">
+        <Header onNavigate={handleNavigate} />
+        <div className="flex-1 pt-[60px] overflow-y-auto">
+          <BillingUsage onBack={handleBackToWorkspace} />
         </div>
-      </MCPProvider>
+        <LoginModal />
+        <RechargeModal />
+      </div>
     )
   }
 
   if (currentPage === 'billing-payments') {
     return (
-      <MCPProvider>
-        <div className="h-screen flex flex-col bg-background">
-          <Header onNavigate={handleNavigate} />
-          <div className="flex-1 pt-[60px] overflow-y-auto">
-            <BillingPayments onBack={handleBackToWorkspace} />
-          </div>
-          <LoginModal />
-          <RechargeModal />
-          <MCPQuickCreateModal />
-          <MCPServiceDetailModal />
-          <MCPQuickConfigModal />
+      <div className="h-screen flex flex-col bg-background">
+        <Header onNavigate={handleNavigate} />
+        <div className="flex-1 pt-[60px] overflow-y-auto">
+          <BillingPayments onBack={handleBackToWorkspace} />
         </div>
-      </MCPProvider>
-    )
-  }
-
-  if (currentPage === 'mcp-center') {
-    return (
-      <MCPProvider>
-        <div className="h-screen flex flex-col bg-background">
-          <Header onNavigate={handleNavigate} />
-          <div className="flex-1 pt-[60px] overflow-y-auto">
-            <MCPCenter onBack={handleBackToWorkspace} />
-          </div>
-          <LoginModal />
-          <RechargeModal />
-          <MCPQuickCreateModal />
-          <MCPQuickConfigModal />
-          <MCPServiceDetailModal />
-        </div>
-      </MCPProvider>
+        <LoginModal />
+        <RechargeModal />
+      </div>
     )
   }
 
   // 默认工作台
   return (
-    <MCPProvider>
-      <div className="h-screen flex flex-col bg-background">
-        {/* 顶部导航栏 */}
-        <Header onNavigate={handleNavigate} />
+    <div className="h-screen flex flex-col bg-background">
+      {/* 顶部导航栏 */}
+      <Header onNavigate={handleNavigate} />
 
-        {/* 主内容区域 */}
-        <div className="flex flex-1 pt-[60px] overflow-hidden">
-          {/* 左侧栏 */}
-          <Sidebar
-            selectedModel={selectedModel}
-            onSelectModel={handleSelectModel}
-            isCollapsed={isSidebarCollapsed}
-            onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          />
-
-          {/* 右侧核心工作区 */}
-          <div className="flex-1 flex flex-col min-w-0 relative overflow-hidden">
-            {/* 会话浮动按钮组 */}
-            <SessionToolbar
-              model={selectedModel}
-              onNewChat={handleNewChat}
-              onOpenHistory={() => setIsHistoryDrawerOpen(true)}
-            />
-
-            {/* 内容展示区 */}
-            <div className="flex-1 overflow-y-auto">
-              <WorkspaceContent
-                model={selectedModel}
-                messages={messages}
-                isLoading={isLoading}
-                onSelectPrompt={handleSelectPrompt}
-              />
-            </div>
-
-            {/* 底部固定输入区 */}
-            <div className="flex-shrink-0 border-t border-border bg-background">
-              <InputArea 
-                model={selectedModel} 
-                onSendMessage={handleSendMessage}
-                inputValue={inputValue}
-                onInputChange={setInputValue}
-                onNavigate={handleNavigate}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* 历史对话弹窗 */}
-        <HistoryDrawer
-          model={selectedModel}
-          isOpen={isHistoryDrawerOpen}
-          onClose={() => setIsHistoryDrawerOpen(false)}
-          onSelectChat={handleSelectChat}
-          onRenameChat={handleRenameChat}
-          onDeleteChat={handleDeleteChat}
-          histories={chatHistories}
+      {/* 主内容区域 */}
+      <div className="flex flex-1 pt-[60px] overflow-hidden">
+        {/* 左侧栏 */}
+        <Sidebar
+          selectedModel={selectedModel}
+          onSelectModel={handleSelectModel}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         />
 
-        {/* 登录弹窗 */}
-        <LoginModal />
+        {/* 右侧核心工作区 */}
+        <div className="flex-1 flex flex-col min-w-0 relative overflow-hidden">
+          {/* 会话浮动按钮组 */}
+          <SessionToolbar
+            model={selectedModel}
+            onNewChat={handleNewChat}
+            onOpenHistory={() => setIsHistoryDrawerOpen(true)}
+          />
 
-        {/* 充值弹窗 */}
-        <RechargeModal />
+          {/* 内容展示区 */}
+          <div className="flex-1 overflow-y-auto">
+            <WorkspaceContent
+              model={selectedModel}
+              messages={messages}
+              isLoading={isLoading}
+              onSelectPrompt={handleSelectPrompt}
+            />
+          </div>
 
-        {/* MCP相关弹窗 */}
-        <MCPQuickCreateModal />
-        <MCPQuickConfigModal />
-        <MCPServiceDetailModal />
+          {/* 底部固定输入区 */}
+          <div className="flex-shrink-0 border-t border-border bg-background">
+            <InputArea 
+              model={selectedModel} 
+              onSendMessage={handleSendMessage}
+              inputValue={inputValue}
+              onInputChange={setInputValue}
+            />
+          </div>
+        </div>
       </div>
-    </MCPProvider>
+
+      {/* 历史对话弹窗 */}
+      <HistoryDrawer
+        model={selectedModel}
+        isOpen={isHistoryDrawerOpen}
+        onClose={() => setIsHistoryDrawerOpen(false)}
+        onSelectChat={handleSelectChat}
+        onRenameChat={handleRenameChat}
+        onDeleteChat={handleDeleteChat}
+        histories={chatHistories}
+      />
+
+      {/* 登录弹窗 */}
+      <LoginModal />
+
+      {/* 充值弹窗 */}
+      <RechargeModal />
+    </div>
   )
 }

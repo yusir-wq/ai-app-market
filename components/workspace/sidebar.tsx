@@ -8,6 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { ModelCard } from './model-card'
 import { mockModels, type Model } from '@/lib/mock-data'
 import { Search, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface SidebarProps {
   selectedModel: Model | null
@@ -49,6 +50,8 @@ export function Sidebar({
     // 按添加时间倒序
     return models.sort((a, b) => b.addedAt.getTime() - a.addedAt.getTime())
   }, [activeTab, searchQuery])
+
+
 
   if (isCollapsed) {
     return (

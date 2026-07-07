@@ -34,6 +34,7 @@ export function RechargeModal() {
   const [customAmount, setCustomAmount] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'qr' | 'processing' | 'success'>('idle')
+
   const [selectedPayment, setSelectedPayment] = useState('wechat')
 
   const finalAmount = selectedAmount === 'custom' 
@@ -365,7 +366,7 @@ export function RechargeModal() {
               确认支付 ¥{finalAmount.toFixed(2) || '0.00'}
             </Button>
 
-            {/* 协议说明 */}
+            {/* 协议提示 */}
             <p className="text-xs text-gray-500 leading-relaxed text-center">
               支付成功即视为您同意
               <a href="#" className="text-blue-500 hover:underline">

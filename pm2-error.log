@@ -1,0 +1,873 @@
+2026-06-08 15:46:56: ⚠ Slow filesystem detected. The benchmark took 400ms. If f:\v0 Wireframe\AI APP Market V1.1\.next/dev is a network drive, consider moving it to a local folder.
+2026-06-08 15:46:56: See more: https://nextjs.org/docs/app/guides/local-development
+2026-06-08 15:47:15: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:47:15:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:47:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:47:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:47:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:47:15:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:47:15:     '  Parsed request is a module\n' +
+2026-06-08 15:47:15:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:47:15:     '  resolve as module\n' +
+2026-06-08 15:47:15:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:47:15:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:47:15: }
+2026-06-08 15:47:22: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:47:22:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:47:22:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:47:22:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:22:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:22:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:22:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:47:22:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:22:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:22:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:22:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:47:22:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:47:22:     '  Parsed request is a module\n' +
+2026-06-08 15:47:22:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:47:22:     '  resolve as module\n' +
+2026-06-08 15:47:22:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:47:22:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:47:22: }
+2026-06-08 15:47:32: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:47:32:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:47:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:47:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:32:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:32:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:47:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:32:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:32:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:47:32:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:47:32:     '  Parsed request is a module\n' +
+2026-06-08 15:47:32:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:47:32:     '  resolve as module\n' +
+2026-06-08 15:47:32:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:47:32:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:47:32: }
+2026-06-08 15:47:35: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:47:35:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:47:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:47:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:35:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:35:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:47:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:35:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:35:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:47:35:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:47:35:     '  Parsed request is a module\n' +
+2026-06-08 15:47:35:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:47:35:     '  resolve as module\n' +
+2026-06-08 15:47:35:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:47:35:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:47:35: }
+2026-06-08 15:47:50: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:47:50:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:47:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:47:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:50:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:50:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:47:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:50:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:47:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:47:50:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:47:50:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:47:50:     '  Parsed request is a module\n' +
+2026-06-08 15:47:50:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:47:50:     '  resolve as module\n' +
+2026-06-08 15:47:50:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:47:50:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:47:50: }
+2026-06-08 15:48:05: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:48:05:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:48:05:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:48:05:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:05:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:05:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:05:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:48:05:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:05:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:05:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:05:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:48:05:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:48:05:     '  Parsed request is a module\n' +
+2026-06-08 15:48:05:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:48:05:     '  resolve as module\n' +
+2026-06-08 15:48:05:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:48:05:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:48:05: }
+2026-06-08 15:48:12: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:48:12:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:48:12:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:48:12:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:12:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:12:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:12:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:48:12:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:12:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:12:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:12:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:48:12:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:48:12:     '  Parsed request is a module\n' +
+2026-06-08 15:48:12:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:48:12:     '  resolve as module\n' +
+2026-06-08 15:48:12:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:48:12:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:48:12: }
+2026-06-08 15:48:18: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:48:18:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:48:18:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:48:18:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:18:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:18:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:18:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:48:18:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:18:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:18:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:18:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:48:18:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:48:18:     '  Parsed request is a module\n' +
+2026-06-08 15:48:18:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:48:18:     '  resolve as module\n' +
+2026-06-08 15:48:18:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:48:18:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:48:18: }
+2026-06-08 15:48:30: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:48:30:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:48:30:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:48:30:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:30:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:30:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:30:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:48:30:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:30:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:30:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:30:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:48:30:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:48:30:     '  Parsed request is a module\n' +
+2026-06-08 15:48:30:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:48:30:     '  resolve as module\n' +
+2026-06-08 15:48:30:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:48:30:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:48:30: }
+2026-06-08 15:48:36: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:48:36:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:48:36:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:48:36:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:36:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:36:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:36:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:48:36:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:36:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:36:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:36:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:48:36:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:48:36:     '  Parsed request is a module\n' +
+2026-06-08 15:48:36:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:48:36:     '  resolve as module\n' +
+2026-06-08 15:48:36:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:48:36:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:48:36: }
+2026-06-08 15:48:45: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:48:45:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:48:45:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:48:45:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:45:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:45:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:45:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:48:45:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:45:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:48:45:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:48:45:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:48:45:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:48:45:     '  Parsed request is a module\n' +
+2026-06-08 15:48:45:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:48:45:     '  resolve as module\n' +
+2026-06-08 15:48:45:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:48:45:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:48:45: }
+2026-06-08 15:49:31: ⚠ Slow filesystem detected. The benchmark took 824ms. If f:\v0 Wireframe\AI APP Market V1.1\.next/dev is a network drive, consider moving it to a local folder.
+2026-06-08 15:49:31: See more: https://nextjs.org/docs/app/guides/local-development
+2026-06-08 15:49:49: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:49:49:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:49:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:49:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:49:49:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:49:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:49:49:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:49:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:49:49:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:49:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:49:49:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:49:49:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:49:49:     '  Parsed request is a module\n' +
+2026-06-08 15:49:49:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:49:49:     '  resolve as module\n' +
+2026-06-08 15:49:49:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:49:49:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:49:49: }
+2026-06-08 15:49:56: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:49:56:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:49:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:49:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:49:56:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:49:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:49:56:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:49:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:49:56:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:49:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:49:56:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:49:56:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:49:56:     '  Parsed request is a module\n' +
+2026-06-08 15:49:56:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:49:56:     '  resolve as module\n' +
+2026-06-08 15:49:56:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:49:56:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:49:56: }
+2026-06-08 15:50:07: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:50:07:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:50:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:50:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:07:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:07:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:50:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:07:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:07:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:50:07:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:50:07:     '  Parsed request is a module\n' +
+2026-06-08 15:50:07:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:50:07:     '  resolve as module\n' +
+2026-06-08 15:50:07:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:50:07:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:50:07: }
+2026-06-08 15:50:15: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:50:15:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:50:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:50:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:50:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:50:15:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:50:15:     '  Parsed request is a module\n' +
+2026-06-08 15:50:15:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:50:15:     '  resolve as module\n' +
+2026-06-08 15:50:15:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:50:15:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:50:15: }
+2026-06-08 15:50:28: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:50:28:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:50:28:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:50:28:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:28:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:28:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:28:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:50:28:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:28:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:28:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:28:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:50:28:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:50:28:     '  Parsed request is a module\n' +
+2026-06-08 15:50:28:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:50:28:     '  resolve as module\n' +
+2026-06-08 15:50:28:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:50:28:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:50:28: }
+2026-06-08 15:50:35: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:50:35:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:50:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:50:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:35:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:35:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:50:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:35:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:35:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:35:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:50:35:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:50:35:     '  Parsed request is a module\n' +
+2026-06-08 15:50:35:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:50:35:     '  resolve as module\n' +
+2026-06-08 15:50:35:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:50:35:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:50:35: }
+2026-06-08 15:50:41: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:50:41:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:50:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:50:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:41:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:41:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:50:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:41:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:41:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:50:41:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:50:41:     '  Parsed request is a module\n' +
+2026-06-08 15:50:41:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:50:41:     '  resolve as module\n' +
+2026-06-08 15:50:41:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:50:41:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:50:41: }
+2026-06-08 15:50:53: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:50:53:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:50:53:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:50:53:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:53:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:53:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:53:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:50:53:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:53:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:50:53:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:50:53:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:50:53:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:50:53:     '  Parsed request is a module\n' +
+2026-06-08 15:50:53:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:50:53:     '  resolve as module\n' +
+2026-06-08 15:50:53:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:50:53:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:50:53: }
+2026-06-08 15:51:02: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:51:02:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:51:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:51:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:02:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:02:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:51:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:02:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:02:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:51:02:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:51:02:     '  Parsed request is a module\n' +
+2026-06-08 15:51:02:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:51:02:     '  resolve as module\n' +
+2026-06-08 15:51:02:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:51:02:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:51:02: }
+2026-06-08 15:51:10: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:51:10:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:51:10:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:51:10:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:10:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:10:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:10:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:51:10:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:10:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:10:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:10:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:51:10:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:51:10:     '  Parsed request is a module\n' +
+2026-06-08 15:51:10:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:51:10:     '  resolve as module\n' +
+2026-06-08 15:51:10:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:51:10:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:51:10: }
+2026-06-08 15:51:26: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:51:26:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:51:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:51:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:26:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:26:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:51:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:26:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:26:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:51:26:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:51:26:     '  Parsed request is a module\n' +
+2026-06-08 15:51:26:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:51:26:     '  resolve as module\n' +
+2026-06-08 15:51:26:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:51:26:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:51:26: }
+2026-06-08 15:51:34: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:51:34:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:51:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:51:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:34:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:34:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:51:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:34:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:34:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:51:34:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:51:34:     '  Parsed request is a module\n' +
+2026-06-08 15:51:34:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:51:34:     '  resolve as module\n' +
+2026-06-08 15:51:34:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:51:34:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:51:34: }
+2026-06-08 15:51:55: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:51:55:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:51:55:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:51:55:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:55:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:55:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:55:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:51:55:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:55:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:51:55:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:51:55:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:51:55:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:51:55:     '  Parsed request is a module\n' +
+2026-06-08 15:51:55:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:51:55:     '  resolve as module\n' +
+2026-06-08 15:51:55:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:51:55:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:51:55: }
+2026-06-08 15:52:11: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:52:11:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:52:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:52:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:11:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:52:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:11:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:52:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:11:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:52:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:11:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:52:11:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:52:11:     '  Parsed request is a module\n' +
+2026-06-08 15:52:11:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:52:11:     '  resolve as module\n' +
+2026-06-08 15:52:11:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:52:11:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:52:11: }
+2026-06-08 15:52:25: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:52:25:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:52:25:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:52:25:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:25:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:52:25:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:25:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:52:25:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:25:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:52:25:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:25:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:52:25:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:52:25:     '  Parsed request is a module\n' +
+2026-06-08 15:52:25:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:52:25:     '  resolve as module\n' +
+2026-06-08 15:52:25:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:52:25:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:52:25: }
+2026-06-08 15:52:44: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:52:44:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:52:44:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:52:44:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:44:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:52:44:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:44:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:52:44:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:44:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:52:44:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:52:44:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:52:44:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:52:44:     '  Parsed request is a module\n' +
+2026-06-08 15:52:44:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:52:44:     '  resolve as module\n' +
+2026-06-08 15:52:44:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:52:44:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:52:44: }
+2026-06-08 15:53:02: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:53:02:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:53:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:53:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:02:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:02:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:53:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:02:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:02:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:02:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:53:02:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:53:02:     '  Parsed request is a module\n' +
+2026-06-08 15:53:02:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:53:02:     '  resolve as module\n' +
+2026-06-08 15:53:02:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:53:02:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:53:02: }
+2026-06-08 15:53:17: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:53:17:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:53:17:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:53:17:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:17:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:17:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:17:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:53:17:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:17:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:17:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:17:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:53:17:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:53:17:     '  Parsed request is a module\n' +
+2026-06-08 15:53:17:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:53:17:     '  resolve as module\n' +
+2026-06-08 15:53:17:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:53:17:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:53:17: }
+2026-06-08 15:53:34: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:53:34:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:53:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:53:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:34:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:34:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:53:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:34:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:34:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:34:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:53:34:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:53:34:     '  Parsed request is a module\n' +
+2026-06-08 15:53:34:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:53:34:     '  resolve as module\n' +
+2026-06-08 15:53:34:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:53:34:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:53:34: }
+2026-06-08 15:53:41: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:53:41:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:53:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:53:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:41:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:41:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:53:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:41:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:41:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:41:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:53:41:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:53:41:     '  Parsed request is a module\n' +
+2026-06-08 15:53:41:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:53:41:     '  resolve as module\n' +
+2026-06-08 15:53:41:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:53:41:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:53:41: }
+2026-06-08 15:53:56: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:53:56:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:53:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:53:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:56:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:56:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:53:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:56:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:53:56:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:53:56:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:53:56:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:53:56:     '  Parsed request is a module\n' +
+2026-06-08 15:53:56:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:53:56:     '  resolve as module\n' +
+2026-06-08 15:53:56:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:53:56:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:53:56: }
+2026-06-08 15:55:07: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:55:07:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:55:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:55:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:55:07:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:55:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:55:07:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:55:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:55:07:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:55:07:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:55:07:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:55:07:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:55:07:     '  Parsed request is a module\n' +
+2026-06-08 15:55:07:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:55:07:     '  resolve as module\n' +
+2026-06-08 15:55:07:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:55:07:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:55:07: }
+2026-06-08 15:55:43: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:55:43:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:55:43:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:55:43:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:55:43:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:55:43:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:55:43:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:55:43:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:55:43:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:55:43:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:55:43:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:55:43:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:55:43:     '  Parsed request is a module\n' +
+2026-06-08 15:55:43:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:55:43:     '  resolve as module\n' +
+2026-06-08 15:55:43:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:55:43:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:55:43: }
+2026-06-08 15:56:32: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:56:32:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:56:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:56:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:56:32:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:56:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:56:32:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:56:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:56:32:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:56:32:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:56:32:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:56:32:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:56:32:     '  Parsed request is a module\n' +
+2026-06-08 15:56:32:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:56:32:     '  resolve as module\n' +
+2026-06-08 15:56:32:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:56:32:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:56:32: }
+2026-06-08 15:56:50: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:56:50:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:56:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:56:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:56:50:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:56:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:56:50:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:56:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:56:50:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:56:50:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:56:50:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:56:50:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:56:50:     '  Parsed request is a module\n' +
+2026-06-08 15:56:50:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:56:50:     '  resolve as module\n' +
+2026-06-08 15:56:50:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:56:50:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:56:50: }
+2026-06-08 15:57:11: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:57:11:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:57:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:57:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:57:11:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:57:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:57:11:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:57:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:57:11:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:57:11:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:57:11:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:57:11:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:57:11:     '  Parsed request is a module\n' +
+2026-06-08 15:57:11:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:57:11:     '  resolve as module\n' +
+2026-06-08 15:57:11:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:57:11:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:57:11: }
+2026-06-08 15:57:26: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:57:26:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:57:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:57:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:57:26:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:57:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:57:26:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:57:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:57:26:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:57:26:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:57:26:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:57:26:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:57:26:     '  Parsed request is a module\n' +
+2026-06-08 15:57:26:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:57:26:     '  resolve as module\n' +
+2026-06-08 15:57:26:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:57:26:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:57:26: }
+2026-06-08 15:58:15: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:58:15:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:58:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:58:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:58:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:58:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:58:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:58:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:58:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:58:15:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:58:15:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:58:15:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:58:15:     '  Parsed request is a module\n' +
+2026-06-08 15:58:15:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:58:15:     '  resolve as module\n' +
+2026-06-08 15:58:15:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:58:15:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:58:15: }
+2026-06-08 15:59:38: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 15:59:38:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 15:59:38:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 15:59:38:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:59:38:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:59:38:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:59:38:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 15:59:38:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:59:38:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 15:59:38:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 15:59:38:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 15:59:38:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 15:59:38:     '  Parsed request is a module\n' +
+2026-06-08 15:59:38:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 15:59:38:     '  resolve as module\n' +
+2026-06-08 15:59:38:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 15:59:38:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 15:59:38: }
+2026-06-08 16:01:06: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 16:01:06:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 16:01:06:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 16:01:06:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:01:06:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 16:01:06:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:01:06:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 16:01:06:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:01:06:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 16:01:06:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:01:06:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 16:01:06:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 16:01:06:     '  Parsed request is a module\n' +
+2026-06-08 16:01:06:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 16:01:06:     '  resolve as module\n' +
+2026-06-08 16:01:06:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 16:01:06:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 16:01:06: }
+2026-06-08 16:01:49: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 16:01:49:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 16:01:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 16:01:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:01:49:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 16:01:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:01:49:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 16:01:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:01:49:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 16:01:49:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:01:49:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 16:01:49:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 16:01:49:     '  Parsed request is a module\n' +
+2026-06-08 16:01:49:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 16:01:49:     '  resolve as module\n' +
+2026-06-08 16:01:49:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 16:01:49:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 16:01:49: }
+2026-06-08 16:02:08: Error: Can't resolve 'tailwindcss' in 'f:\v0 Wireframe'
+2026-06-08 16:02:08:     [2m[at finishWithoutResolve (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:586:18)][0m
+2026-06-08 16:02:08:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:678:14][0m
+2026-06-08 16:02:08:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:02:08:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 16:02:08:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:02:08:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+2026-06-08 16:02:08:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:02:08:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+2026-06-08 16:02:08:     [2m[at F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\enhanced-resolve@5.19.0\node_modules\enhanced-resolve\lib\Resolver.js:739:5][0m
+2026-06-08 16:02:08:     [2m[at eval (eval at create (F:\v0 Wireframe\AI APP Market V1.1\node_modules\.pnpm\tapable@2.3.0\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+2026-06-08 16:02:08:   details: "resolve 'tailwindcss' in 'f:\\v0 Wireframe'\n" +
+2026-06-08 16:02:08:     '  Parsed request is a module\n' +
+2026-06-08 16:02:08:     '  No description file found in f:\\v0 Wireframe or above\n' +
+2026-06-08 16:02:08:     '  resolve as module\n' +
+2026-06-08 16:02:08:     "    f:\\v0 Wireframe\\node_modules doesn't exist or is not a directory\n" +
+2026-06-08 16:02:08:     "    f:\\node_modules doesn't exist or is not a directory"
+2026-06-08 16:02:08: }
+2026-06-08 16:02:40: 
+2026-06-08 16:02:40: <--- Last few GCs --->
+2026-06-08 16:02:40: 
+2026-06-08 16:02:43: 
+2026-06-08 16:02:44: <--- JS stacktrace --->
+2026-06-08 16:02:44: 
+2026-06-08 16:02:44: FATAL ERROR: Committing semi space failed. Allocation failed - JavaScript heap out of memory
+2026-06-08 16:02:44: ----- Native stack trace -----
+2026-06-08 16:02:44: 
+2026-06-08 16:02:44:  1: 00007FF77B50711D node::SetCppgcReference+17725
+2026-06-08 16:02:44:  2: 00007FF77B46A138 SSL_get_quiet_shutdown+92344
+2026-06-08 16:02:44:  3: 00007FF77BFF0C51 v8::Isolate::ReportExternalAllocationLimitReached+65
+2026-06-08 16:02:44:  4: 00007FF77BFDD8D6 v8::Function::Experimental_IsNopFunction+2870
+2026-06-08 16:02:44:  5: 00007FF77BE2AA20 v8::internal::StrongRootAllocatorBase::StrongRootAllocatorBase+31456
+2026-06-08 16:02:44:  6: 00007FF77BDE3533 v8::FixedArray::Length+130291
+2026-06-08 16:02:44:  7: 00007FF77BE33B6F v8::internal::StrongRootAllocatorBase::StrongRootAllocatorBase+68655
+2026-06-08 16:02:44:  8: 00007FF77BE243B2 v8::internal::StrongRootAllocatorBase::StrongRootAllocatorBase+5234
+2026-06-08 16:02:44:  9: 00007FF77BE1FDB5 v8::CpuProfileNode::GetScriptResourceNameStr+188453
+2026-06-08 16:02:44: 10: 00007FF77B7A309D BIO_ssl_shutdown+189
+2026-06-08 16:02:46: 
+2026-06-08 16:02:46: <--- Last few GCs --->
+2026-06-08 16:02:46: 
+2026-06-08 16:02:46: [81768:000001B806E10000]     1430 ms: Scavenge 12.9 (17.7) -> 10.5 (18.3) MB, pooled: 0 MB, 1.10 / 0.00 ms  (average mu = 1.000, current mu = 1.000) task; 
+2026-06-08 16:02:46: [81768:000001B806E10000]     9547 ms: Mark-Compact (reduce) 10.5 (18.3) -> 9.9 (12.0) MB, pooled: 0 MB, 3.90 / 0.00 ms  (+ 2.6 ms in 0 steps since start of marking, biggest step 0.0 ms, walltime since start of marking 9 ms) (average mu = 1.000, current mu
+2026-06-08 16:02:46: 
+2026-06-08 16:02:46: <--- JS stacktrace --->
+2026-06-08 16:02:46: 
+2026-06-08 16:02:46: FATAL ERROR: Committing semi space failed. Allocation failed - JavaScript heap out of memory
+2026-06-08 16:02:46: ----- Native stack trace -----
+2026-06-08 16:02:46: 
+2026-06-08 16:02:46:  1: 00007FF77B50711D 
+2026-06-08 16:02:46:  2: 00007FF77B46A138 
+2026-06-08 16:02:46:  3: 00007FF77BFF0C51 
+2026-06-08 16:02:46:  4: 00007FF77BFDD8D6 
+2026-06-08 16:02:46:  5: 00007FF77BE2AA20 
+2026-06-08 16:02:46:  6: 00007FF77BDE3533 
+2026-06-08 16:02:46:  7: 00007FF77BE33B6F 
+2026-06-08 16:02:46:  8: 00007FF77BE243B2 
+2026-06-08 16:02:46:  9: 00007FF77BE1FDB5 
+2026-06-08 16:02:46: 10: 00007FF77B7A309D 
+2026-06-08 16:03:08: 
+2026-06-08 16:03:08: <--- Last few GCs --->
+2026-06-08 16:03:08: 
+2026-06-08 16:03:08: [5432:0000026063AB7000]      144 ms: Scavenge 6.4 (8.0) -> 6.3 (10.5) MB, pooled: 0 MB, 0.79 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+2026-06-08 16:03:08: [5432:0000026063AB7000]      397 ms: Scavenge 9.1 (11.3) -> 8.2 (11.8) MB, pooled: 0 MB, 1.01 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+2026-06-08 16:03:08: 
+2026-06-08 16:03:08: 
+2026-06-08 16:03:08: <--- JS stacktrace --->
+2026-06-08 16:03:08: 
+2026-06-08 16:03:08: FATAL ERROR: NewSpace::EnsureCurrentCapacity Allocation failed - JavaScript heap out of memory
+2026-06-08 16:03:08: ----- Native stack trace -----
+2026-06-08 16:03:08: 
+2026-06-08 16:03:20:  1: 00007FF77B50711D 
+2026-06-08 16:03:20:  2: 00007FF77B46A138 
+2026-06-08 16:03:20:  3: 00007FF77BFF0C51 
+2026-06-08 16:03:20:  4: 00007FF77BFDD8D6 
+2026-06-08 16:03:20:  5: 00007FF77BE2AA20 
+2026-06-08 16:03:20:  6: 00007FF77BE08502 
+2026-06-08 16:03:20:  7: 00007FF77BE315EB 
+2026-06-08 16:03:20:  8: 00007FF77BE33BDB 
+2026-06-08 16:03:20:  9: 00007FF77BE243B2 
+2026-06-08 16:03:20: 10: 00007FF77BE1FDB5 
+2026-06-08 16:03:20: 11: 00007FF77B7A309D 
+2026-06-08 16:03:34: 
+2026-06-08 16:03:34: 
+2026-06-08 16:03:34: #
+2026-06-08 16:03:34: # Fatal process out of memory: Zone
+2026-06-08 16:03:34: #
+2026-06-08 16:03:34: ----- Native stack trace -----
+2026-06-08 16:03:34: 
+2026-06-08 16:03:34:  1: 00007FF77B50711D 
+2026-06-08 16:03:34:  2: 00007FF77B3E181F 
+2026-06-08 16:03:34:  3: 00007FF77C6595C6 
+2026-06-08 16:03:34:  4: 00007FF77BFDD6E1 
+2026-06-08 16:03:34:  5: 00007FF77BAAC79B 
+2026-06-08 16:03:34:  6: 00007FF77C7E77B0 
+2026-06-08 16:03:34:  7: 00007FF77C7E9058 
+2026-06-08 16:03:34:  8: 00007FF77C7E8BE2 
+2026-06-08 16:03:34:  9: 00007FF77C7E7ADB 
+2026-06-08 16:03:34: 10: 00007FF77C7A5607 
+2026-06-08 16:03:34: 11: 00007FF77C7780B1 
+2026-06-08 16:03:34: 12: 00007FF77C7A51EE 
+2026-06-08 16:03:34: 13: 00007FF77C7A599E 
+2026-06-08 16:03:34: 14: 00007FF77C7A5692 
+2026-06-08 16:03:34: 15: 00007FF77C779D0D 
+2026-06-08 16:03:34: 16: 00007FF77C775ABB 
+2026-06-08 16:03:34: 17: 00007FF77C77064A 
+2026-06-08 16:03:34: 18: 00007FF77BF58314 
+2026-06-08 16:03:34: 19: 00007FF77BF11C22 
+2026-06-08 16:03:34: 20: 00007FF77C1E24F5 
+2026-06-08 16:03:34: 21: 00007FF77B3E4540 
+2026-06-08 16:03:34: 22: 00007FF77B567463 
+2026-06-08 16:03:34: 23: 00007FF77CD64C2E 
+2026-06-08 16:03:34: 24: 00007FFBD3017374 
+2026-06-08 16:03:34: 25: 00007FFBD399CC91 RtlUserThreadStart+33

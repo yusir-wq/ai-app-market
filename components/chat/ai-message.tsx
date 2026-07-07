@@ -7,7 +7,6 @@ import { useState, useRef, useEffect } from 'react'
 import type { ChatMessage } from '@/lib/mock-data'
 import { MarkdownContent } from './markdown-content'
 import { CodeBlock } from './code-block'
-import { MCPMessageView } from '@/components/workspace/mcp-message-view'
 
 interface AIMessageProps {
   message: ChatMessage
@@ -60,9 +59,7 @@ export function AIMessage({ message, modelName, modelLogo, isLastMessage }: AIMe
               isExpanded ? '' : 'line-clamp-10'
             }`}
           >
-            {message.contentType === 'mcp' && message.mcpContent ? (
-              <MCPMessageView content={message.mcpContent} />
-            ) : message.contentType === 'markdown' ? (
+            {message.contentType === 'markdown' ? (
               <MarkdownContent content={message.content} />
             ) : message.contentType === 'code' ? (
               <CodeBlock
@@ -80,18 +77,8 @@ export function AIMessage({ message, modelName, modelLogo, isLastMessage }: AIMe
           <div className="flex items-center gap-2 mt-3 pt-2">
             <span className="text-xs text-muted-foreground">
               {isLastMessage
-                ? message.timestamp.toLocaleTimeString('zh-CN', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
-                : message.timestamp.toLocaleString('zh-CN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
-              }
+                ? message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false })
+                : `${message.timestamp.getFullYear()}-${String(message.timestamp.getMonth() + 1).padStart(2, '0')}-${String(message.timestamp.getDate()).padStart(2, '0')} ${String(message.timestamp.getHours()).padStart(2, '0')}:${String(message.timestamp.getMinutes()).padStart(2, '0')}`}
             </span>
 
             {/* 展开/收起按钮 */}

@@ -7,7 +7,6 @@ import { StreamingMessage } from './streaming-message'
 import { ImagePreviewDialog } from './image-preview-dialog'
 import { VideoPreviewDialog } from './video-preview-dialog'
 import { VideoCard } from './video-card'
-import { MCPMessageView } from '@/components/workspace/mcp-message-view'
 import type { Model, Message } from '@/lib/mock-data'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -124,9 +123,8 @@ export function ChatMessages({ messages, model, isLoading, insufficientPoints }:
                         />
                         <p className="text-xs text-muted-foreground mt-2">
                           {isLastMessage
-                            ? message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
-                            : message.timestamp.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
-                          }
+                            ? message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false })
+                            : `${message.timestamp.getFullYear()}-${String(message.timestamp.getMonth() + 1).padStart(2, '0')}-${String(message.timestamp.getDate()).padStart(2, '0')} ${String(message.timestamp.getHours()).padStart(2, '0')}:${String(message.timestamp.getMinutes()).padStart(2, '0')}`}
                         </p>
                         {/* 智点不足提示 */}
                         {showInsufficientPoints && (
@@ -213,9 +211,8 @@ export function ChatMessages({ messages, model, isLoading, insufficientPoints }:
                         />
                         <p className="text-xs text-muted-foreground mt-2">
                           {isLastMessage
-                            ? message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
-                            : message.timestamp.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
-                          }
+                            ? message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false })
+                            : `${message.timestamp.getFullYear()}-${String(message.timestamp.getMonth() + 1).padStart(2, '0')}-${String(message.timestamp.getDate()).padStart(2, '0')} ${String(message.timestamp.getHours()).padStart(2, '0')}:${String(message.timestamp.getMinutes()).padStart(2, '0')}`}
                         </p>
                         {/* 智点不足提示 */}
                         {showInsufficientPoints && (
