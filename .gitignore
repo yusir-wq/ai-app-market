@@ -15,10 +15,18 @@ node_modules
 .DS_Store
 .vercel
 
-# Server logs and temp files
+# Logs
+*.log
+pm2-*.log
+pm2-*.err.log
 server-*.log
 server-*.err.log
 server-*.pid
+
+# OS & IDE
+.trae-html-share-packages/
+
+# Local server scripts (should not be in repo)
 start-lan-*.cmd
 启动服务器.ps1
 启动服务器.bat
