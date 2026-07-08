@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -16,7 +15,6 @@ interface AgentHomeViewProps {
 }
 
 export function AgentHomeView({ onSelectAgent }: AgentHomeViewProps = {}) {
-  const router = useRouter()
   const [activeCategory, setActiveCategory] = useState<AgentCategory | 'all'>('all')
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -32,11 +30,7 @@ export function AgentHomeView({ onSelectAgent }: AgentHomeViewProps = {}) {
   }, [activeCategory, searchQuery])
 
   const handleAgentClick = (agentId: string) => {
-    if (onSelectAgent) {
-      onSelectAgent(agentId)
-    } else {
-      router.push(`/agent/${agentId}`)
-    }
+    onSelectAgent?.(agentId)
   }
 
   return (

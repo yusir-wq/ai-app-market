@@ -38,6 +38,9 @@ import {
   Calendar,
   ChevronRight,
   X,
+  Copy,
+  Trash2,
+  Download,
 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -636,7 +639,34 @@ export function AgentDetailView({ agent, onBack, onViewResult, prefillText }: Ag
                                 <Calendar className="h-3 w-3" />
                                 {task.createdAt}
                               </span>
-                              <ChevronRight className="h-3 w-3 text-muted-foreground/50 group-hover:text-primary transition-colors" />
+                              <ChevronRight className="h-3 w-3 text-muted-foreground/50 group-hover:hidden transition-colors" />
+                            </div>
+                            {/* Hover 操作按钮 */}
+                            <div className="hidden group-hover:flex items-center gap-1 pt-2 mt-1 border-t border-border/20">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  toast.info('下载功能模拟中...')
+                                }}
+                              >
+                                <Download className="h-3.5 w-3.5" />
+                                下载
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs gap-1 text-muted-foreground hover:text-destructive"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  toast.info('删除功能模拟中...')
+                                }}
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                                删除
+                              </Button>
                             </div>
                           </CardContent>
                         </>
@@ -689,9 +719,37 @@ export function AgentDetailView({ agent, onBack, onViewResult, prefillText }: Ag
                                   <Calendar className="h-3 w-3" />
                                   {task.createdAt}
                                 </span>
-                                <ChevronRight className="h-3 w-3 ml-auto text-muted-foreground/50 group-hover:text-primary transition-colors" />
+                                <ChevronRight className="h-3 w-3 ml-auto text-muted-foreground/50 group-hover:hidden transition-colors" />
                               </div>
                             </div>
+                          </div>
+                          {/* Hover 操作按钮 */}
+                          <div className="hidden group-hover:flex items-center gap-1 pt-2 mt-1 border-t border-border/20">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                navigator.clipboard.writeText(task.resultPreview)
+                                toast.success('已复制到剪贴板')
+                              }}
+                            >
+                              <Copy className="h-3.5 w-3.5" />
+                              复制
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 px-2 text-xs gap-1 text-muted-foreground hover:text-destructive"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                toast.info('删除功能模拟中...')
+                              }}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                              删除
+                            </Button>
                           </div>
                         </CardContent>
                       )}
