@@ -464,11 +464,11 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
           <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6 items-stretch">
 
             {/* 输入区 */}
-            <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW}>
+            <div className="rounded-[12px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW}>
               <div className="p-6 h-full flex flex-col">
                 {/* 标题栏 + 工具按钮 */}
                 <div className="flex items-center justify-between mb-4 shrink-0">
-                  <h3 className="text-[18px] font-medium text-foreground">输入内容</h3>
+                  <h3 className="text-[18px] font-medium text-[#3f4558]">输入内容</h3>
                   <div className="flex items-center gap-0.5">
                     {/* AI帮我写 */}
                     <Popover>
@@ -502,9 +502,9 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
             </div>
 
             {/* 生成设置 */}
-            <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW} ref={scrollRef}>
+            <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" ref={scrollRef}>
               <div className="p-6 h-full flex flex-col">
-                <h3 className="text-[18px] font-medium text-foreground mb-3 shrink-0">生成设置</h3>
+                <h3 className="text-[18px] font-medium text-[#3f4558] mb-3 shrink-0">生成设置</h3>
                 {/* 选择声音 */}
                 <div className="shrink-0">
                   <span className="text-[13px] font-medium text-[#3f4558]/60 mb-2 block">选择声音</span>
@@ -677,7 +677,7 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                 <div className="grid grid-cols-1 gap-6">
                   {/* 语音内容 */}
                   <div>
-                    <h4 className="text-sm font-medium text-foreground mb-3">输入内容</h4>
+                    <h4 className="text-sm font-medium text-[#3f4558] mb-3">输入内容</h4>
                     {isEditingTranscript ? (
                       <div className="space-y-3">
                         <textarea value={transcriptEditText} onChange={e => setTranscriptEditText(e.target.value)} className="w-full rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] p-5 text-sm text-foreground leading-relaxed font-sans h-[400px] resize-none outline-none focus:border-primary/50" />
@@ -692,7 +692,7 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                         <div className="flex items-center gap-1.5 mt-3">
                           <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={startEditTranscript}><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                           <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => handleCopy(resultText)}><Copy className="h-3.5 w-3.5" />复制</Button>
-                          <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('已下载')}><ArrowLineDown className="h-3.5 w-3.5" />导出 MP3</Button>
+                          <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('已下载')}><ArrowLineDown className="h-3.5 w-3.5" />导出 MP3</Button>
                         </div>
                       </>
                     )}
@@ -810,7 +810,7 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                     <div className="flex items-center gap-1.5 mt-3">
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(selectedHistoryItem.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载 MP3</Button>
+                      <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载 MP3</Button>
                     </div>
                   </div>
                   {/* 音频区域：生成设置信息条 + 播放器 */}

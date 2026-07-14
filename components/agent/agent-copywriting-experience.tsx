@@ -325,7 +325,7 @@ SoundPro X1 搭载了全新一代自适应主动降噪芯片，能够实时感�
         <div className="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-6 items-stretch">
 
           {/* 输入区卡片 */}
-          <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW}>
+          <div className="rounded-[12px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW}>
             <div className="p-6 h-full flex flex-col">
               <h3 className="text-[18px] font-medium text-[#3f4558] mb-3 shrink-0">输入文案主题</h3>
               <div className="flex-1 relative flex flex-col">
@@ -364,7 +364,7 @@ SoundPro X1 搭载了全新一代自适应主动降噪芯片，能够实时感�
           </div>
 
           {/* 生成设置卡片 + 立即生成按钮 */}
-          <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW} ref={scrollRef}>
+          <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" ref={scrollRef}>
             <div className="p-6 h-full flex flex-col">
               <h3 className="text-[18px] font-medium text-[#3f4558] mb-3 shrink-0">生成设置</h3>
               <div className="rounded-[14px] border border-[#e7ebf5] bg-muted/20 divide-y divide-[#e7ebf5] overflow-hidden">
@@ -372,8 +372,8 @@ SoundPro X1 搭载了全新一代自适应主动降噪芯片，能够实时感�
                 <div className="flex items-center justify-between px-4 py-3.5">
                   <span className="text-sm text-[#3f4558]">生成语言</span>
                   <Select value={language} onValueChange={setLanguage}>
-                    <SelectTrigger className="w-[140px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40"><SelectValue /></SelectTrigger>
-                    <SelectContent>
+                    <SelectTrigger className="w-[140px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40 shadow-none"><SelectValue /></SelectTrigger>
+                    <SelectContent style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}>
                       {languageOptions.map(opt => (
                         <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
                       ))}
@@ -464,7 +464,7 @@ SoundPro X1 搭载了全新一代自适应主动降噪芯片，能够实时感�
                     <div className="flex items-center gap-2 mt-3">
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={startEdit}><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => handleCopy(resultText)}><Copy className="h-3.5 w-3.5" />复制</Button>
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={handleExportTxt}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
+                      <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={handleExportTxt}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
                       {/* 生成视频按钮 - 视觉强调 */}
                       <Button size="sm" className="h-[34px] px-4 rounded-[7px] text-sm bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white gap-1.5 ml-auto" style={{ boxShadow: '0px 4px 12px rgba(87,92,233,0.2)' }} onClick={() => {
                         if (onNavigateToAgent) {
@@ -558,7 +558,7 @@ SoundPro X1 搭载了全新一代自适应主动降噪芯片，能够实时感�
                   <div className="flex items-center gap-1.5 mt-3">
                     <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                     <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(selectedHistoryItem.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
-                    <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('已导出 TXT 文件')}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
+                    <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('已导出 TXT 文件')}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
                   </div>
                 </div>
                 {/* 文件信息 - 靠在一起 */}

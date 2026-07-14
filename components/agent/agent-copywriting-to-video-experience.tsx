@@ -254,19 +254,19 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
           </div>
 
           {/* 生成设置卡片 + 立即生成按钮 */}
-          <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW} ref={scrollRef}>
+          <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" ref={scrollRef}>
             <div className="p-6 h-full flex flex-col">
               <h3 className="text-[18px] font-medium text-[#3f4558] mb-3 shrink-0">生成设置</h3>
               <div className="rounded-[14px] border border-[#e7ebf5] bg-muted/20 divide-y divide-[#e7ebf5] overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">画面比例</span>
                   <Select value={aspectRatio} onValueChange={setAspectRatio}>
-                    <SelectTrigger className="w-[140px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40"><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="w-[140px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40 shadow-none"><SelectValue /></SelectTrigger>
                     <SelectContent className="rounded-[12px] border-[#E5E9F6]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}><SelectItem value="auto">自适应</SelectItem><SelectItem value="9:16">9:16</SelectItem><SelectItem value="16:9">16:9</SelectItem><SelectItem value="1:1">1:1</SelectItem></SelectContent>
                   </Select>
                 </div>
                 <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">清晰度</span>
                   <Select value={resolution} onValueChange={setResolution}>
-                    <SelectTrigger className="w-[140px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40"><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="w-[140px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40 shadow-none"><SelectValue /></SelectTrigger>
                     <SelectContent className="rounded-[12px] border-[#E5E9F6]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}><SelectItem value="540P">540P</SelectItem><SelectItem value="720P">720P</SelectItem><SelectItem value="1080P">1080P</SelectItem></SelectContent>
                   </Select>
                 </div>
@@ -332,7 +332,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 mt-3">
-                    <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载视频</Button>
+                    <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载视频</Button>
                   </div>
                   <p className="text-xs text-muted-foreground/80 mt-[7px] flex items-center gap-1"><WarningCircle className="h-3 w-3" />AI生成内容，仅供参考，请勿用于违法违规用途。</p>
                 </div>
@@ -353,7 +353,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                       <div className="flex items-center gap-1.5 mt-3">
                         <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={startEditScript}><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                         <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => handleCopy(resultScript)}><Copy className="h-3.5 w-3.5" />复制</Button>
-                        <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={handleExportScript}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
+                        <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={handleExportScript}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
                       </div>
                       <div className="mt-[7px] h-[16px]"></div>
                     </>
@@ -461,7 +461,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                     </div>
                     {/* 操作按钮 */}
                     <div className="flex items-center gap-1.5 mt-3">
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载视频</Button>
+                      <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载视频</Button>
                     </div>
                   </div>
                   {/* 右侧：分镜脚本 */}
@@ -474,7 +474,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                     <div className="flex items-center gap-1.5 mt-3">
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(selectedHistoryItem.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('已导出 TXT 文件')}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
+                      <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('已导出 TXT 文件')}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
                     </div>
                   </div>
                 </div>
