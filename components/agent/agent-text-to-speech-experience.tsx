@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
+import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
@@ -17,102 +16,56 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from '@/components/ui/alert-dialog'
+import {
   Play,
   Pause,
   GearSix,
-  CheckCircle,
   MagicWand,
   BookOpen,
   FileText,
   UploadSimple,
   MusicNotesSimple,
   Lightning,
-  Sparkle,
   Spinner,
+  CaretLeft,
+  Star,
+  ShareNetwork,
+  ArrowLineDown,
+  Trash,
+  Copy,
+  PencilSimple,
+  WarningCircle,
+  SpeakerHigh, X,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { Agent } from '@/lib/mock-data'
-
-// ============================================================
-// V2.0 Constants
-// ============================================================
+import { AgentTextToSpeechIntro } from './agent-text-to-speech-intro'
+import { toast } from 'sonner'
 
 const CARD_SHADOW: React.CSSProperties = { boxShadow: '0 8px 22px rgba(38,44,72,0.028)' }
-
-// ============================================================
-// Types
-// ============================================================
-
-interface TextToSpeechExperienceProps {
-  agent: Agent
-  text: string
-  paramValues: Record<string, any>
-  onTextChange: (text: string) => void
-  onParamChange: (id: string, value: any) => void
-  error?: string
-  isProcessing?: boolean
-  progress?: number
-  progressSteps?: { label: string; status: 'pending' | 'running' | 'done' }[]
-  costPoints?: number
-  processTime?: string
-  onStartProcess: () => void
-}
-
-// ============================================================
-// Quick Fill Actions
-// ============================================================
-
-const quickFillActions = [
-  { id: 'ai-write', label: 'AI帮我写', icon: MagicWand },
-  { id: 'random-story', label: '随机故事', icon: BookOpen },
-  { id: 'upload-txt', label: '上传txt', icon: FileText },
-]
+const COST_POINTS = 20
+const COST_PRICE = 0.02
+const COST_TEXT = `使用费用：${COST_POINTS} 智点/次（约 ${COST_PRICE} 元）`
 
 // ============================================================
 // Voice Presets
 // ============================================================
 
 const voicePresets = [
-  {
-    value: 'female-gentle',
-    label: 'Bella',
-    avatar: 'B',
-    avatarBg: 'bg-rose-100 text-rose-600',
-    tags: '温暖，知性，细腻',
-    tagColor: 'bg-rose-50 text-rose-600',
-  },
-  {
-    value: 'female-lively',
-    label: 'Luna',
-    avatar: 'L',
-    avatarBg: 'bg-pink-100 text-pink-600',
-    tags: '欢快，明亮，自信',
-    tagColor: 'bg-pink-50 text-pink-600',
-  },
-  {
-    value: 'male-calm',
-    label: 'Alex',
-    avatar: 'A',
-    avatarBg: 'bg-blue-100 text-blue-600',
-    tags: '沉稳，大气，字正腔圆',
-    tagColor: 'bg-blue-50 text-blue-600',
-  },
-  {
-    value: 'male-deep',
-    label: 'Marcus',
-    avatar: 'M',
-    avatarBg: 'bg-indigo-100 text-indigo-600',
-    tags: '低沉，醇厚，富有感染力',
-    tagColor: 'bg-indigo-50 text-indigo-600',
-  },
-  {
-    value: 'child',
-    label: 'Milo',
-    avatar: 'M',
-    avatarBg: 'bg-amber-100 text-amber-600',
-    tags: '天真，灵动，自然',
-    tagColor: 'bg-amber-50 text-amber-600',
-  },
+  { value: 'female-gentle', label: '知夏', avatar: '/avatars/voice-zhixia.jpg', tags: ['温暖', '知性', '细腻'], tagColor: 'bg-rose-50 text-rose-600' },
+  { value: 'female-lively', label: '悦晴', avatar: '/avatars/voice-yueqing.jpg', tags: ['欢快', '明亮', '自信'], tagColor: 'bg-pink-50 text-pink-600' },
+  { value: 'male-calm', label: '正宇', avatar: '/avatars/voice-zhengyu.jpg', tags: ['沉稳', '大气', '字正腔圆'], tagColor: 'bg-blue-50 text-blue-600' },
+  { value: 'male-deep', label: '沉言', avatar: '/avatars/voice-chenyan.jpg', tags: ['低沉', '醇厚', '感染力'], tagColor: 'bg-indigo-50 text-indigo-600' },
+  { value: 'child', label: '童童', avatar: '/avatars/voice-tongtong.jpg', tags: ['天真', '灵动', '自然'], tagColor: 'bg-amber-50 text-amber-600' },
 ]
 
 // ============================================================
@@ -121,64 +74,63 @@ const voicePresets = [
 
 const bgmOptions = [
   { value: 'none', label: '无背景音乐', duration: '' },
-  { value: 'light', label: '阳光明媚', duration: '01:18', sub: '轻快自然' },
-  { value: 'inspire', label: '逐梦前行', duration: '02:05', sub: '积极向上' },
-  { value: 'upbeat', label: '元气满满', duration: '00:52', sub: '活泼灵动' },
-  { value: 'cinematic', label: '史诗之旅', duration: '01:45', sub: '大气沉稳' },
-  { value: 'lofi', label: '午后咖啡馆', duration: '02:30', sub: '悠闲放松' },
-  { value: 'classical', label: '月光花园', duration: '03:12', sub: '优雅温婉' },
-  { value: 'electronic', label: '未来脉搏', duration: '01:33', sub: '科技节奏' },
+  { value: 'light', label: '阳光明媚', duration: '01:18' },
+  { value: 'inspire', label: '逐梦前行', duration: '02:05' },
+  { value: 'upbeat', label: '元气满满', duration: '00:52' },
+  { value: 'cinematic', label: '史诗之旅', duration: '01:45' },
+  { value: 'lofi', label: '午后咖啡馆', duration: '02:30' },
+  { value: 'classical', label: '月光花园', duration: '03:12' },
+  { value: 'electronic', label: '未来脉搏', duration: '01:33' },
 ]
 
 // ============================================================
-// Voice Settings Popover Content
+// Mock History
 // ============================================================
 
-function VoiceSettingsPopover({
-  speed,
-  volume,
-  onSpeedChange,
-  onVolumeChange,
-}: {
-  speed: number
-  volume: number
-  onSpeedChange: (v: number) => void
-  onVolumeChange: (v: number) => void
+const mockHistory = [
+  { id: 'h1', title: '产品宣传文案.mp3', status: 'completed' as const, time: '2026-06-15 14:30', size: '3.2 MB', result: '在这个快速迭代的时代，科技创新正以前所未有的速度改变着我们的生活…', resultId: 'result-text-to-speech' },
+  { id: 'h2', title: '有声书章节 1.mp3', status: 'completed' as const, time: '2026-06-12 09:15', size: '8.7 MB', result: '深夜，九岁的阿布悄悄溜出外婆家，提着一盏熄灭的马灯走向神秘的黑森林…', resultId: 'result-text-to-speech' },
+  { id: 'h3', title: '新闻播报稿.mp3', status: 'completed' as const, time: '2026-06-10 16:00', size: '2.1 MB', result: '各位听众朋友大家好，欢迎收听今日新闻播报。今天的主要内容有…', resultId: 'result-text-to-speech' },
+]
+
+// ============================================================
+// Helpers
+// ============================================================
+
+function formatTime(dateStr: string) {
+  const d = new Date(dateStr)
+  const now = new Date()
+  if (d.toDateString() === now.toDateString()) return `今天 ${d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`
+  return d.toLocaleDateString('zh-CN') + ' ' + d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+}
+
+function formatAudioTime(s: number) {
+  const m = Math.floor(s / 60)
+  const sec = Math.floor(s % 60)
+  return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
+}
+
+// ============================================================
+// Voice Settings Popover
+// ============================================================
+
+function VoiceSettingsPopover({ speed, volume, onSpeedChange, onVolumeChange }: {
+  speed: number; volume: number; onSpeedChange: (v: number) => void; onVolumeChange: (v: number) => void
 }) {
   return (
-    <PopoverContent
-      side="left"
-      align="start"
-      className="w-56 p-0 overflow-hidden shadow-xl border-[#f0f2f8] rounded-[14px]"
-    >
+    <PopoverContent side="left" align="start" className="w-56 p-0 overflow-hidden border-[#E5E9F6] rounded-[12px]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}>
       <div className="p-3 space-y-3">
-        {/* 语速：标签 + 进度条 + 当前值 一行 */}
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <span className="text-[12px] font-medium text-[#3f4558]/60 shrink-0 w-7">语速</span>
-            <Slider
-              value={[speed]}
-              onValueChange={(vals) => onSpeedChange(vals[0])}
-              min={0.5}
-              max={2.0}
-              step={0.1}
-              className="flex-1"
-            />
+            <Slider value={[speed]} onValueChange={(vals) => onSpeedChange(vals[0])} min={0.5} max={2.0} step={0.1} className="flex-1" />
             <span className="text-[12px] font-medium tabular-nums text-[#3f4558]/70 shrink-0 w-7 text-right">{speed}x</span>
           </div>
         </div>
-        {/* 音量：标签 + 进度条 + 当前值 一行 */}
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <span className="text-[12px] font-medium text-[#3f4558]/60 shrink-0 w-7">音量</span>
-            <Slider
-              value={[volume]}
-              onValueChange={(vals) => onVolumeChange(vals[0])}
-              min={50}
-              max={150}
-              step={10}
-              className="flex-1"
-            />
+            <Slider value={[volume]} onValueChange={(vals) => onVolumeChange(vals[0])} min={50} max={150} step={10} className="flex-1" />
             <span className="text-[12px] font-medium tabular-nums text-[#3f4558]/70 shrink-0 w-7 text-right">{volume}%</span>
           </div>
         </div>
@@ -188,114 +140,37 @@ function VoiceSettingsPopover({
 }
 
 // ============================================================
-// Voice Row Component (1 column, 5 rows)
+// Voice Row
 // ============================================================
 
-function VoiceRow({
-  voice,
-  isSelected,
-  isPlaying,
-  onSelect,
-  onTogglePlay,
-  speed,
-  volume,
-  onSpeedChange,
-  onVolumeChange,
-}: {
-  voice: (typeof voicePresets)[number]
-  isSelected: boolean
-  isPlaying: boolean
-  onSelect: () => void
-  onTogglePlay: () => void
-  speed: number
-  volume: number
-  onSpeedChange: (v: number) => void
-  onVolumeChange: (v: number) => void
+function VoiceRow({ voice, isSelected, isPlaying, onSelect, onTogglePlay, speed, volume, onSpeedChange, onVolumeChange }: {
+  voice: (typeof voicePresets)[number]; isSelected: boolean; isPlaying: boolean; onSelect: () => void; onTogglePlay: () => void; speed: number; volume: number; onSpeedChange: (v: number) => void; onVolumeChange: (v: number) => void
 }) {
   const [settingsOpen, setSettingsOpen] = useState(false)
-
   return (
-    <div
-      onClick={onSelect}
-      className={cn(
-        'group relative flex items-center gap-3 px-3 py-2.5 rounded-[12px] cursor-pointer transition-all duration-200',
-        isSelected
-          ? 'bg-[#4f55ec]/[0.04] ring-1 ring-[#4f55ec]/[0.12]'
-          : 'hover:bg-[#4f55ec]/[0.03]'
-      )}
-    >
-      {/* 左侧：彩色首字母头像 */}
+    <div onClick={onSelect} className={cn('group relative flex items-center gap-3 px-3 py-2.5 rounded-[12px] cursor-pointer transition-all duration-200', isSelected ? 'bg-[#4f55ec]/[0.04] ring-1 ring-[#4f55ec]/[0.12]' : 'hover:bg-[#4f55ec]/[0.03]')}>
       <div className="shrink-0">
-        <div className={cn(
-          'w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-200',
-          voice.avatarBg
-        )}>
-          {voice.avatar}
-        </div>
+        <img src={voice.avatar} alt={voice.label} className="w-9 h-9 rounded-full object-cover" />
       </div>
-
-      {/* 中间：人名 + 声音标签徽章 */}
       <div className="flex-1 min-w-0 flex items-center gap-2">
-        <span className={cn(
-          'text-[15px] font-medium transition-colors tracking-tight',
-          isSelected ? 'text-[#3f4558]' : 'text-[#3f4558]/80'
-        )}>
-          {voice.label}
-        </span>
-        <span className={cn('inline-flex items-center text-[11px] px-1.5 py-0.5 rounded-md font-medium', voice.tagColor)}>
-          {voice.tags}
-        </span>
+        <span className={cn('text-[15px] font-medium tracking-tight', isSelected ? 'text-[#3f4558]' : 'text-[#3f4558]/80')}>{voice.label}</span>
+        {voice.tags.map((tag, i) => (
+          <span key={i} className={cn('inline-flex items-center text-[11px] px-1.5 py-0.5 rounded-md font-medium', voice.tagColor)}>{tag}</span>
+        ))}
       </div>
-
-      {/* 右侧：试听 + 设置按钮（hover 显示） */}
       <div className="flex items-center gap-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        {/* 试听按钮 */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            onTogglePlay()
-          }}
-          className={cn(
-            'w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200',
-            isPlaying
-              ? 'bg-[#3f4558]/10 text-[#3f4558]'
-              : 'text-[#3f4558]/40 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.06]'
-          )}
-        >
-          {isPlaying ? (
-            <Pause className="h-3.5 w-3.5" weight="fill" />
-          ) : (
-            <Play className="h-3.5 w-3.5 ml-0.5" weight="fill" />
-          )}
+        <button onClick={(e) => { e.stopPropagation(); onTogglePlay() }} className={cn('w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200', isPlaying ? 'bg-[#3f4558]/10 text-[#3f4558]' : 'text-[#3f4558]/40 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.06]')}>
+          {isPlaying ? <Pause className="h-3.5 w-3.5" weight="fill" /> : <Play className="h-3.5 w-3.5 ml-0.5" weight="fill" />}
         </button>
-        {/* 设置按钮 */}
         <Popover open={settingsOpen} onOpenChange={setSettingsOpen}>
           <PopoverTrigger asChild>
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                setSettingsOpen(!settingsOpen)
-              }}
-              className={cn(
-                'w-7 h-7 rounded-md flex items-center justify-center transition-all duration-200',
-                settingsOpen
-                  ? 'bg-[#3f4558]/[0.06] text-[#3f4558]'
-                  : 'text-[#3f4558]/40 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.06]'
-              )}
-            >
+            <button onClick={(e) => { e.stopPropagation(); setSettingsOpen(!settingsOpen) }} className={cn('w-7 h-7 rounded-md flex items-center justify-center transition-all duration-200', settingsOpen ? 'bg-[#4f55ec]/[0.06] text-[#4f55ec]' : 'text-[#3f4558]/60 hover:text-[#4f55ec] hover:bg-[#4f55ec]/[0.06]')}>
               <GearSix className="h-3.5 w-3.5" />
             </button>
           </PopoverTrigger>
-          <VoiceSettingsPopover
-            speed={speed}
-            volume={volume}
-            onSpeedChange={onSpeedChange}
-            onVolumeChange={onVolumeChange}
-          />
+          <VoiceSettingsPopover speed={speed} volume={volume} onSpeedChange={onSpeedChange} onVolumeChange={onVolumeChange} />
         </Popover>
       </div>
-
-      {/* 播放中波形指示 — 底部微条 */}
       {isPlaying && (
         <div className="absolute bottom-0 inset-x-3 h-0.5 bg-[#3f4558]/10 rounded-full overflow-hidden">
           <div className="h-full bg-[#4f55ec]/30 rounded-full animate-pulse" style={{ width: '60%' }} />
@@ -309,433 +184,674 @@ function VoiceRow({
 // Main Component
 // ============================================================
 
-export function TextToSpeechExperienceArea({
-  agent,
-  text,
-  paramValues,
-  onTextChange,
-  onParamChange,
-  error,
-  isProcessing,
-  progress,
-  progressSteps,
-  costPoints,
-  processTime,
-  onStartProcess,
-}: TextToSpeechExperienceProps) {
+interface TextToSpeechExperienceProps {
+  agent: Agent
+  onBack: () => void
+  onViewResult?: (resultId: string, fileName?: string) => void
+}
+
+export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSpeechExperienceProps) {
+  // 输入
+  const [text, setText] = useState('')
+  const [voice, setVoice] = useState('female-gentle')
+  const [speed, setSpeed] = useState(1.0)
+  const [volume, setVolume] = useState(100)
+  const [bgm, setBgm] = useState('')
+  const [bgmFile, setBgmFile] = useState<File | null>(null)
+
+  // BGM 播放器
+  const [bgmPlaying, setBgmPlaying] = useState(false)
+  const [bgmCurrentTime, setBgmCurrentTime] = useState(0)
+  const [bgmDuration] = useState(120) // 模拟 120 秒
+  const bgmTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // 处理
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [resultText, setResultText] = useState('')
+
+  // 历史
+  const [history, setHistory] = useState(mockHistory)
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
+  const [selectedHistoryItem, setSelectedHistoryItem] = useState<typeof history[0] | null>(null)
+
+  // Tab
+  const [activeTab, setActiveTab] = useState<'intro' | 'experience'>('experience')
+
+  // 音频播放
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration] = useState(32)
+  const [playbackRate, setPlaybackRate] = useState(1.0)
+  const audioTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // 声音试听
   const [playingVoice, setPlayingVoice] = useState<string | null>(null)
   const [playingBgm, setPlayingBgm] = useState<string | null>(null)
   const [bgmSelectOpen, setBgmSelectOpen] = useState(false)
-  // AI写悬浮卡片
+
+  // AI写
   const [aiWriteKeyword, setAiWriteKeyword] = useState('')
   const [aiWriteGenerating, setAiWriteGenerating] = useState(false)
 
-  const currentVoice = paramValues.voice || 'female-gentle'
-  const currentSpeed = paramValues.speed ?? 1.0
-  const currentVolume = paramValues.volume ?? 100
-  const currentBgm = paramValues.bgm || ''
+  // 文本编辑
+  const [isEditingTranscript, setIsEditingTranscript] = useState(false)
+  const [transcriptEditText, setTranscriptEditText] = useState('')
 
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const resultRef = useRef<HTMLDivElement>(null)
+
+  // ============================================================
+  // Handlers
+  // ============================================================
+
+  function handleGenerate() {
+    if (!text.trim()) { toast.error('请输入要转换的文字内容'); return }
+    setIsProcessing(true)
+    setProgress(0)
+    setResultText('')
+    setCurrentTime(0)
+    setIsPlaying(false)
+    if (audioTimer.current) { clearInterval(audioTimer.current); audioTimer.current = null }
+    const iv = setInterval(() => {
+      setProgress(prev => {
+        const next = prev + Math.floor(Math.random() * 12) + 6
+        if (next >= 100) { clearInterval(iv); setTimeout(finish, 400); return 100 }
+        return next
+      })
+    }, 350)
+  }
+
+  function finish() {
+    setIsProcessing(false)
+    setProgress(100)
+    setResultText(text)
+    toast.success('语音生成完成！')
+    setTimeout(() => {
+      resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
+  }
+
+  function handleDeleteHistory(id: string) { setDeleteConfirmId(id) }
+  function confirmDelete() { if (deleteConfirmId) { setHistory(prev => prev.filter(h => h.id !== deleteConfirmId)); setDeleteConfirmId(null); toast.success('已删除') } }
+  function handleCopy(text: string) { navigator.clipboard.writeText(text); toast.success('已复制到剪贴板') }
+
+  // 音频播放
+  function togglePlay() {
+    if (isPlaying) {
+      if (audioTimer.current) { clearInterval(audioTimer.current); audioTimer.current = null }
+      setIsPlaying(false)
+    } else {
+      setIsPlaying(true)
+      audioTimer.current = setInterval(() => {
+        setCurrentTime(prev => {
+          const next = prev + (100 * playbackRate / 1000)
+          if (next >= duration) { clearInterval(audioTimer.current!); audioTimer.current = null; setIsPlaying(false); return duration }
+          return next
+        })
+      }, 100)
+    }
+  }
+  function handleProgressChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const wasPlaying = isPlaying
+    if (audioTimer.current) { clearInterval(audioTimer.current); audioTimer.current = null }
+    setIsPlaying(false)
+    const v = parseFloat(e.target.value)
+    setCurrentTime(v)
+    if (wasPlaying) {
+      setIsPlaying(true)
+      audioTimer.current = setInterval(() => {
+        setCurrentTime(prev => {
+          const next = prev + (100 * playbackRate / 1000)
+          if (next >= duration) { clearInterval(audioTimer.current!); audioTimer.current = null; setIsPlaying(false); return duration }
+          return next
+        })
+      }, 100)
+    }
+  }
+  function changePlaybackRate() {
+    const rates = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
+    const idx = rates.indexOf(playbackRate)
+    const next = rates[(idx + 1) % rates.length]
+    setPlaybackRate(next)
+  }
+
+  // 声音试听
   const togglePreview = (voiceValue: string) => {
-    if (playingVoice === voiceValue) {
-      setPlayingVoice(null)
-    } else {
-      setPlayingVoice(voiceValue)
-      setTimeout(() => setPlayingVoice(null), 2000)
-    }
+    if (playingVoice === voiceValue) { setPlayingVoice(null) } else { setPlayingVoice(voiceValue); setTimeout(() => setPlayingVoice(null), 2000) }
   }
-
   const toggleBgmPreview = (bgmValue: string) => {
-    if (playingBgm === bgmValue) {
-      setPlayingBgm(null)
-    } else {
-      setPlayingBgm(bgmValue)
-      setTimeout(() => setPlayingBgm(null), 2000)
+    if (playingBgm === bgmValue) { setPlayingBgm(null) } else { setPlayingBgm(bgmValue); setTimeout(() => setPlayingBgm(null), 2000) }
+  }
+
+  // 快捷填充
+  function handleQuickFill(actionId: string) {
+    if (actionId === 'random-story') {
+      setText('萤火虫的秘密\n深夜，九岁的阿布悄悄溜出外婆家，提着一盏熄灭的马灯走向神秘的黑森林。\n他想抓住传说中能实现愿望的"黄金萤火虫"，来治好外婆的眼睛。林子里静得只能听到他自己的心跳，微风吹过，树叶沙沙作响。突然，前方亮起了一团温暖的微光。那不是一只，而是成千上万只萤火虫聚在一起，宛如地上的银河。\n当它们围绕着阿布翩翩起舞时，阿布闭上眼睛，在心里虔诚地许愿。等他再次睁开眼，手里的马灯竟然自己亮了起来，散发出永不熄灭的柔和光芒。阿布开心地笑了，他捧着这盏希望之灯，朝着外婆家的方向飞奔而去。')
+      return
     }
   }
 
-  const handleBgmUpload = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const uploadedFile = e.target.files?.[0]
-      if (uploadedFile) {
-        onParamChange('bgm', 'custom-' + uploadedFile.name)
-        onParamChange('customBgmName', uploadedFile.name)
-      }
-      e.target.value = ''
-    },
-    [onParamChange]
-  )
+  function handleTxtUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const uploadedFile = e.target.files?.[0]
+    if (uploadedFile) {
+      const reader = new FileReader()
+      reader.onload = (ev) => { setText((ev.target?.result as string) || '') }
+      reader.readAsText(uploadedFile)
+    }
+    e.target.value = ''
+  }
 
-  const handleQuickFill = useCallback(
-    (actionId: string) => {
-      if (actionId === 'random-story') {
-        onTextChange('萤火虫的秘密\n深夜，九岁的阿布悄悄溜出外婆家，提着一盏熄灭的马灯走向神秘的黑森林。\n他想抓住传说中能实现愿望的"黄金萤火虫"，来治好外婆的眼睛。林子里静得只能听到他自己的心跳，微风吹过，树叶沙沙作响。突然，前方亮起了一团温暖的微光。那不是一只，而是成千上万只萤火虫聚在一起，宛如地上的银河。\n当它们围绕着阿布翩翩起舞时，阿布闭上眼睛，在心里虔诚地许愿。等他再次睁开眼，手里的马灯竟然自己亮了起来，散发出永不熄灭的柔和光芒。阿布开心地笑了，他捧着这盏希望之灯，朝着外婆家的方向飞奔而去。')
-        return
-      }
-    },
-    [text, onTextChange]
-  )
+  function handleBgmUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const uploadedFile = e.target.files?.[0]
+    if (uploadedFile) {
+      setBgm('custom')
+      setBgmFile(uploadedFile)
+      setBgmCurrentTime(0)
+      setBgmPlaying(false)
+      if (bgmTimer.current) { clearInterval(bgmTimer.current); bgmTimer.current = null }
+      // 保持气泡开启
+      setBgmSelectOpen(true)
+    }
+    e.target.value = ''
+  }
 
-  const handleTxtUpload = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const uploadedFile = e.target.files?.[0]
-      if (uploadedFile) {
-        const reader = new FileReader()
-        reader.onload = (ev) => {
-          onTextChange((ev.target?.result as string) || '')
-        }
-        reader.readAsText(uploadedFile)
-      }
-      e.target.value = ''
-    },
-    [onTextChange]
-  )
+  function toggleBgmPlay() {
+    if (bgmPlaying) {
+      if (bgmTimer.current) { clearInterval(bgmTimer.current); bgmTimer.current = null }
+      setBgmPlaying(false)
+    } else {
+      setBgmPlaying(true)
+      bgmTimer.current = setInterval(() => {
+        setBgmCurrentTime(prev => {
+          const next = prev + 0.1
+          if (next >= bgmDuration) { clearInterval(bgmTimer.current!); bgmTimer.current = null; setBgmPlaying(false); return 0 }
+          return next
+        })
+      }, 100)
+    }
+  }
 
-  // AI写生成处理
-  const handleAiWriteGenerate = () => {
+  function handleBgmProgressChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const wasPlaying = bgmPlaying
+    if (bgmTimer.current) { clearInterval(bgmTimer.current); bgmTimer.current = null }
+    setBgmPlaying(false)
+    setBgmCurrentTime(parseFloat(e.target.value))
+    if (wasPlaying) {
+      setBgmPlaying(true)
+      bgmTimer.current = setInterval(() => {
+        setBgmCurrentTime(prev => {
+          const next = prev + 0.1
+          if (next >= bgmDuration) { clearInterval(bgmTimer.current!); bgmTimer.current = null; setBgmPlaying(false); return 0 }
+          return next
+        })
+      }, 100)
+    }
+  }
+
+  function formatBgmTime(s: number) {
+    const m = Math.floor(s / 60)
+    const sec = Math.floor(s % 60)
+    return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
+  }
+
+  function handleAiWriteGenerate() {
     if (aiWriteGenerating || !aiWriteKeyword.trim()) return
     setAiWriteGenerating(true)
     setTimeout(() => {
-      onTextChange(
-        '【' + aiWriteKeyword + '】\n\n' +
-        '针对"${keyword}"这一主题，我为您撰写了以下配音文案：\n\n'.replace('${keyword}', aiWriteKeyword) +
-        '在这个快速迭代的时代，科技创新正以前所未有的速度改变着我们的生活。' +
-        '从清晨智能闹钟的轻柔唤醒，到夜晚智能助手的贴心陪伴，科技已经融入了我们生命中的每一个角落。\n\n' +
-        '想象一下，当你迈进家门的那一刻，灯光自动亮起，温度已经调整到最舒适的度数，' +
-        '就连你最爱的音乐也已经在背景中轻轻流淌……这一切，不再是科幻电影中的场景，而是正在发生的现实。\n\n' +
-        '让我们一起拥抱这个充满无限可能的智能时代，用科技的力量，去创造更美好的明天。'
-      )
+      setText('【' + aiWriteKeyword + '】\n\n针对"' + aiWriteKeyword + '"这一主题，我为您撰写了以下配音文案：\n\n在这个快速迭代的时代，科技创新正以前所未有的速度改变着我们的生活。从清晨智能闹钟的轻柔唤醒，到夜晚智能助手的贴心陪伴，科技已经融入了我们生命中的每一个角落。\n\n想象一下，当你迈进家门的那一刻，灯光自动亮起，温度已经调整到最舒适的度数，就连你最爱的音乐也已经在背景中轻轻流淌……这一切，不再是科幻电影中的场景，而是正在发生的现实。\n\n让我们一起拥抱这个充满无限可能的智能时代，用科技的力量，去创造更美好的明天。')
       setAiWriteGenerating(false)
     }, 1500)
   }
 
+  function startEditTranscript() { setTranscriptEditText(resultText); setIsEditingTranscript(true) }
+  function saveEditTranscript() { setResultText(transcriptEditText); setIsEditingTranscript(false); toast.success('已保存') }
+
+  // ============================================================
+  // Render
+  // ============================================================
+
   return (
-    <div className="flex flex-col lg:flex-row gap-6 w-full">
-      {/* ========================================== */}
-      {/* LEFT: 输入内容                                                    */}
-      {/* ========================================== */}
-      <div className="flex-1 min-w-0 relative">
-        <Card className="border border-[#f0f2f8] bg-white overflow-hidden h-full" style={CARD_SHADOW}>
-          <CardContent className="p-0 flex flex-col h-full">
-            {/* 标题栏 — 精简到只有标题 + 工具按钮 */}
-            <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#f0f2f8]">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="w-1.5 h-4 rounded-full bg-violet-400 shrink-0" />
-                <h3 className="text-[15px] font-medium text-[#3f4558] tracking-tight">输入内容</h3>
-                <div className="hidden sm:flex items-center gap-0.5 ml-1 pl-2 border-l border-[#f0f2f8]">
-                  {/* AI帮我写 — Popover */}
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors">
-                        <MagicWand className="h-4 w-4" weight="duotone" />
-                        AI帮我写
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent side="bottom" align="start" className="w-72 p-0 overflow-hidden shadow-xl border-[#f0f2f8] rounded-[14px]">
-                      <div className="px-4 py-3 border-b border-[#f0f2f8] bg-[#f8f9fc]">
-                        <span className="text-[13px] font-semibold text-[#3f4558]">AI 智能写作</span>
-                      </div>
-                      <div className="p-4 space-y-3">
-                        <Input
-                          value={aiWriteKeyword}
-                          onChange={(e) => setAiWriteKeyword(e.target.value)}
-                          placeholder="输入关键词，使用AI帮写生成完整故事内容"
-                          className="h-9 text-[13px] rounded-[12px] border-[#e7ebf5] focus-visible:ring-[#4f55ec]/20 focus-visible:border-[#4f55ec]/30"
-                          onKeyDown={(e) => e.key === 'Enter' && handleAiWriteGenerate()}
-                        />
-                        <Button
-                          className="w-full h-9 text-[13px] gap-2 rounded-[10px] bg-[#4f55ec] hover:bg-[#4f55ec]/80"
-                          onClick={handleAiWriteGenerate}
-                          disabled={aiWriteGenerating}
-                        >
-                          {aiWriteGenerating ? (
-                            <><Spinner className="h-4 w-4 animate-spin" />生成中...</>
-                          ) : (
-                            <>
-                              <Sparkle className="h-4 w-4" weight="fill" />
-                              生成
-                              <span className="flex items-center gap-1 ml-1 text-xs font-normal opacity-70">
-                                <span className="w-px h-3 bg-white/30" />
-                                <Lightning className="h-3 w-3" weight="fill" />1
-                              </span>
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-
-                  {/* 随机故事 */}
-                  <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors" onClick={() => handleQuickFill('random-story')}>
-                    <BookOpen className="h-4 w-4" weight="duotone" />
-                    随机故事
-                  </Button>
-
-                  {/* 上传txt */}
-                  <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors" onClick={() => document.getElementById('tts-txt-upload')?.click()}>
-                    <FileText className="h-4 w-4" weight="duotone" />
-                    上传txt
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <input
-              id="tts-txt-upload"
-              type="file"
-              accept=".txt"
-              className="hidden"
-              onChange={handleTxtUpload}
-            />
-
-          {/* 移动端工具条 */}
-          <div className="sm:hidden flex items-center gap-1 flex-wrap px-4 py-2 border-b border-[#f0f2f8]">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors">
-                  <MagicWand className="h-4 w-4" weight="duotone" />
-                  AI帮我写
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent side="bottom" align="start" className="w-72 p-0 overflow-hidden shadow-xl border-[#f0f2f8] rounded-[14px]">
-                <div className="px-4 py-3 border-b border-[#f0f2f8] bg-[#f8f9fc]">
-                  <span className="text-[13px] font-semibold text-[#3f4558]">AI 智能写作</span>
-                </div>
-                <div className="p-4 space-y-3">
-                  <Input value={aiWriteKeyword} onChange={(e) => setAiWriteKeyword(e.target.value)} placeholder="输入关键词，使用AI帮写生成完整故事内容" className="h-9 text-[13px] rounded-[12px] border-[#e7ebf5] focus-visible:ring-[#4f55ec]/20 focus-visible:border-[#4f55ec]/30" onKeyDown={(e) => e.key === 'Enter' && handleAiWriteGenerate()} />
-                  <Button className="w-full h-9 text-[13px] gap-2 rounded-[10px] bg-[#4f55ec] hover:bg-[#4f55ec]/80" onClick={handleAiWriteGenerate} disabled={aiWriteGenerating}>
-                    {aiWriteGenerating ? <><Spinner className="h-4 w-4 animate-spin" />生成中...</> : (<><Sparkle className="h-4 w-4" weight="fill" />生成<span className="flex items-center gap-1 ml-1 text-xs font-normal opacity-70"><span className="w-px h-3 bg-white/30" /><Lightning className="h-3 w-3" weight="fill" />1</span></>)}
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-            <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors" onClick={() => handleQuickFill('random-story')}>
-              <BookOpen className="h-4 w-4" weight="duotone" />
-              随机故事
+    <div className="flex-1 flex flex-col">
+      {/* Header */}
+      <header className="sticky top-0 z-20 border-b backdrop-blur-[10px]" style={{ background: 'rgba(255,255,255,0.96)', borderColor: 'rgb(237,240,248)' }}>
+        <div className="flex items-center justify-between h-16 px-[34px] relative">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 text-muted-foreground hover:text-foreground">
+              <CaretLeft className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors" onClick={() => document.getElementById('tts-txt-upload')?.click()}>
-              <FileText className="h-4 w-4" weight="duotone" />
-              上传txt
-            </Button>
-          </div>
-
-          {/* Textarea — 无边框无底色，字数在右下角 */}
-          <div className="flex-1 relative p-4">
-            <Textarea
-              id="tts-experience-textarea"
-              placeholder="输入你想要的配音文案，AI 即刻生成带情感的自然人声…"
-              value={text}
-              onChange={(e) => onTextChange(e.target.value)}
-              className="min-h-[280px] h-full resize-none rounded-[12px] border border-[#e7ebf5] shadow-none bg-white focus-visible:ring-0 text-[13px] leading-7 placeholder:text-[#3f4558]/35"
-            />
-            <span className={cn(
-              'absolute bottom-6 right-6 text-[11px] font-medium tabular-nums tracking-tight',
-              text.length > 4500
-                ? 'text-destructive/80'
-                : 'text-[#3f4558]/40'
-            )}>
-              {text.length}/5000
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Loading 覆盖层 */}
-      {isProcessing && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-[16px] overflow-hidden">
-          <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px]" />
-          <div className="relative z-10 text-center space-y-4">
-            <div className="flex items-center justify-center">
-              <Spinner className="h-8 w-8 animate-spin text-[#3f4558]/60" />
+            <div className="flex items-center gap-2.5">
+              <SpeakerHigh className="h-6 w-6 text-[#4f55ec]" weight="fill" />
+              <span className="text-[18px] font-medium text-[#3f4558]">AI文字转语音</span>
             </div>
-            {progressSteps && progressSteps.length > 0 ? (
-              <div className="space-y-1.5">
-                {progressSteps.map((step, i) => (
-                  <div key={i} className="flex items-center gap-2 text-[13px]">
-                    {step.status === 'done' ? (
-                      <CheckCircle className="h-3.5 w-3.5 text-emerald-500 shrink-0" weight="fill" />
-                    ) : step.status === 'running' ? (
-                      <Spinner className="h-3.5 w-3.5 animate-spin text-[#3f4558] shrink-0" />
-                    ) : (
-                      <div className="w-3.5 h-3.5 rounded-full border border-[#f0f2f8] shrink-0" />
-                    )}
-                    <span className={cn(
-                      step.status === 'done' ? 'text-emerald-600' : step.status === 'running' ? 'text-[#3f4558]/80' : 'text-[#3f4558]/50'
-                    )}>
-                      {step.label}
-                      {step.status === 'running' && progress != null && ` ${Math.round(progress)}%`}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-[13px] text-[#3f4558]/50">处理中…{progress != null ? ` ${Math.round(progress)}%` : ''}</p>
-            )}
-            {costPoints && processTime && (
-              <p className="text-[12px] text-[#3f4558]/40">预计消耗 {costPoints} 智点 · 约 {processTime}</p>
-            )}
+          </div>
+          {/* Tabs */}
+          <div className="absolute left-1/2 -translate-x-1/2">
+            <div className="inline-flex bg-muted rounded-[10px] p-1 gap-0.5">
+              <button onClick={() => setActiveTab('intro')} className={cn('h-8 px-5 rounded-[7px] text-sm transition-all cursor-pointer', activeTab === 'intro' ? 'bg-white text-foreground font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground')}>场景介绍</button>
+              <button onClick={() => setActiveTab('experience')} className={cn('h-8 px-5 rounded-[7px] text-sm transition-all cursor-pointer', activeTab === 'experience' ? 'bg-white text-foreground font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground')}>使用应用</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="h-9 rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e7ebf5] bg-white text-[#596176] hover:bg-[#4f55ec]/[0.06] px-[14px] shadow-none"><Star className="h-[17px] w-[17px]" />收藏</Button>
+            <Button variant="outline" size="sm" className="h-9 rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e7ebf5] bg-white text-[#596176] hover:bg-[#4f55ec]/[0.06] px-[14px] shadow-none"><ShareNetwork className="h-[17px] w-[17px]" />分享</Button>
           </div>
         </div>
-      )}
-    </div>
+      </header>
 
-      {/* ========================================== */}
-      {/* RIGHT: 选择声音 + 背景音乐 + 开始处理                              */}
-      <div className="w-full lg:w-[380px] shrink-0 flex flex-col gap-4">
-        {/* 配音设置 Card — 音色 + BGM 合为一张卡片 */}
-        <Card className="border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW}>
-          <CardContent className="p-0">
-            {/* 选择声音 Section */}
-            <div>
-              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#f0f2f8]">
-                <span className="w-1.5 h-4 rounded-full bg-rose-400/60 shrink-0" />
-                <h3 className="text-[15px] font-medium text-[#3f4558] tracking-tight">选择声音</h3>
+      {activeTab === 'intro' ? (
+        <div className="max-w-[1440px] mx-auto px-[34px] pt-9 pb-16"><AgentTextToSpeechIntro /></div>
+      ) : (
+        <div className="max-w-[1440px] mx-auto px-[34px] pt-9 pb-16 flex flex-col gap-6">
+
+          {/* CARD 1 — 使用指南 */}
+          <div className="rounded-[16px] border border-[#e0e5ff]" style={{ background: '#fdfdff' }}>
+            <div className="h-[230px] px-[26px] py-[22px] grid grid-cols-1 md:grid-cols-[0.74fr_1fr] gap-6 items-center">
+              <div>
+                <span className="text-[17px] font-normal text-[#3f4558] mb-2 inline-block">使用指南</span>
+                <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">输入文字内容，AI 即刻生成带情感的自然人声。支持多音色切换、语速音量调节、背景音乐混音，满足配音、有声书、播客等多种场景。</p>
+                <small className="text-[14px] text-[#9ca3b8]">{COST_TEXT}</small>
               </div>
-              <div className="px-3 py-2 space-y-1.5">
-                {voicePresets.map((voice) => (
-                  <VoiceRow
-                    key={voice.value}
-                    voice={voice}
-                    isSelected={currentVoice === voice.value}
-                    isPlaying={playingVoice === voice.value}
-                    onSelect={() => onParamChange('voice', voice.value)}
-                    onTogglePlay={() => togglePreview(voice.value)}
-                    speed={currentSpeed}
-                    volume={currentVolume}
-                    onSpeedChange={(v) => onParamChange('speed', v)}
-                    onVolumeChange={(v) => onParamChange('volume', v)}
-                  />
-                ))}
+              <div className="flex items-center justify-center h-full">
+                <div className="w-full h-[180px] rounded-[18px] bg-white flex items-center justify-center overflow-hidden" style={{ boxShadow: '0px 16px 42px rgba(87,92,233,0.08)' }}>
+                  <img src="/covers/agent-text-to-speech.jpg" alt="AI文字转语音封面图" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 2A + 2B — 输入区 | 生成设置，3:2 比例 */}
+          <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6 items-stretch">
+
+            {/* 输入区 */}
+            <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW}>
+              <div className="p-6 h-full flex flex-col">
+                {/* 标题栏 + 工具按钮 */}
+                <div className="flex items-center justify-between mb-4 shrink-0">
+                  <h3 className="text-[18px] font-medium text-foreground">输入内容</h3>
+                  <div className="flex items-center gap-0.5">
+                    {/* AI帮我写 */}
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors"><MagicWand className="h-4 w-4" weight="duotone" />AI帮我写</Button>
+                      </PopoverTrigger>
+                      <PopoverContent side="bottom" align="start" className="w-[360px] p-0 overflow-hidden border-[#E5E9F6] rounded-[12px]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}>
+                        <div className="px-4 py-3 border-b border-[#E5E9F6] bg-[#f8f9fc]"><span className="text-[13px] font-semibold text-[#3f4558]">AI 智能写作</span></div>
+                        <div className="p-4 space-y-3">
+                          <Input value={aiWriteKeyword} onChange={(e) => setAiWriteKeyword(e.target.value)} placeholder="输入关键词，使用AI帮写生成完整故事内容" className="h-9 text-[13px] rounded-[12px] border-[#e7ebf5] focus-visible:ring-[#4f55ec]/20 focus-visible:border-[#4f55ec]/30" onKeyDown={(e) => e.key === 'Enter' && handleAiWriteGenerate()} />
+                          <Button className="w-full h-9 text-[13px] gap-2 rounded-[10px] bg-[#4f55ec] hover:bg-[#4f55ec]/80" onClick={handleAiWriteGenerate} disabled={aiWriteGenerating}>
+                            {aiWriteGenerating ? (<><Spinner className="h-4 w-4 animate-spin" />生成中...</>) : (<><MagicWand className="h-4 w-4" weight="fill" />生成<span className="flex items-center gap-1 ml-1 text-xs font-normal opacity-70"><span className="w-px h-3 bg-white/30" /><Lightning className="h-3 w-3" weight="fill" />1</span></>)}
+                          </Button>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                    {/* 随机故事 */}
+                    <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors" onClick={() => handleQuickFill('random-story')}><BookOpen className="h-4 w-4" weight="duotone" />随机故事</Button>
+                    {/* 上传txt */}
+                    <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors" onClick={() => document.getElementById('tts-txt-upload')?.click()}><FileText className="h-4 w-4" weight="duotone" />上传txt</Button>
+                    <input id="tts-txt-upload" type="file" accept=".txt" className="hidden" onChange={handleTxtUpload} />
+                  </div>
+                </div>
+                {/* Textarea */}
+                <div className="flex-1 relative">
+                  <Textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="输入你想要的配音文案，AI 即刻生成带情感的自然人声…" className="min-h-[280px] h-full resize-none rounded-[12px] border border-[#e7ebf5] shadow-none bg-[#F8FAFF] focus-visible:ring-0 text-[13px] leading-7 placeholder:text-[#3f4558]/35" />
+                  <span className={cn('absolute bottom-3 right-3 text-[11px] font-medium tabular-nums tracking-tight', text.length > 4500 ? 'text-destructive/80' : 'text-[#3f4558]/40')}>{text.length}/5000</span>
+                </div>
+                <p className="flex items-center gap-1.5 mt-3 text-[12px] text-muted-foreground/70 shrink-0"><WarningCircle className="h-3 w-3 shrink-0" />生成内容仅供合法用途，请勿用于违法违规场景。</p>
               </div>
             </div>
 
-            {/* 背景音乐 — 降为子选项，标题 + 下拉同行 */}
-            <div className="px-4 py-2.5 border-t border-[#f0f2f8]">
-              <div className="flex items-center gap-3">
-                <span className="text-[13px] font-medium text-[#3f4558]/60 shrink-0">背景音乐</span>
-                <Select
-                  open={bgmSelectOpen}
-                  onOpenChange={setBgmSelectOpen}
-                  value={currentBgm}
-                  onValueChange={(v) => {
-                    onParamChange('bgm', v)
-                    setBgmSelectOpen(false)
-                  }}
-                >
-                  <SelectTrigger className="flex-1 h-8 rounded-[11px] border border-[#e7ebf5] bg-white text-[13px] hover:bg-[#4f55ec]/[0.04] transition-colors px-3 shadow-none focus-visible:ring-[#4f55ec]/20 focus-visible:ring-1">
-                    {currentBgm ? (
-                      <span className="text-[#3f4558]">{bgmOptions.find(o => o.value === currentBgm)?.label || currentBgm}</span>
-                    ) : (
-                      <span className="text-[#3f4558]/50">选择背景音乐</span>
-                    )}
-                  </SelectTrigger>
-                  <SelectContent align="start" className="w-[340px] p-2">
-                    <div className="grid grid-cols-2 gap-1">
-                      {/* 上传本地音乐 */}
-                      <label
-                        className="flex items-center gap-2 px-2.5 py-2 rounded-md cursor-pointer hover:bg-[#4f55ec]/[0.04] transition-colors text-[#3f4558]/60 hover:text-[#3f4558] border border-dashed border-[#f0f2f8]"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <UploadSimple className="h-4 w-4 shrink-0" weight="duotone" />
-                        <span className="text-[13px]">上传本地音乐</span>
-                        <input
-                          type="file"
-                          accept=".mp3,.wav,.m4a,.flac"
-                          className="hidden"
-                          onChange={handleBgmUpload}
-                        />
-                      </label>
-                      {/* BGM 选项：2 列网格 */}
-                      {bgmOptions.map((opt) => {
-                        const isBgmPlaying = playingBgm === opt.value
-                        return (
-                          <div
-                            key={opt.value}
-                            onClick={() => { onParamChange('bgm', opt.value); setBgmSelectOpen(false) }}
-                            className={cn(
-                              'group flex items-center gap-2.5 px-2.5 py-2 rounded-md cursor-pointer transition-colors text-[#3f4558]',
-                              currentBgm === opt.value
-                                ? 'bg-[#4f55ec]/[0.04]'
-                                : 'hover:bg-[#4f55ec]/[0.03]'
-                            )}
-                          >
-                            {/* 音乐 icon + 播放 icon 同位置叠加 */}
+            {/* 生成设置 */}
+            <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW} ref={scrollRef}>
+              <div className="p-6 h-full flex flex-col">
+                <h3 className="text-[18px] font-medium text-foreground mb-3 shrink-0">生成设置</h3>
+                {/* 选择声音 */}
+                <div className="shrink-0">
+                  <span className="text-[13px] font-medium text-[#3f4558]/60 mb-2 block">选择声音</span>
+                  <div className="space-y-1.5">
+                    {voicePresets.map((v) => (
+                      <VoiceRow key={v.value} voice={v} isSelected={voice === v.value} isPlaying={playingVoice === v.value} onSelect={() => setVoice(v.value)} onTogglePlay={() => togglePreview(v.value)} speed={speed} volume={volume} onSpeedChange={setSpeed} onVolumeChange={setVolume} />
+                    ))}
+                  </div>
+                </div>
+                {/* 背景音乐 */}
+                <div className="mt-3 shrink-0">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[13px] font-medium text-[#3f4558]/60 shrink-0">背景音乐</span>
+                    <Select open={bgmSelectOpen} onOpenChange={setBgmSelectOpen} value={bgm} onValueChange={(v) => { setBgm(v) }}>
+                      <SelectTrigger className="flex-1 h-8 rounded-[11px] border border-[#e7ebf5] bg-white text-[13px] hover:bg-[#4f55ec]/[0.04] transition-colors px-3 shadow-none focus-visible:ring-[#4f55ec]/20 focus-visible:ring-1">
+                        {bgm === 'custom' ? <span className="text-[#3f4558] truncate">白噪音.mp3</span> : bgm ? <span className="text-[#3f4558]">{bgmOptions.find(o => o.value === bgm)?.label || bgm}</span> : <span className="text-[#3f4558]/50">选择背景音乐</span>}
+                      </SelectTrigger>
+                      <SelectContent align="start" className="w-[480px] p-2 border-[#E5E9F6] rounded-[12px]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}>
+                        <div className="grid grid-cols-2 gap-2">
+                          {/* 上传本地音乐 */}
+                          {bgm === 'custom' ? (
                             <div
-                              className="shrink-0 relative w-5 h-5"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                if (opt.value !== 'none') toggleBgmPreview(opt.value)
-                              }}
+                              className={cn('group flex flex-col gap-1 px-2.5 py-2 rounded-md cursor-pointer transition-colors', bgm === 'custom' ? 'bg-[#F3F5FF] text-[#4F55EC]' : 'text-[#3f4558] hover:bg-[#4f55ec]/[0.03]')}
+                              onClick={() => setBgm('custom')}
                             >
-                              {opt.value === 'none' ? (
-                                <span className="absolute inset-0 flex items-center justify-center text-[10px]">—</span>
+                              {/* 第一行：图标 + 名称 */}
+                              <div className="flex items-center gap-2">
+                                <div
+                                  className="shrink-0 w-5 h-5 relative"
+                                  onClick={(e) => { e.stopPropagation(); toggleBgmPlay() }}
+                                >
+                                  <MusicNotesSimple className={cn('absolute inset-0 h-5 w-5 transition-opacity duration-200', bgmPlaying ? 'opacity-0' : 'opacity-100 group-hover:opacity-0')} />
+                                  <div className={cn('absolute inset-0 h-5 w-5 rounded flex items-center justify-center transition-opacity duration-200', bgmPlaying ? 'opacity-100 bg-[#3f4558]/10' : 'opacity-0 group-hover:opacity-100 group-hover:bg-[#3f4558]/[0.05]')}>
+                                    {bgmPlaying ? <Pause className="h-4 w-4" weight="fill" /> : <Play className="h-4 w-4 ml-px" weight="fill" />}
+                                  </div>
+                                </div>
+                                <span className="text-[13px] font-medium block truncate">白噪音.mp3</span>
+                              </div>
+                              {/* 第二行：选中时显示播放控制，未选中时显示时长 */}
+                              {bgm === 'custom' ? (
+                                <div className="flex items-center gap-2 pl-7">
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); toggleBgmPlay() }}
+                                    className="shrink-0 w-[14px] h-[14px] flex items-center justify-center text-[#4F55EC] hover:text-[#4f55ec]/80 transition-colors"
+                                  >
+                                    {bgmPlaying ? <Pause className="h-[14px] w-[14px]" weight="fill" /> : <Play className="h-[14px] w-[14px] ml-[1px]" weight="fill" />}
+                                  </button>
+                                  <div className="flex-1 relative">
+                                    <div className="w-full h-1 rounded-full bg-[#e7ebf5]" />
+                                    <div
+                                      className="absolute top-0 left-0 h-1 rounded-full bg-[#4f55ec]"
+                                      style={{ width: bgmPlaying ? '60%' : '0%' }}
+                                    />
+                                  </div>
+                                  <span className="text-[11px] text-[#8a91a6] whitespace-nowrap shrink-0">02:30</span>
+                                </div>
                               ) : (
-                                <>
-                                  <MusicNotesSimple className={cn(
-                                    'absolute inset-0 h-5 w-5 transition-opacity duration-200',
-                                    isBgmPlaying ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'
-                                  )} />
-                                  <div className={cn(
-                                    'absolute inset-0 h-5 w-5 rounded flex items-center justify-center transition-opacity duration-200',
-                                    isBgmPlaying ? 'opacity-100 bg-[#3f4558]/10' : 'opacity-0 group-hover:opacity-100 group-hover:bg-[#3f4558]/[0.05]'
-                                  )}>
-                                    {isBgmPlaying ? (
-                                      <Pause className="h-4 w-4" weight="fill" />
+                                <div className="pl-7">
+                                  <span className="text-[12px] text-[#70788D] block">02:30</span>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <label
+                              className="flex items-center gap-2 px-2.5 py-2 rounded-md cursor-pointer hover:bg-[#4f55ec]/[0.04] transition-colors text-[#3f4558]/60 hover:text-[#3f4558] border border-dashed border-[#E5E9F6]"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <UploadSimple className="h-4 w-4 shrink-0" weight="duotone" />
+                              <span className="text-[13px]">上传本地音乐</span>
+                              <input type="file" accept=".mp3,.wav,.m4a,.flac" className="hidden" onChange={handleBgmUpload} />
+                            </label>
+                          )}
+                          {/* 预设选项 */}
+                          {bgmOptions.map((opt) => {
+                            const isBgmPlaying = playingBgm === opt.value
+                            const isSelected = bgm === opt.value
+                            return (
+                              <div
+                                key={opt.value}
+                                onClick={() => setBgm(opt.value)}
+                                className={cn('group flex flex-col gap-1 px-2.5 py-2 rounded-md cursor-pointer transition-colors', isSelected ? 'bg-[#F3F5FF] text-[#4F55EC]' : 'text-[#3f4558] hover:bg-[#4f55ec]/[0.03]')}
+                              >
+                                {/* 第一行：图标 + 名称 */}
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className="shrink-0 w-5 h-5 relative"
+                                    onClick={(e) => { e.stopPropagation(); if (opt.value !== 'none') toggleBgmPreview(opt.value) }}
+                                  >
+                                    {opt.value === 'none' ? (
+                                      <span className="absolute inset-0 flex items-center justify-center text-[10px]">—</span>
                                     ) : (
-                                      <Play className="h-4 w-4 ml-px" weight="fill" />
+                                      <>
+                                        <MusicNotesSimple className={cn('absolute inset-0 h-5 w-5 transition-opacity duration-200', isBgmPlaying ? 'opacity-0' : 'opacity-100 group-hover:opacity-0')} />
+                                        <div className={cn('absolute inset-0 h-5 w-5 rounded flex items-center justify-center transition-opacity duration-200', isBgmPlaying ? 'opacity-100 bg-[#3f4558]/10' : 'opacity-0 group-hover:opacity-100 group-hover:bg-[#3f4558]/[0.05]')}>
+                                          {isBgmPlaying ? <Pause className="h-4 w-4" weight="fill" /> : <Play className="h-4 w-4 ml-px" weight="fill" />}
+                                        </div>
+                                      </>
                                     )}
                                   </div>
-                                </>
-                              )}
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-[13px] font-medium block truncate">{opt.label}</span>
-                              {opt.sub && (
-                                <span className="text-[12px] text-[#3f4558]/50 block">{opt.sub} · {opt.duration}</span>
-                              )}
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </SelectContent>
-                </Select>
+                                  <span className="text-[13px] font-medium block truncate">{opt.label}</span>
+                                </div>
+                                {/* 第二行：选中时显示播放控制，未选中时显示时长 */}
+                                {isSelected && opt.value !== 'none' ? (
+                                  <div className="flex items-center gap-2 pl-7">
+                                    <button
+                                      onClick={(e) => { e.stopPropagation(); toggleBgmPreview(opt.value) }}
+                                      className="shrink-0 w-[14px] h-[14px] flex items-center justify-center text-[#4F55EC] hover:text-[#4f55ec]/80 transition-colors"
+                                    >
+                                      {isBgmPlaying ? <Pause className="h-[14px] w-[14px]" weight="fill" /> : <Play className="h-[14px] w-[14px] ml-[1px]" weight="fill" />}
+                                    </button>
+                                    <div className="flex-1 relative">
+                                      <div className="w-full h-1 rounded-full bg-[#e7ebf5]" />
+                                      <div
+                                        className="absolute top-0 left-0 h-1 rounded-full bg-[#4f55ec]"
+                                        style={{ width: isBgmPlaying ? '60%' : '0%' }}
+                                      />
+                                    </div>
+                                    <span className="text-[11px] text-[#8a91a6] whitespace-nowrap shrink-0">{opt.duration}</span>
+                                  </div>
+                                ) : (
+                                  <div className="pl-7">
+                                    <span className={cn('text-[12px] block', opt.duration ? 'text-[#70788D]' : 'text-transparent')}>{opt.duration || '占位'}</span>
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                {/* 立即生成 */}
+                {text.trim() && (
+                  <div className="flex flex-col items-center pt-4 mt-auto shrink-0">
+                    <Button onClick={handleGenerate} disabled={isProcessing} className="h-[46px] px-12 rounded-[10px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white font-medium text-[15px] min-w-[200px]" style={{ boxShadow: '0px 12px 28px rgba(87,92,233,0.22)' }}>
+                      {isProcessing ? (<span className="flex items-center gap-2"><Spinner className="h-4 w-4 animate-spin" />正在生成...</span>) : (<span className="flex items-center gap-2"><MagicWand className="h-4 w-4" weight="fill" />立即生成</span>)}
+                    </Button>
+                    <p className="text-[11px] text-[#b7becf] mt-3">{COST_TEXT}</p>
+                  </div>
+                )}
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* 开始处理按钮 + 智点 */}
-        <Button
-          className="w-full h-[46px] text-[15px] font-semibold gap-2 rounded-[10px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 shadow-lg shadow-[#4f55ec]/20 hover:shadow-[#4f55ec]/30 transition-all duration-200 hover:-translate-y-0.5"
-          size="lg"
-          onClick={onStartProcess}
-          disabled={isProcessing}
-        >
-          {isProcessing ? (
-            <>
-              <Sparkle className="h-5 w-5 animate-pulse" weight="fill" />
-              处理中...
-            </>
-          ) : (
-            <>
-              <Play className="h-5 w-5" weight="fill" />
-              开始处理
-              <span className="flex items-center gap-1 ml-1 text-[13px] font-normal opacity-80">
-                <span className="w-px h-3 bg-white/30" />
-                <Lightning className="h-3.5 w-3.5" weight="fill" />
-                {agent.costPoints} 智点
-              </span>
-            </>
-          )}
-        </Button>
-
-        {/* Error */}
-        {error && (
-          <div className="flex items-center gap-2 p-3 rounded-[16px] bg-destructive/10 text-destructive text-[13px]">
-            <span className="text-[13px]">⚠</span>
-            <span>{error}</span>
           </div>
-        )}
-      </div>
+
+          {/* CARD 3 — 生成结果 */}
+          {isProcessing && (
+            <div className="rounded-[18px] border border-[#f0f2f8] overflow-hidden" style={{ ...CARD_SHADOW, background: 'rgba(255,255,255,0.96)' }} ref={resultRef}>
+              <div className="px-6 pt-6 pb-2" style={{ background: 'linear-gradient(180deg, #f8faff 0%, #ffffff 100%)' }}>
+                <h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3>
+              </div>
+              <div className="p-6 pt-4 pb-6">
+                <div className="p-10 text-center">
+                  <Spinner className="h-10 w-10 text-muted-foreground animate-spin mx-auto mb-4" />
+                  <p className="text-[15px] font-medium text-foreground mb-1.5">AI 正在生成语音…</p>
+                  <p className="text-sm text-muted-foreground mb-6">预计 {agent.avgProcessTime} 完成</p>
+                  <div className="w-full h-2 bg-[#e7ebf5] rounded-full overflow-hidden max-w-[400px] mx-auto">
+                    <div className="h-full bg-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {resultText && !isProcessing && (
+            <div className="rounded-[18px] border border-[#f0f2f8] overflow-hidden" style={{ ...CARD_SHADOW, background: 'rgba(255,255,255,0.96)' }} ref={resultRef}>
+              <div className="px-6 pt-6 pb-2" style={{ background: 'linear-gradient(180deg, #f8faff 0%, #ffffff 100%)' }}>
+                <div className="flex items-center justify-between"><h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3><span className="text-xs text-[#8a91a6]">消耗 {COST_POINTS} 智点</span></div>
+              </div>
+              <div className="p-6 pt-4">
+                <div className="grid grid-cols-1 gap-6">
+                  {/* 语音内容 */}
+                  <div>
+                    <h4 className="text-sm font-medium text-foreground mb-3">输入内容</h4>
+                    {isEditingTranscript ? (
+                      <div className="space-y-3">
+                        <textarea value={transcriptEditText} onChange={e => setTranscriptEditText(e.target.value)} className="w-full rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] p-5 text-sm text-foreground leading-relaxed font-sans h-[400px] resize-none outline-none focus:border-primary/50" />
+                        <div className="flex items-center gap-2">
+                          <Button size="sm" className="h-[46px] rounded-[10px] text-[15px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white px-6" style={{ boxShadow: '0px 8px 16px rgba(87,92,233,0.14)' }} onClick={saveEditTranscript}>保存</Button>
+                          <Button size="sm" variant="outline" className="h-[46px] rounded-[10px] text-[15px] px-6" onClick={() => setIsEditingTranscript(false)}>取消</Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] p-5 h-[400px] overflow-y-auto"><pre className="text-sm text-foreground leading-relaxed whitespace-pre-wrap font-sans">{resultText}</pre></div>
+                        <div className="flex items-center gap-1.5 mt-3">
+                          <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={startEditTranscript}><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
+                          <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => handleCopy(resultText)}><Copy className="h-3.5 w-3.5" />复制</Button>
+                          <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('已下载')}><ArrowLineDown className="h-3.5 w-3.5" />导出 MP3</Button>
+                        </div>
+                      </>
+                    )}
+                    {/* 音频区域：生成设置信息条 + 播放器，一体 */}
+                    <div className="mt-4 rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] overflow-hidden">
+                      {/* 生成设置信息条 */}
+                      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 border-b border-[#e7ebf5]">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[12px] text-[#a0a7b8]">声音</span>
+                          <span className="text-[13px] text-[#3f4558] font-medium">{voicePresets.find(v => v.value === voice)?.label || voice}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[12px] text-[#a0a7b8]">背景音乐</span>
+                          <span className="text-[13px] text-[#3f4558] font-medium">{bgm === 'custom' ? '白噪音.mp3' : bgmOptions.find(o => o.value === bgm)?.label || '无背景音乐'}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[12px] text-[#a0a7b8]">文件名称</span>
+                          <span className="text-[13px] text-[#3f4558] font-medium">{resultText.slice(0, 20).trim() || '未命名'}.mp3</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[12px] text-[#a0a7b8]">音频格式</span>
+                          <span className="text-[13px] text-[#3f4558] font-medium">MP3 · 32秒 · 128kbps</span>
+                        </div>
+                      </div>
+                      {/* 音频播放器 */}
+                      <div className="px-3 py-2 flex items-center gap-3 h-10">
+                        <button onClick={togglePlay} className="w-6 h-6 rounded-full bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white flex items-center justify-center shrink-0 transition-colors">
+                          {isPlaying ? <Pause className="h-3 w-3" weight="fill" /> : <Play className="h-3 w-3 ml-0.5" weight="fill" />}
+                        </button>
+                        <div className="flex-1 relative">
+                          <input type="range" min={0} max={duration} step={0.01} value={currentTime} onChange={handleProgressChange} className="w-full h-2 rounded-full appearance-none cursor-pointer" style={{ background: `linear-gradient(to right, #4f55ec ${(currentTime/duration)*100}%, #e7ebf5 ${(currentTime/duration)*100}%)`, WebkitAppearance: 'none' }} />
+                        </div>
+                        <span className="text-xs text-muted-foreground whitespace-nowrap shrink-0 w-[80px] text-right">{formatAudioTime(currentTime)}/{formatAudioTime(duration)}</span>
+                        <button onClick={changePlaybackRate} className="h-7 px-2.5 rounded-[6px] border border-[#e7ebf5] bg-white text-xs text-foreground hover:bg-[#f8faff] shrink-0 transition-colors">{playbackRate.toFixed(2)}x</button>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground/80 mt-[7px] flex items-center gap-1"><WarningCircle className="h-3 w-3" />AI生成内容，仅供参考，请勿用于违法违规用途。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* CARD 4 — 生成历史 */}
+          <div className="rounded-[18px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW}>
+            <div className="p-6 pb-2" style={{ background: 'linear-gradient(180deg, #f8faff 0%, #ffffff 100%)' }}>
+              <div className="flex items-center justify-between mb-4"><h3 className="text-[18px] font-medium text-[#3f4558]">生成历史</h3><span className="text-sm text-muted-foreground">历史记录将为您保留 3 天。为避免过期丢失，请及时下载到本地设备。</span></div>
+            </div>
+            {history.length === 0 ? (
+              <div className="px-6 pb-6"><div className="rounded-[12px] bg-white p-10 text-center"><SpeakerHigh className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" /><p className="text-[18px] text-foreground mb-1.5">暂无生成记录</p><p className="text-sm text-muted-foreground">输入文字后，生成结果将显示在这里</p></div></div>
+            ) : (
+              <div className="px-6 pb-6">
+                <div className="rounded-[14px] border border-[#e7ebf5] divide-y divide-[#e7ebf5] overflow-hidden [&>*:last-child]:border-b-0">
+                {history.map(item => (
+                  <div key={item.id} className="px-4 py-3 flex items-center gap-4 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
+                    <div className="w-[76px] h-[58px] rounded-[8px] bg-gradient-to-br from-[#f3f0ff] to-[#f8faff] border border-[#e7ebf5] flex items-center justify-center shrink-0 overflow-hidden relative"><SpeakerHigh className="h-5 w-5 text-[#7c3aed]/50" weight="fill" /></div>
+                    <div className="w-[200px] shrink-0 min-w-0">
+                      <span className="text-xs text-[#a0a7b8] block">输入内容</span>
+                      <span className="text-sm text-[#697185] truncate block">{item.result.length > 20 ? item.result.slice(0, 20) + '...' : item.result}</span>
+                    </div>
+                    <div className="w-[180px] shrink-0 min-w-0">
+                      <span className="text-xs text-[#a0a7b8] block">文件名称</span>
+                      <span className="text-sm text-[#697185] truncate block">{item.title}</span>
+                    </div>
+                    <div className="w-[130px] shrink-0">
+                      <span className="text-xs text-[#a0a7b8] block">创建时间</span>
+                      <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
+                    </div>
+                    <div className="flex items-center gap-1 ml-auto shrink-0">
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); toast.success('下载完成'); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                      <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] text-[#9ca2b5] hover:text-destructive gap-1" onClick={(e) => { e.stopPropagation(); handleDeleteHistory(item.id); }}><Trash className="h-3.5 w-3.5" />删除</Button>
+                    </div>
+                  </div>
+                ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 删除确认弹窗 */}
+          <AlertDialog open={!!deleteConfirmId} onOpenChange={(open) => !open && setDeleteConfirmId(null)}>
+            <AlertDialogContent className="rounded-[16px]">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-center text-base font-medium">确认删除？</AlertDialogTitle>
+                <AlertDialogDescription className="text-center text-xs text-muted-foreground">删除后不可恢复，确定要删除这条生成记录吗？</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter className="flex gap-3 sm:justify-center">
+                <AlertDialogCancel className="h-9 rounded-[8px] text-sm mt-0">取消</AlertDialogCancel>
+                <AlertDialogAction className="h-9 rounded-[8px] text-sm bg-destructive hover:bg-destructive/80" onClick={confirmDelete}>删除</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          {/* 历史记录详情弹窗 */}
+          {selectedHistoryItem && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setSelectedHistoryItem(null)}>
+              <div className="bg-white rounded-[16px] shadow-2xl max-w-[800px] w-full mx-4 max-h-[85vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                {/* 标题区域 - 带渐变背景 */}
+                <div className="px-6 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(180deg, #f0f4ff 0%, #ffffff 100%)' }}>
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3>
+                    <span className="text-xs text-[#8a91a6]">消耗 {COST_POINTS} 智点</span>
+                  </div>
+                  <button onClick={() => setSelectedHistoryItem(null)} className="text-[#8a91a6] hover:text-[#3f4558] transition-colors"><X className="h-5 w-5" /></button>
+                </div>
+                {/* 内容区域 */}
+                <div className="p-6 overflow-y-auto max-h-[70vh]">
+                  {/* 输入内容 */}
+                  <div>
+                    <h4 className="text-sm font-medium text-[#3f4558] mb-3">输入内容</h4>
+                    <div className="rounded-[12px] border border-[#e7ebf5] bg-[#F8FAFF] p-5 h-[300px] overflow-y-auto">
+                      <pre className="text-sm text-[#3f4558] leading-relaxed whitespace-pre-wrap font-sans">{selectedHistoryItem.result}</pre>
+                    </div>
+                    {/* 操作按钮 */}
+                    <div className="flex items-center gap-1.5 mt-3">
+                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
+                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(selectedHistoryItem.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
+                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载 MP3</Button>
+                    </div>
+                  </div>
+                  {/* 音频区域：生成设置信息条 + 播放器 */}
+                  <div className="mt-4 rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] overflow-hidden">
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 border-b border-[#e7ebf5]">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[12px] text-[#a0a7b8]">声音</span>
+                        <span className="text-[13px] text-[#3f4558] font-medium">知夏 · 温柔女声</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[12px] text-[#a0a7b8]">背景音乐</span>
+                        <span className="text-[13px] text-[#3f4558] font-medium">无背景音乐</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[12px] text-[#a0a7b8]">音频格式</span>
+                        <span className="text-[13px] text-[#3f4558] font-medium">MP3 · 32秒 · 128kbps</span>
+                      </div>
+                    </div>
+                    <div className="px-3 py-2 flex items-center gap-3 h-10">
+                      <button className="w-6 h-6 rounded-full bg-[#4f55ec] text-white flex items-center justify-center shrink-0"><Play className="h-3 w-3 ml-0.5" weight="fill" /></button>
+                      <div className="flex-1 relative">
+                        <input type="range" min={0} max={100} step={0.01} defaultValue={0} className="w-full h-2 rounded-full appearance-none cursor-pointer" style={{ background: 'linear-gradient(to right, #4f55ec 0%, #e7ebf5 0%)', WebkitAppearance: 'none' }} readOnly />
+                      </div>
+                      <span className="text-xs text-muted-foreground whitespace-nowrap shrink-0 w-[80px] text-right">00:00/00:32</span>
+                      <button className="h-7 px-2.5 rounded-[6px] border border-[#e7ebf5] bg-white text-xs text-foreground shrink-0">1.00x</button>
+                    </div>
+                  </div>
+                  {/* 文件信息 - 靠在一起 */}
+                  <div className="mt-4 flex items-center gap-4 text-xs text-[#8a91a6]">
+                    <span>内容：{selectedHistoryItem.result.length > 20 ? selectedHistoryItem.result.slice(0, 20) + '...' : selectedHistoryItem.result}</span>
+                    <span>创建时间：{formatTime(selectedHistoryItem.time)}</span>
+                  </div>
+                  {/* 提示信息 */}
+                  <p className="text-xs text-muted-foreground/80 mt-3 flex items-center gap-1"><WarningCircle className="h-3 w-3" />AI生成内容，仅供参考，请勿用于违法违规用途。</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      )}
     </div>
   )
 }

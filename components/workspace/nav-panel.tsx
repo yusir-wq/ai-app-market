@@ -27,21 +27,21 @@ import { useAuth } from '@/contexts/auth-context'
 import { UserProfilePopover } from './user-profile-popover'
 import {
   Plus,
-  Search,
-  MessageSquare,
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-  ChevronRight,
-  Sparkles,
-  PanelLeftClose,
-  PanelLeft,
+  MagnifyingGlass,
+  Chat,
+  DotsThree,
+  PencilSimple,
+  Trash,
+  CaretRight,
+  Sparkle,
+  Sidebar,
+  SidebarSimple,
+  Robot,
   UserPlus,
-  Bot,
   Cpu,
   Clock,
-  Zap,
-} from 'lucide-react'
+  Lightning,
+} from '@phosphor-icons/react'
 import * as LucideIcons from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -165,14 +165,14 @@ export function NavPanel({
         <div className="w-[56px] bg-sidebar border-r border-sidebar-border flex flex-col items-center h-full py-3 gap-2 shrink-0">
           {/* Logo */}
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0 mb-1">
-            <Sparkles className="h-4 w-4 text-brand-foreground" />
+            <Sparkle className="h-4 w-4 text-brand-foreground" />
           </div>
 
           {/* 展开按钮 */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon-sm" onClick={onToggleCollapse}>
-                <PanelLeft className="h-4 w-4 text-muted-foreground" />
+                <Sidebar className="h-4 w-4 text-muted-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right" className="text-xs">展开面板</TooltipContent>
@@ -192,7 +192,7 @@ export function NavPanel({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon-sm" onClick={handleSearchClick}>
-                <Search className="h-4 w-4 text-muted-foreground" />
+                <MagnifyingGlass className="h-4 w-4 text-muted-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right" className="text-xs">搜索对话</TooltipContent>
@@ -202,7 +202,7 @@ export function NavPanel({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon-sm" onClick={onViewAll}>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                <CaretRight className="h-4 w-4 text-muted-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right" className="text-xs">查看全部</TooltipContent>
@@ -255,7 +255,7 @@ export function NavPanel({
       {/* 品牌区域 */}
       <div className="p-4 pb-3 flex items-center gap-3">
         <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shrink-0">
-          <Sparkles className="h-5 w-5 text-brand-foreground" />
+          <Sparkle className="h-5 w-5 text-brand-foreground" />
         </div>
         <h1 className="font-semibold text-sm text-sidebar-foreground flex-1">AI应用广场</h1>
         <Button
@@ -264,7 +264,7 @@ export function NavPanel({
           className="shrink-0"
           onClick={onToggleCollapse}
         >
-          <PanelLeftClose className="h-4 w-4 text-muted-foreground" />
+          <SidebarSimple className="h-4 w-4 text-muted-foreground" />
         </Button>
       </div>
 
@@ -292,7 +292,7 @@ export function NavPanel({
             )}
             onClick={() => onTabChange?.('agents')}
           >
-            <Bot className="h-4 w-4" />
+            <Robot className="h-4 w-4" />
             智能应用
           </button>
         </div>
@@ -322,7 +322,7 @@ export function NavPanel({
               className="w-full justify-start gap-2 text-muted-foreground hover:text-sidebar-foreground"
               onClick={handleSearchClick}
             >
-              <Search className="h-4 w-4" />
+              <MagnifyingGlass className="h-4 w-4" />
               搜索对话
             </Button>
           </div>
@@ -400,7 +400,7 @@ export function NavPanel({
                                 className="h-6 w-6 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity shrink-0"
                                 onClick={(e) => e.stopPropagation()}
                               >
-                                <MoreHorizontal className="h-3.5 w-3.5" />
+                                <DotsThree className="h-3.5 w-3.5" />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-32">
@@ -411,7 +411,7 @@ export function NavPanel({
                                   handleStartRename(conv.id, conv.title)
                                 }}
                               >
-                                <Pencil className="h-3.5 w-3.5" />
+                                <PencilSimple className="h-3.5 w-3.5" />
                                 重命名
                               </DropdownMenuItem>
                               <DropdownMenuItem
@@ -422,7 +422,7 @@ export function NavPanel({
                                   setDeleteDialogOpen(true)
                                 }}
                               >
-                                <Trash2 className="h-3.5 w-3.5" />
+                                <Trash className="h-3.5 w-3.5" />
                                 删除
                               </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -433,7 +433,7 @@ export function NavPanel({
                   })
                 ) : (
                   <div className="flex flex-col items-center justify-center py-8 text-center">
-                    <MessageSquare className="h-8 w-8 text-muted-foreground/30 mb-2" />
+                    <Chat className="h-8 w-8 text-muted-foreground/30 mb-2" />
                     <p className="text-xs text-muted-foreground">暂无对话记录</p>
                   </div>
                 )}
@@ -512,7 +512,7 @@ export function NavPanel({
                 return (
                   <div key={category.id}>
                     <div className="flex items-center gap-1.5 px-1 py-2">
-                      <Zap className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Lightning className="h-3.5 w-3.5 text-muted-foreground" />
                       <span className="text-xs font-medium text-muted-foreground">{category.name}</span>
                     </div>
                     <div className="space-y-0.5">

@@ -23,12 +23,12 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import {
-  PlusCircle, FileAudio, Star,
+  PlusCircle, VideoCamera, Star,
   ShareNetwork, WarningCircle,
-  CheckCircle, SpinnerGap, Calendar, Trash, Copy,
-  Lightning, MagicWand, CaretLeft, Play, Pause,
+  SpinnerGap, Trash, Copy,
+  MagicWand, CaretLeft, Play, Pause,
   PencilSimple, FileText, ArrowsClockwise, PaperPlaneTilt, Robot,
-  MusicNote, VideoCamera, ArrowLineDown, X,
+  ArrowLineDown, X,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -37,7 +37,7 @@ const COST_POINTS = 20
 const COST_PRICE = 0.02
 const COST_TEXT = `使用费用：${COST_POINTS} 智点/次（约 ${COST_PRICE} 元）`
 
-interface SpeechToTextExperienceProps {
+interface VideoToTextExperienceProps {
   agent: Agent
   onBack: () => void
   onViewResult?: (resultId: string, fileName?: string) => void
@@ -62,12 +62,12 @@ function formatTime(dateStr: string) {
 }
 
 const mockHistory = [
-  { id: 'h1', title: 'meeting-recording.mp3', status: 'completed' as const, time: '2026-06-15 14:30', size: '12.3 MB', result: '会议讨论了 Q4 产品规划，确定了三个主要方向……', resultId: 'result-speech-to-text' },
-  { id: 'h2', title: 'interview-zhang.mp3', status: 'completed' as const, time: '2026-06-12 09:15', size: '8.7 MB', result: '受访者张总介绍了公司数字化转型的三个阶段……', resultId: 'result-speech-to-text' },
-  { id: 'h3', title: 'lecture-ai.mp3', status: 'completed' as const, time: '2026-06-10 16:00', size: '22.1 MB', result: '大家好，欢迎来到 AI 基础入门课程……', resultId: 'result-speech-to-text' },
+  { id: 'h1', title: 'meeting-recording.mp4', status: 'completed' as const, time: '2026-06-15 14:30', size: '45.2 MB', result: '会议讨论了 Q4 产品规划，确定了三个主要方向……', resultId: 'result-video-to-text', thumbnail: '/thumbnails/thumb-business-conference.jpg' },
+  { id: 'h2', title: 'interview-zhang.mp4', status: 'completed' as const, time: '2026-06-12 09:15', size: '32.8 MB', result: '受访者张总介绍了公司数字化转型的三个阶段……', resultId: 'result-video-to-text', thumbnail: '/thumbnails/thumb-team-meeting.jpg' },
+  { id: 'h3', title: 'lecture-ai.mp4', status: 'completed' as const, time: '2026-06-10 16:00', size: '128.5 MB', result: '大家好，欢迎来到 AI 基础入门课程……', resultId: 'result-video-to-text', thumbnail: '/thumbnails/thumb-online-course.jpg' },
 ]
 
-export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechToTextExperienceProps) {
+export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTextExperienceProps) {
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState('')
   const [isDragging, setIsDragging] = useState(false)
@@ -106,7 +106,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
   const [summaryInput, setSummaryInput] = useState('')
 
   function getFileExtension(name: string) { const last = name.lastIndexOf('.'); return last > -1 ? name.slice(last + 1).toUpperCase() : '' }
-  function getFileType(ext: string) { const audio = ['MP3','WAV','M4A','AAC','FLAC']; return audio.includes(ext) ? '音频' : '视频' }
+  function getFileType(_ext: string) { return '视频' }
 
   const handleDrag = useCallback((e: React.DragEvent, active: boolean) => {
     e.preventDefault()
@@ -129,7 +129,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
   function validateAndSet(f: File) {
     setError('')
     const ext = '.' + f.name.split('.').pop()?.toLowerCase()
-    const valid = ['.mp3', '.wav', '.m4a', '.aac', '.flac', '.mp4', '.mov', '.webm']
+    const valid = ['.mp4', '.mov', '.webm', '.avi', '.mkv']
     if (!valid.includes(ext)) {
       setError(`不支持 ${ext} 格式，请上传 ${valid.join('、')}`)
       return
@@ -158,7 +158,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
   }
 
   function handleGenerate() {
-    if (!file) { setError('请先上传音视频文件'); return }
+    if (!file) { setError('请先上传视频文件'); return }
     setError('')
     setIsProcessing(true)
     setProgress(0)
@@ -315,8 +315,8 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
               <CaretLeft className="h-4 w-4" />
             </Button>
             <div className="flex items-center gap-2.5">
-              <FileAudio className="h-6 w-6 text-[#4f55ec]" weight="fill" />
-              <span className="text-[18px] font-medium text-[#3f4558]">AI语音转文字</span>
+              <VideoCamera className="h-6 w-6 text-[#4f55ec]" weight="fill" />
+              <span className="text-[18px] font-medium text-[#3f4558]">AI视频转文字</span>
             </div>
           </div>
           {/* Tabs — 居中，滑动按钮样式 */}
@@ -371,7 +371,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
           <div className="h-[230px] px-[26px] py-[22px] grid grid-cols-1 md:grid-cols-[0.74fr_1fr] gap-6 items-center">
             <div>
               <span className="text-[17px] font-normal text-[#3f4558] mb-2 inline-block">使用指南</span>
-              <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">上传音频或视频文件，AI 自动识别语音并转写为高精度文字稿。支持多人对话区分、自动添加标点符号、生成内容摘要，让音频内容即时变文字。</p>
+              <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">上传视频文件，AI 自动提取音频并识别语音，转写为高精度文字稿。支持多人对话区分、自动添加标点符号、生成内容摘要，让视频内容即时变文字。</p>
               <small className="text-[14px] text-[#9ca3b8]">{COST_TEXT}</small>
             </div>
             <div className="flex items-center justify-center h-full">
@@ -379,7 +379,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                 className="w-full h-[180px] rounded-[18px] bg-white flex items-center justify-center overflow-hidden"
                 style={{ boxShadow: '0px 16px 42px rgba(87,92,233,0.08)' }}
               >
-                <img src="/covers/agent-speech-to-text.jpg" alt="AI语音转文字封面图" className="w-full h-full object-cover" />
+                <img src="/covers/agent-video-to-text(2).jpg" alt="AI视频转文字封面图" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -394,31 +394,26 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
               {!file ? (
                 <div onDragOver={e => handleDrag(e, true)} onDragLeave={e => handleDrag(e, false)} onDrop={handleDrop} onClick={() => fileInput.current?.click()} className={cn('flex-1 border-2 border-dashed rounded-[12px] py-10 px-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-3', isDragging ? 'border-primary bg-primary/[0.04]' : 'border-[#e7ebf5] hover:border-primary/30')} style={{ background: '#f8faff' }}>
                   <PlusCircle className="text-[#4f55ec]" style={{ fontSize: '60px' }} />
-                  <p className="text-[17px] text-[#3f4558]">点击或拖拽上传音视频文件</p>
-                  <div className="flex flex-col items-center gap-1 text-[13px] text-muted-foreground"><span>支持 MP3、WAV、M4A、AAC、MP4、WebM</span><span>单文件不超过 500MB</span></div>
-                  <input ref={fileInput} type="file" accept=".mp3,.wav,.m4a,.aac,.flac,.mp4,.mov,.webm" className="hidden" onChange={handleFilePick} />
+                  <p className="text-[17px] text-[#3f4558]">点击或拖拽上传视频文件</p>
+                  <div className="flex flex-col items-center gap-1 text-[13px] text-muted-foreground"><span>支持 MP4、MOV、WebM、AVI、MKV</span><span>单文件不超过 500MB</span></div>
+                  <input ref={fileInput} type="file" accept=".mp4,.mov,.webm,.avi,.mkv" className="hidden" onChange={handleFilePick} />
                 </div>
               ) : (
                 (() => {
                   const ext = getFileExtension(file!.name)
-                  const fType = getFileType(ext)
                   return (
                 <div className="flex-1 rounded-[12px] border border-[#e7ebf5] p-5 flex flex-col items-center justify-center relative group cursor-pointer" onClick={() => fileInput.current?.click()} style={{ background: '#f8faff' }}>
                   <div className="text-center">
                     <div className="w-14 h-14 rounded-xl bg-sky-50 flex items-center justify-center mx-auto mb-3">
-                      {fType === '音频' ? (
-                        <MusicNote className="h-7 w-7 text-sky-500" weight="fill" />
-                      ) : (
-                        <VideoCamera className="h-7 w-7 text-sky-500" weight="fill" />
-                      )}
+                      <VideoCamera className="h-7 w-7 text-sky-500" weight="fill" />
                     </div>
                     <p className="text-sm font-medium text-foreground mb-2">{file!.name}</p>
                     <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground">
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] bg-muted/60">
-                        {fType === '音频' ? <MusicNote className="h-3 w-3" /> : <VideoCamera className="h-3 w-3" />}
+                        <VideoCamera className="h-3 w-3" />
                         {ext}
                       </span>
-                      <span>{fType}</span>
+                      <span>视频</span>
                       <span>{formatSize(file!.size)}</span>
                       {audioDuration > 0 && <span>时长 {formatDuration(audioDuration)}</span>}
                     </div>
@@ -426,7 +421,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                   <div className="absolute inset-0 bg-black/40 rounded-[12px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className="text-white text-sm font-medium">重新上传</span>
                   </div>
-                  <input ref={fileInput} type="file" accept=".mp3,.wav,.m4a,.aac,.flac,.mp4,.mov,.webm" className="hidden" onChange={handleFilePick} />
+                  <input ref={fileInput} type="file" accept=".mp4,.mov,.webm,.avi,.mkv" className="hidden" onChange={handleFilePick} />
                 </div>
                   )
                 })()
@@ -561,13 +556,13 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
             <div className="flex items-center justify-between mb-4"><h3 className="text-[18px] font-medium text-[#3f4558]">生成历史</h3><span className="text-sm text-muted-foreground">历史记录将为您保留 3 天。为避免过期丢失，请及时下载到本地设备。</span></div>
           </div>
           {history.length === 0 ? (
-            <div className="px-6 pb-6"><div className="rounded-[12px] bg-white p-10 text-center"><FileAudio className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" /><p className="text-[18px] text-foreground mb-1.5">暂无生成记录</p><p className="text-sm text-muted-foreground">上传文件后，生成结果将显示在这里</p></div></div>
+            <div className="px-6 pb-6"><div className="rounded-[12px] bg-white p-10 text-center"><VideoCamera className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" /><p className="text-[18px] text-foreground mb-1.5">暂无生成记录</p><p className="text-sm text-muted-foreground">上传文件后，生成结果将显示在这里</p></div></div>
           ) : (
             <div className="px-6 pb-6">
               <div className="rounded-[14px] border border-[#e7ebf5] divide-y divide-[#e7ebf5] overflow-hidden [&>*:last-child]:border-b-0">
               {history.map(item => (
                 <div key={item.id} className="px-4 py-3 flex items-center gap-4 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
-                  <div className="w-[76px] h-[58px] rounded-[8px] bg-gradient-to-br from-[#f3f0ff] to-[#f8faff] border border-[#e7ebf5] flex items-center justify-center shrink-0 overflow-hidden relative"><FileAudio className="h-5 w-5 text-[#7c3aed]/50" weight="fill" /></div>
+                  <img src={item.thumbnail} alt={item.title} className="w-[76px] h-[58px] rounded-[8px] shrink-0 object-cover" />
                   <div className="w-[180px] shrink-0 min-w-0">
                     <span className="text-xs text-[#a0a7b8] block">文件名称</span>
                     <span className="text-sm text-[#697185] truncate block">{item.title}</span>
@@ -647,12 +642,21 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                   <div>
                     <h4 className="text-sm font-medium text-[#3f4558] mb-3">智能总结</h4>
                     <div className="rounded-[12px] border border-[#e7ebf5] bg-[#F8FAFF] p-5 h-[350px] overflow-y-auto">
-                      <pre className="text-sm text-[#3f4558] leading-relaxed whitespace-pre-wrap font-sans">{summaryText}</pre>
+                      <pre className="text-sm text-[#3f4558] leading-relaxed whitespace-pre-wrap font-sans">本次会议主要讨论了以下内容：
+
+1. Q4 产品规划方向确定
+2. 技术团队资源分配方案
+3. 市场推广策略调整
+
+关键决议：
+- 优先推进 AI 语音识别在医疗领域的应用
+- 下月初完成多语言模型升级
+- 增加 2 名前端开发人员</pre>
                     </div>
                     {/* 操作按钮 */}
                     <div className="flex items-center gap-1.5 mt-3">
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><ArrowsClockwise className="h-3.5 w-3.5" />重新生成</Button>
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(summaryText); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
+                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('已复制到剪贴板')}><Copy className="h-3.5 w-3.5" />复制</Button>
                     </div>
                     {/* 对话输入框 */}
                     <div className="mt-4 relative h-10">

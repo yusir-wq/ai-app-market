@@ -1,0 +1,1195 @@
+{
+  "info": {
+    "source": "agent_browser_saved",
+    "url": "http://192.9.186.204/frontends-demo/aichinazcn/#/quick-start",
+    "title": "AI应用广场 1.3 快速开始原型",
+    "doctype": null
+  },
+  "tag_counts": {
+    "span": 356,
+    "div": 229,
+    "button": 206,
+    "strong": 117,
+    "i": 108,
+    "img": 88,
+    "em": 59,
+    "small": 54,
+    "b": 48,
+    "p": 30,
+    "article": 22,
+    "section": 21,
+    "dt": 14,
+    "dd": 14,
+    "h2": 9,
+    "h3": 9,
+    "input": 5,
+    "aside": 4,
+    "header": 4,
+    "dl": 4,
+    "link": 3,
+    "meta": 2,
+    "nav": 2,
+    "h1": 2,
+    "a": 2,
+    "html": 1,
+    "head": 1,
+    "title": 1,
+    "script": 1,
+    "body": 1,
+    "main": 1,
+    "footer": 1
+  },
+  "head_children": [
+    {
+      "tag": "meta",
+      "attrs": {
+        "charset": "\\\"UTF-8\\\""
+      },
+      "text": ""
+    },
+    {
+      "tag": "meta",
+      "attrs": {
+        "name": "\\\"viewport\\\"",
+        "content": "\\\"width=device-width,",
+        "initial-scale": "1.0\\\""
+      },
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "attrs": {},
+      "text": "AI应用广场 1.3 快速开始原型"
+    },
+    {
+      "tag": "link",
+      "attrs": {
+        "rel": [
+          "\\\"stylesheet\\\""
+        ],
+        "href": "\\\"https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css\\\""
+      },
+      "text": ""
+    },
+    {
+      "tag": "link",
+      "attrs": {
+        "rel": [
+          "\\\"stylesheet\\\""
+        ],
+        "href": "\\\"https://unpkg.com/@phosphor-icons/web@2.1.2/src/duotone/style.css\\\""
+      },
+      "text": ""
+    },
+    {
+      "tag": "link",
+      "attrs": {
+        "rel": [
+          "\\\"stylesheet\\\""
+        ],
+        "href": "\\\"./styles.css?v=20260708-032\\\""
+      },
+      "text": ""
+    },
+    {
+      "tag": "script",
+      "attrs": {
+        "src": "\\\"./main.js?v=20260708-032\\\"",
+        "defer": "\\\"\\\""
+      },
+      "text": ""
+    }
+  ],
+  "body_structure": [
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "\\\"app-shell"
+      ],
+      "attrs_keys": [
+        "class",
+        "is-collapsed\\\""
+      ],
+      "child_count": 1364,
+      "text_preview": "\\n\\n\\n\\n\\n\\nAI应用广场\\n多模型 · 多工具 · 便宜好用\\n\\n\\n\\n\\n\\n\\n\\n\\n快速开始\\n\\n\\n\\n搜索\\n\\n\\n\\n与模型对话\\n\\n\\n\\n\\nAI图像工具\\n\\n\\n\\n\\nAI音视频工具\\n\\n\\n"
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "\\\"search-layer\\\""
+      ],
+      "attrs_keys": [
+        "class",
+        "hidden"
+      ],
+      "child_count": 14,
+      "text_preview": "\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n热门搜索\\n换背景\\n扩图\\n商品海报\\nGPT-5\\nDeepSeek\\n\\n\\n"
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "\\\"confirm-layer\\\""
+      ],
+      "attrs_keys": [
+        "class",
+        "data-download-confirm",
+        "hidden"
+      ],
+      "child_count": 7,
+      "text_preview": "\\n\\n\\n确认下载\\n下载即表示您确认对上传素材拥有合法使用权，知悉该图片为AI生成/编辑内容，并自行承担使用责任。\\n\\n取消\\n确认并下载\\n\\n\\n"
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "\\\"app-toast\\\""
+      ],
+      "attrs_keys": [
+        "class",
+        "data-app-toast",
+        "hidden"
+      ],
+      "child_count": 0,
+      "text_preview": ""
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "\\\"floating-actions\\\""
+      ],
+      "attrs_keys": [
+        "class",
+        "data-floating-actions",
+        "aria-label"
+      ],
+      "child_count": 19,
+      "text_preview": "\\n\\n\\n\\n\\n\\n\\n\\n二维码图\\n扫码实时沟通，快速响应您的问题\\n工作日8:30～18:00在线\\n\\n\\n\\n\\n\\n\\n\\n意见反馈\\n\\n调用外部NPS系统脚本\\n\\n\\n\\n\\n\\n\\n\\n收起浮层\\n\\n"
+    }
+  ],
+  "stylesheets": [
+    {
+      "href": "https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css",
+      "media": null,
+      "crossorigin": null
+    },
+    {
+      "href": "https://unpkg.com/@phosphor-icons/web@2.1.2/src/duotone/style.css",
+      "media": null,
+      "crossorigin": null
+    },
+    {
+      "href": "./styles.css?v=20260708-032",
+      "media": null,
+      "crossorigin": null
+    }
+  ],
+  "inline_styles": [],
+  "style_attributes_sample": [
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "style": "\\\"--color-swatch:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "\\\"background-scene-visual\\\""
+      ],
+      "style": "\\\"--scene-gradient:"
+    }
+  ],
+  "scripts_summary": [
+    {
+      "src": "./main.js?v=20260708-032",
+      "type": null,
+      "inline_length": 0,
+      "preview": null
+    }
+  ],
+  "landmarks": [
+    {
+      "tag": "header",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "热门模型"
+    },
+    {
+      "tag": "header",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "热门工具"
+    },
+    {
+      "tag": "header",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-topbar\\\""
+      ],
+      "text_preview": "\\n\\n\\nAI 扩图\\n\\n\\n\\n\\n                  收藏\\n\\n\\n\\n                  分享\\n\\n\\n"
+    },
+    {
+      "tag": "header",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\n"
+    },
+    {
+      "tag": "nav",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"primary-nav\\\""
+      ],
+      "text_preview": "\\n\\n\\n快速开始\\n\\n\\n\\n搜索\\n\\n\\n\\n与模型对话\\n\\n\\n\\n\\nAI图像工具\\n\\n\\n\\n\\nAI音视频工具\\n\\n\\n\\n\\nMCP广"
+    },
+    {
+      "tag": "nav",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"inner-nav\\\""
+      ],
+      "text_preview": "\\n\\n\\nAI 扩图\\n\\n\\n\\nAI 换背景(demo页)\\n\\n\\n\\nAI 写真\\n\\n\\n\\nAI 商品海报\\n\\n\\n\\nAI 风格转换\\n\\n\\"
+    },
+    {
+      "tag": "main",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"content-shell\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\n想用的AI，这里都有\\n国内外热门AI模型一站聚合，聊天、修图、做视频，不折腾，直接用。\\n\\n\\n\\n\\nAI万象 ·一呼即应\\n\\n\\n"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"user-popover\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\n\\nchinaz_0000000\\n199****9999\\n\\n\\n消费明细\\n充值账单\\n\\n退出登录\\n\\n\\n"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"page-surface"
+      ],
+      "text_preview": "\\n\\n\\n\\n想用的AI，这里都有\\n国内外热门AI模型一站聚合，聊天、修图、做视频，不折腾，直接用。\\n\\n\\n\\n\\nAI万象 ·一呼即应\\n\\n\\n\\n"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"home-search-section\\\""
+      ],
+      "text_preview": "\\nAI万象 ·一呼即应\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n热门模型\\n\\n\\nGPT-5\\n立即体验\\n\\n\\n\\nClaude Sonnet"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"suggest-column\\\""
+      ],
+      "text_preview": "\\n热门模型\\n\\n\\nGPT-5\\n立即体验\\n\\n\\n\\nClaude Sonnet 4.5\\n立即体验\\n\\n\\n\\nGemini 2.5 Pro\\n立即"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"suggest-column\\\""
+      ],
+      "text_preview": "\\n热门工具\\n\\n\\nAI 扩图\\n立即体验\\n\\n\\n\\nAI 换背景\\n立即体验\\n\\n\\n\\nAI 商品海报\\n立即体验\\n\\n\\n\\nAI 风格转换\\"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": "\\\"featuredModels\\\"",
+      "class": [
+        "\\\"content-section\\\""
+      ],
+      "text_preview": "\\n\\n\\n推荐模型\\n大家都青睐的主流模型，即点即用\\n\\n\\n\\n\\n\\n\\nFast\\n\\n\\nDoubao-Seed-1.6\\n便宜好用\\n响应快，适合"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"content-section"
+      ],
+      "text_preview": "\\n\\n文本模型\\n图片模型\\n视频模型\\n支持纯文本自然语言理解、文档解读、多轮对话\\n\\n\\n\\n全部\\n\\n\\n豆包\\n\\n\\nDeepSeek\\n\\n\\"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": "\\\"featuredTools\\\"",
+      "class": [
+        "\\\"content-section\\\""
+      ],
+      "text_preview": "\\n\\n\\n推荐工具\\n不用费力研究，点开就会用。\\n\\n\\n\\n\\n\\n\\n\\n\\nAI 扩图\\n上传一张图片，24 个扩图场景可选，自动补全画面并适配封面、"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": "\\\"allTools\\\"",
+      "class": [
+        "\\\"content-section\\\""
+      ],
+      "text_preview": "\\n全部AI工具\\n\\n\\n\\n                图像工具\\n\\n\\n\\n                音视频工具\\n\\n适合修图、扩图、换背景"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"page-surface"
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 扩图\\n\\n\\n\\n\\n                  收藏\\n\\n\\n\\n                  分享\\n\\n\\n\\"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"inner-workspace\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\nAI 扩图\\n\\n\\n\\n\\n                  收藏\\n\\n\\n\\n                  分享\\n\\n\\n\\n\\"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"expand-layout\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 扩图\\n先上传图片，再选择用途\\n\\n500 智点/次 · 失败不扣费\\n\\n\\n\\n\\n\\n上传参考图片\\n支持 PNG、JPG、J"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"expand-layout"
+      ],
+      "text_preview": "\\n\\n\\nAI 扩图\\n一张图，适配更多场景\\n上传原图，选择用途，AI 会自然补全画面并输出推荐尺寸。\\n\\n\\n\\n\\nBefore\\n\\n\\n\\nAft"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"expand-result-bottom\\\""
+      ],
+      "text_preview": "\\n\\n生成结果\\n等待生成\\n上传图片并选择场景后，结果会展示在这里。\\n\\n\\n\\n\\n暂无结果\\n\\n\\n\\n下载 JPG\\n\\n\\n"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"background-scenes-panel\\\""
+      ],
+      "text_preview": "\\n\\n\\n选择风格\\n\\n\\n\\n\\n            分类一\\n\\n        \\n\\n            分类二\\n\\n        \\n"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"background-result-panel\\\""
+      ],
+      "text_preview": "\\n\\n生成结果\\n\\n\\n\\n\\n暂未生成图片\\n\\n\\n\\n\\n\\n\\n当前为带水印预览图，下载后可获取原图。右下角“AI生成”为合规标识，将随原图保留。\\"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"background-history-panel\\\""
+      ],
+      "text_preview": "\\n\\n\\n生成历史\\n\\n历史记录将为您保留 3 天。为避免过期丢失，请及时下载到本地设备。\\n\\n\\n\\n\\n\\n家居空间\\n\\n\\n尺寸\\n1024 x "
+    },
+    {
+      "tag": "section",
+      "role": "\\\"dialog\\\"",
+      "id": null,
+      "class": [
+        "\\\"search-dialog\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\n\\n\\n\\n\\n热门搜索\\n换背景\\n扩图\\n商品海报\\nGPT-5\\nDeepSeek\\n\\n"
+    },
+    {
+      "tag": "section",
+      "role": "\\\"dialog\\\"",
+      "id": null,
+      "class": [
+        "\\\"confirm-dialog\\\""
+      ],
+      "text_preview": "\\n确认下载\\n下载即表示您确认对上传素材拥有合法使用权，知悉该图片为AI生成/编辑内容，并自行承担使用责任。\\n\\n取消\\n确认并下载\\n\\n"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"floating-support-panel\\\""
+      ],
+      "text_preview": "\\n\\n二维码图\\n扫码实时沟通，快速响应您的问题\\n工作日8:30～18:00在线\\n\\n"
+    },
+    {
+      "tag": "section",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"floating-feedback-panel\\\""
+      ],
+      "text_preview": "\\n调用外部NPS系统脚本\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"model-card"
+      ],
+      "text_preview": "\\n\\n\\nFast\\n\\n\\nDoubao-Seed-1.6\\n便宜好用\\n响应快，适合日常问答、写作和知识整理。\\n立即体验\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"model-card\\\""
+      ],
+      "text_preview": "\\n\\n\\nReasoning\\n\\n\\nDeepSeek-V3.1\\n推理稳定\\n推理和代码表现稳定，适合稍复杂的问题拆解。\\n立即体验\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"model-card\\\""
+      ],
+      "text_preview": "\\n\\n\\nChat\\n\\n\\nGPT-5 mini\\n能力均衡\\n通用能力均衡，适合内容生成和多轮对话。\\n立即体验\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\nDoubao-Seed-1.6便宜好用\\n立即体验\\n\\n低价高频场景优先，适合日常对话、写作、翻译和办公任务。\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\nDoubao-Seed-thinking深度思考\\n立即体验\\n\\n适合复杂问题拆解、逻辑推理、长链路分析和知识整理。\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\nDoubao-Smart-Router智能路由\\n立即体验\\n\\n根据任务意图自动匹配合适模型，适合不知道怎么选的新手用户。\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\nDoubao-Seed-Translation模型上新\\n立即体验\\n\\n多语言翻译模型，支持多语种互译，输出更自然稳定。\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\nDoubao-Seed-Character新版升级\\n立即体验\\n\\n面向角色扮演、故事叙事和陪伴对话优化，表达更稳定。\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\nDoubao-Seed-lite\\n立即体验\\n\\n轻量、快速、低成本，适合客服问答和批量内容处理。\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\nDeepSeek-V3.1推理稳定\\n立即体验\\n\\n通用问答、代码辅助和知识问答表现稳定，适合日常复杂任务。\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n\\n\\n\\n\\nDeepSeek-R1深度思考\\n立即体验\\n\\n适合数学推理、逻辑分析和多步骤问题拆解。\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 扩图\\n上传一张图片，24 个扩图场景可选，自动补全画面并适配封面、海报、商品图、PPT 背景等常用尺寸。\\n\\n补全画面\\n尺寸适配"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 换背景\\n上传人物或商品图片，24 种背景场景可选，AI 会保留主体，把背景换成白底、摄影棚、家居、商务、节日等效果。\\n\\n替换背景"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 写真\\n上传人物照片，女性、男性、儿童 3 类写真模板可选，共 72 种写真风格，轻松生成旅行、棚拍、复古、海岛等人像大片。\\n\\n写"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-browser-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 扩图\\n\\n智能补全画面尺寸\\n立即体验\\n\\n\\n\\n            \\n\\n短视频封面\\n\\n              "
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-browser-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 换背景\\n\\n保留主体换场景\\n立即体验\\n\\n\\n\\n            \\n\\n商品白底\\n\\n               "
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-browser-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 写真\\n\\n生成多风格写真\\n立即体验\\n\\n\\n\\n            \\n\\n旅行写真\\n\\n                "
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-browser-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 商品海报\\n\\n商品图一键成海报\\n立即体验\\n\\n\\n\\n            \\n\\n新品促销\\n\\n             "
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-browser-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 风格转换\\n\\n图片风格快速重塑\\n立即体验\\n\\n\\n\\n            \\n\\n未来科技\\n\\n             "
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"tool-browser-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI 配色重绘\\n\\n重绘色彩和氛围\\n立即体验\\n\\n\\n\\n            \\n\\n清新绿调\\n\\n              "
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"background-history-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n家居空间\\n\\n\\n尺寸\\n1024 x 1024\\n\\n\\n大小\\n1.8MB\\n\\n\\n时间\\n2026-07-08 09:42\\n\\n\\n\\n"
+    },
+    {
+      "tag": "article",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"background-history-card\\\""
+      ],
+      "text_preview": "\\n\\n\\n白底商品\\n\\n\\n尺寸\\n1024 x 1024\\n\\n\\n大小\\n1.4MB\\n\\n\\n时间\\n2026-07-07 16:18\\n\\n\\n\\n"
+    },
+    {
+      "tag": "aside",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"sidebar\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\nAI应用广场\\n多模型 · 多工具 · 便宜好用\\n\\n\\n\\n\\n\\n\\n\\n\\n快速开始\\n\\n\\n\\n搜索\\n\\n\\n\\n与模型对话\\"
+    },
+    {
+      "tag": "aside",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"expand-result-side\\\""
+      ],
+      "text_preview": "\\n\\n当前用途\\n横图扩展\\n把图扩成横版\\n\\n\\n模型比例\\n16:9\\n\\n\\n最终尺寸\\n1920 x 1080\\n\\n\\n导出\\nJPG · 高清\\"
+    },
+    {
+      "tag": "aside",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"expand-builder-form\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\n上传图片\\n单张不超过 10MB\\n选择图片\\n\\n\\n\\n\\n已上传图片\\n等待读取图片信息\\n\\n\\n\\n\\n\\n\\n已选用途\\n横图扩"
+    },
+    {
+      "tag": "aside",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"background-control-panel\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\n点击或拖拽上传图片\\n\\n支持 PNG、JPG、JPEG、WebP\\n单张不超过 10MB\\n\\n\\n\\n\\n重新上传\\n\\n\\n\\n上传即"
+    },
+    {
+      "tag": "footer",
+      "role": null,
+      "id": null,
+      "class": [
+        "\\\"site-footer\\\""
+      ],
+      "text_preview": "\\n© 2026 站长之家 AI应用广场\\n闽ICP备08105208号-3\\n闽公网安备35020302000061号\\n"
+    },
+    {
+      "tag": "div",
+      "role": "\\\"tablist\\\"",
+      "id": null,
+      "class": [
+        "\\\"model-gallery-tabs\\\""
+      ],
+      "text_preview": "\\n文本模型\\n图片模型\\n视频模型\\n支持纯文本自然语言理解、文档解读、多轮对话\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": [
+        "\\\"is-active\\\""
+      ],
+      "text_preview": "文本模型"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "图片模型"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "视频模型"
+    },
+    {
+      "tag": "div",
+      "role": "\\\"tablist\\\"",
+      "id": null,
+      "class": [
+        "\\\"model-vendor-strip\\\""
+      ],
+      "text_preview": "\\n\\n全部\\n\\n\\n豆包\\n\\n\\nDeepSeek\\n\\n\\nOpenAI\\n\\n\\nClaude\\n\\n\\n通义千问\\n\\n\\nGemini\\n\\n\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": [
+        "\\\"is-active\\\""
+      ],
+      "text_preview": "\\n全部\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\n豆包\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\nDeepSeek\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\nOpenAI\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\nClaude\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\n通义千问\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\nGemini\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\nMistral\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\nKimi\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\nMeta\\n"
+    },
+    {
+      "tag": "div",
+      "role": "\\\"tablist\\\"",
+      "id": null,
+      "class": [
+        "\\\"tool-category-tabs"
+      ],
+      "text_preview": "\\n\\n\\n                图像工具\\n\\n\\n\\n                音视频工具\\n\\n适合修图、扩图、换背景、写真和电商海报等高"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": [
+        "\\\"is-active\\\""
+      ],
+      "text_preview": "\\n\\n                图像工具\\n"
+    },
+    {
+      "tag": "button",
+      "role": "\\\"tab\\\"",
+      "id": null,
+      "class": null,
+      "text_preview": "\\n\\n                音视频工具\\n"
+    },
+    {
+      "tag": "section",
+      "role": "\\\"dialog\\\"",
+      "id": null,
+      "class": [
+        "\\\"search-dialog\\\""
+      ],
+      "text_preview": "\\n\\n\\n\\n\\n\\n\\n\\n\\n热门搜索\\n换背景\\n扩图\\n商品海报\\nGPT-5\\nDeepSeek\\n\\n"
+    },
+    {
+      "tag": "section",
+      "role": "\\\"dialog\\\"",
+      "id": null,
+      "class": [
+        "\\\"confirm-dialog\\\""
+      ],
+      "text_preview": "\\n确认下载\\n下载即表示您确认对上传素材拥有合法使用权，知悉该图片为AI生成/编辑内容，并自行承担使用责任。\\n\\n取消\\n确认并下载\\n\\n"
+    },
+    {
+      "tag": "div",
+      "role": "\\\"img\\\"",
+      "id": null,
+      "class": [
+        "\\\"support-qr\\\""
+      ],
+      "text_preview": "二维码图"
+    }
+  ],
+  "meta_tags": [
+    {
+      "charset": "UTF-8",
+      "name": null,
+      "http-equiv": null,
+      "content": null
+    },
+    {
+      "charset": null,
+      "name": "viewport",
+      "http-equiv": null,
+      "content": "width=device-width, initial-scale=1.0"
+    }
+  ]
+}

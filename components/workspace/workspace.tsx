@@ -159,6 +159,24 @@ export function Workspace() {
     }
   }, [isLoggedIn, user?.id, benefitToastDismissedUserId])
 
+  // 监听从文案生成跳转到文案生视频的事件
+  useEffect(() => {
+    const handleNavigateToAgent = (event: Event) => {
+      const customEvent = event as CustomEvent
+      const { agentId, params } = customEvent.detail
+      if (agentId === 'copywriting-to-video' && params?.text) {
+        setPrefillAgentText(params.text)
+        setSelectedAgentId('copywriting-to-video')
+        setSelectedResultId(null)
+        setSelectedResultFileName(null)
+        setViewMode('agent-detail')
+        toast.success('已跳转到"AI 文案生视频"，可配置参数后生成视频')
+      }
+    }
+    window.addEventListener('navigateToAgent', handleNavigateToAgent)
+    return () => window.removeEventListener('navigateToAgent', handleNavigateToAgent)
+  }, [])
+
   const handleCloseNewUserBenefitToast = useCallback(() => {
     setShowNewUserBenefitToast(false)
     if (user?.id) {

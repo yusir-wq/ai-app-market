@@ -5,7 +5,7 @@ import { ModelListRow } from './model-list-row'
 import { ModelSearchDialog } from './model-search-dialog'
 import { HomeInputArea } from './home-input-area'
 import { mockModels, type Model } from '@/lib/mock-data'
-import { Sparkles, MessageSquare, Image, Video, Search } from 'lucide-react'
+import { Sparkle, Chat, Image as ImageIcon, FilmReel, MagnifyingGlass } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 const recommendedModelIds = ['deepseek-v4-pro', 'gpt-image-2', 'doubao-seedance-2-0-260128']
@@ -50,7 +50,7 @@ export function HomeContent({
       <div className="flex flex-col items-center w-full max-w-[720px] mx-auto px-4 md:px-6 pt-[150px] pb-[150px]">
         <div className="flex items-center justify-center gap-3 mb-8 md:mb-10 shrink-0">
           <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Sparkles className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+            <Sparkle className="h-5 w-5 md:h-6 md:w-6 text-primary" />
           </div>
           <h1 className="text-xl md:text-2xl font-bold text-foreground">AI 应用广场</h1>
         </div>
@@ -80,7 +80,7 @@ export function HomeContent({
             onClick={() => setSearchDialogOpen(true)}
             className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border hover:border-primary/30 hover:bg-accent transition-colors cursor-pointer shrink-0"
           >
-            <Search className="h-4 w-4 text-muted-foreground" />
+            <MagnifyingGlass className="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
 
@@ -100,7 +100,7 @@ export function HomeContent({
         <div className="w-full space-y-6 shrink-0">
           <ModelListRow
             title="聊天模型"
-            icon={<MessageSquare className="h-4 w-4 text-blue-500" />}
+            icon={<Chat className="h-4 w-4 text-blue-500" />}
             models={chatModels}
             onSelectModel={onNavigateToModel}
             compact
@@ -108,7 +108,7 @@ export function HomeContent({
           />
           <ModelListRow
             title="图片模型"
-            icon={<Image className="h-4 w-4 text-green-500" />}
+            icon={<ImageIcon className="h-4 w-4 text-green-500" />}
             models={imageModels}
             onSelectModel={onNavigateToModel}
             compact
@@ -116,7 +116,7 @@ export function HomeContent({
           />
           <ModelListRow
             title="视频模型"
-            icon={<Video className="h-4 w-4 text-purple-500" />}
+            icon={<FilmReel className="h-4 w-4 text-purple-500" />}
             models={videoModels}
             onSelectModel={onNavigateToModel}
             compact
