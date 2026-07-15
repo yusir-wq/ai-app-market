@@ -1,0 +1,32 @@
+{
+  "data": [
+    {
+      "id": "page-login-001",
+      "type": "page",
+      "name": "OEM 登录页",
+      "title": "OEM 登录页",
+      "version": 1,
+      "createdAt": 1721030400000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/login.html"
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "desktop",
+    "designLibrary": {
+      "name": "GEO-SAAS",
+      "id": null,
+      "version": null,
+      "scope": null,
+      "versionSource": null,
+      "path": "../.design_library/geo-saas"
+    }
+  }
+}

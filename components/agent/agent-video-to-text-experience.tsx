@@ -615,7 +615,7 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
               {/* 内容区域 */}
               <div className="p-6 overflow-y-auto max-h-[65vh]">
                 <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6">
-                  {/* 左侧：转写内容 + 音频播放器 */}
+                  {/* 左侧：转写内容 */}
                   <div>
                     <h4 className="text-sm font-medium text-[#3f4558] mb-3">转写内容</h4>
                     <div className="rounded-[12px] border border-[#e7ebf5] bg-[#F8FAFF] p-5 h-[350px] overflow-y-auto">
@@ -626,16 +626,6 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(selectedHistoryItem.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
                       <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('已导出 TXT 文件')}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
-                      <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载音频</Button>
-                    </div>
-                    {/* 音频播放器 */}
-                    <div className="mt-4 rounded-[8px] border border-[#e7ebf5] bg-[#f8faff] px-3 py-2 flex items-center gap-3 h-10">
-                      <button className="w-6 h-6 rounded-full bg-[#4f55ec] text-white flex items-center justify-center shrink-0"><Play className="h-3 w-3 ml-0.5" weight="fill" /></button>
-                      <div className="flex-1 relative">
-                        <input type="range" min={0} max={100} step={0.01} defaultValue={0} className="w-full h-2 rounded-full appearance-none cursor-pointer" style={{ background: 'linear-gradient(to right, #4f55ec 0%, #e7ebf5 0%)', WebkitAppearance: 'none' }} readOnly />
-                      </div>
-                      <span className="text-xs text-muted-foreground whitespace-nowrap shrink-0 w-[112px] text-right">00:00/03:24</span>
-                      <button className="h-7 px-2.5 rounded-[6px] border border-[#e7ebf5] bg-white text-xs text-foreground shrink-0">1.0x</button>
                     </div>
                   </div>
                   {/* 右侧：智能总结 */}

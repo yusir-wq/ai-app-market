@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OEM 登录 - GEO-SAAS</title>
+    <style id="theme-vars">
+/* @group-priority: primary, success, info, warning, error */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* primary - 紫色/蓝色系 */
+  --geo-indigo-50: #eef2ff; /* AI-generated */
+  --geo-indigo-100: #e0e7ff; /* AI-generated */
+  --geo-indigo-200: #c7d2fe; /* AI-generated */
+  --geo-indigo-300: #a5b4fc; /* AI-generated */
+  --geo-indigo-400: #818cf8; /* AI-generated */
+  --geo-indigo-500: #6366f1; /* @primary */ /* AI-generated */
+  --geo-indigo-600: #4f46e5; /* AI-generated */
+  --geo-indigo-700: #4338ca; /* AI-generated */
+  --geo-indigo-800: #3730a3; /* AI-generated */
+  --geo-indigo-900: #312e81; /* AI-generated */
+
+  /* text */
+  --geo-slate-50: #f8fafc; /* AI-generated */
+  --geo-slate-100: #f1f5f9; /* AI-generated */
+  --geo-slate-200: #e2e8f0; /* AI-generated */
+  --geo-slate-300: #cbd5e1; /* AI-generated */
+  --geo-slate-400: #94a3b8; /* AI-generated */
+  --geo-slate-500: #64748b; /* @primary */ /* AI-generated */
+  --geo-slate-600: #475569; /* AI-generated */
+  --geo-slate-700: #334155; /* AI-generated */
+  --geo-slate-800: #1e293b; /* AI-generated */
+  --geo-slate-900: #0f172a; /* AI-generated */
+
+  /* surface */
+  --geo-gray-50: #fafbfc; /* AI-generated */
+  --geo-gray-100: #f4f6f8; /* AI-generated */
+  --geo-gray-200: #e8ecf0; /* AI-generated */
+  --geo-gray-300: #d1d8e0; /* AI-generated */
+  --geo-gray-400: #a0aec0; /* AI-generated */
+  --geo-gray-500: #718096; /* @primary */ /* AI-generated */
+  --geo-gray-600: #4a5568; /* AI-generated */
+  --geo-gray-700: #2d3748; /* AI-generated */
+  --geo-gray-800: #1a202c; /* AI-generated */
+  --geo-gray-900: #0d1117; /* AI-generated */
+
+  /* success */
+  --geo-green-50: #f0fdf4; /* AI-generated */
+  --geo-green-100: #dcfce7; /* AI-generated */
+  --geo-green-200: #bbf7d0; /* AI-generated */
+  --geo-green-300: #86efac; /* AI-generated */
+  --geo-green-400: #4ade80; /* AI-generated */
+  --geo-green-500: #22c55e; /* @primary */ /* AI-generated */
+  --geo-green-600: #16a34a; /* AI-generated */
+  --geo-green-700: #15803d; /* AI-generated */
+  --geo-green-800: #166534; /* AI-generated */
+  --geo-green-900: #14532d; /* AI-generated */
+
+  /* warning */
+  --geo-amber-50: #fffbeb; /* AI-generated */
+  --geo-amber-100: #fef3c7; /* AI-generated */
+  --geo-amber-200: #fde68a; /* AI-generated */
+  --geo-amber-300: #fcd34d; /* AI-generated */
+  --geo-amber-400: #fbbf24; /* AI-generated */
+  --geo-amber-500: #f59e0b; /* @primary */ /* AI-generated */
+  --geo-amber-600: #d97706; /* AI-generated */
+  --geo-amber-700: #b45309; /* AI-generated */
+  --geo-amber-800: #92400e; /* AI-generated */
+  --geo-amber-900: #78350f; /* AI-generated */
+
+  /* error */
+  --geo-red-50: #fef2f2; /* AI-generated */
+  --geo-red-100: #fee2e2; /* AI-generated */
+  --geo-red-200: #fecaca; /* AI-generated */
+  --geo-red-300: #fca5a5; /* AI-generated */
+  --geo-red-400: #f87171; /* AI-generated */
+  --geo-red-500: #ef4444; /* @primary */ /* AI-generated */
+  --geo-red-600: #dc2626; /* AI-generated */
+  --geo-red-700: #b91c1c; /* AI-generated */
+  --geo-red-800: #991b1b; /* AI-generated */
+  --geo-red-900: #7f1d1d; /* AI-generated */
+
+  /* info */
+  --geo-cyan-50: #ecfeff; /* AI-generated */
+  --geo-cyan-100: #cffafe; /* AI-generated */
+  --geo-cyan-200: #a5f3fc; /* AI-generated */
+  --geo-cyan-300: #67e8f9; /* AI-generated */
+  --geo-cyan-400: #22d3ee; /* AI-generated */
+  --geo-cyan-500: #06b6d4; /* @primary */ /* AI-generated */
+  --geo-cyan-600: #0891b2; /* AI-generated */
+  --geo-cyan-700: #0e7490; /* AI-generated */
+  --geo-cyan-800: #155e75; /* AI-generated */
+  --geo-cyan-900: #164e63; /* AI-generated */
+
+  /* === Semantic Aliases (Layer 2) === */
+  --primary: var(--geo-indigo-500);
+  --primary-foreground: #ffffff;
+  --secondary: var(--geo-slate-100);
+  --secondary-foreground: var(--geo-slate-900);
+  --accent: var(--geo-indigo-600);
+  --accent-foreground: #ffffff;
+  --background: #ffffff;
+  --foreground: var(--geo-slate-900);
+  --muted: var(--geo-slate-100);
+  --muted-foreground: var(--geo-slate-500);
+  --border: var(--geo-slate-200);
+  --ring: var(--geo-indigo-500);
+  --bg: var(--geo-gray-50);
+  --fg: var(--geo-slate-900);
+  --rule: var(--geo-slate-200);
+  --link: var(--geo-indigo-600);
+  --surface: #ffffff;
+  --surface-dim: var(--geo-gray-100);
+  --surface-bright: #ffffff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: var(--geo-gray-50);
+  --surface-container: var(--geo-gray-100);
+  --surface-container-high: var(--geo-gray-200);
+  --surface-container-highest: var(--geo-gray-300);
+  --inverse-surface: var(--geo-slate-800);
+  --inverse-on-surface: var(--geo-gray-50);
+  --interactive-hover: rgba(99,102,241,0.08);
+  --interactive-focus: rgba(99,102,241,0.12);
+  --interactive-press: rgba(99,102,241,0.16);
+  --error: var(--geo-red-500);
+  --error-container: var(--geo-red-50);
+  --on-error: #ffffff;
+  --on-error-container: var(--geo-red-900);
+
+  /* === Portable Aliases (Layer 3) === */
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-surface: var(--surface);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-card: var(--surface);
+  --color-sidebar: var(--surface-container-low);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--geo-indigo-600);
+  --color-on-primary: #ffffff;
+  --color-primary-container: var(--geo-indigo-50);
+  --color-on-primary-container: var(--geo-indigo-900);
+  --color-secondary: var(--geo-slate-200);
+  --color-secondary-container: var(--geo-slate-100);
+  --color-on-secondary-container: var(--geo-slate-800);
+  --color-error: var(--error);
+  --color-error-container: var(--error-container);
+  --color-on-error: var(--on-error);
+  --color-success: var(--geo-green-600);
+  --color-warning: var(--geo-amber-600);
+  --color-border: var(--rule);
+  --color-outline: var(--rule);
+  --color-outline-variant: var(--geo-slate-100);
+  --color-muted-foreground: var(--muted-foreground);
+  --font-family-base: var(--font-body);
+
+  /* === Typography === */
+  --font-display: 'DM Sans', sans-serif;
+  --font-heading: 'DM Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --font-size-display: 48px;
+  --font-size-h1: 36px;
+  --font-size-h2: 28px;
+  --font-size-h3: 22px;
+  --font-size-h4: 18px;
+  --font-size-body: 14px;
+  --font-size-lead: 16px;
+  --font-size-caption: 12px;
+  --font-size-eyebrow: 11px;
+  --font-size-mono: 13px;
+
+  --font-weight-display: 700;
+  --font-weight-h1: 700;
+  --font-weight-h2: 600;
+  --font-weight-h3: 600;
+  --font-weight-h4: 600;
+  --font-weight-body: 400;
+  --font-weight-lead: 400;
+  --font-weight-caption: 400;
+  --font-weight-eyebrow: 600;
+  --font-weight-mono: 400;
+
+  --line-height-display: 1.15;
+  --line-height-h1: 1.2;
+  --line-height-h2: 1.25;
+  --line-height-h3: 1.3;
+  --line-height-h4: 1.4;
+  --line-height-body: 1.6;
+  --line-height-lead: 1.6;
+  --line-height-caption: 1.5;
+  --line-height-eyebrow: 1.4;
+  --line-height-mono: 1.6;
+
+  /* === Spacing === */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* === Sizing === */
+  --size-button-height: 36px;
+  --size-input-height: 36px;
+  --size-icon-sm: 16px;
+  --size-icon-md: 20px;
+  --size-icon-lg: 24px;
+  --size-avatar-sm: 28px;
+  --size-avatar-md: 36px;
+  --size-avatar-lg: 48px;
+  --sidebar-width: 240px;
+  --nav-height: 56px;
+
+  /* === Radius === */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-full: 9999px;
+
+  /* === Shadows === */
+  --shadow-1: 0 1px 2px 0 rgba(15,23,42,0.05); /* Card */
+  --shadow-2: 0 2px 8px -2px rgba(15,23,42,0.08); /* Card Hover */
+  --shadow-3: 0 4px 16px -4px rgba(15,23,42,0.12); /* Dropdown */
+  --shadow-4: 0 8px 24px -8px rgba(15,23,42,0.16); /* Modal */
+  --shadow-5: 0 16px 48px -12px rgba(15,23,42,0.20); /* Overlay */
+
+  /* === Motion === */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-enter: cubic-bezier(0, 0, 0.2, 1);
+  --easing-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.dark {
+  --primary: var(--geo-indigo-400);
+  --accent: var(--geo-indigo-400);
+  --background: var(--geo-gray-900);
+  --foreground: var(--geo-gray-50);
+  --muted: var(--geo-slate-800);
+  --muted-foreground: var(--geo-slate-400);
+  --border: var(--geo-slate-700);
+  --ring: var(--geo-indigo-400);
+  --bg: var(--geo-gray-900);
+  --fg: var(--geo-gray-50);
+  --rule: var(--geo-slate-700);
+  --link: var(--geo-indigo-400);
+  --surface: var(--geo-gray-800);
+  --surface-dim: var(--geo-gray-900);
+  --surface-bright: var(--geo-gray-700);
+  --surface-container-lowest: var(--geo-gray-900);
+  --surface-container-low: var(--geo-gray-800);
+  --surface-container: var(--geo-gray-700);
+  --surface-container-high: var(--geo-slate-700);
+  --surface-container-highest: var(--geo-slate-600);
+  --inverse-surface: var(--geo-gray-100);
+  --inverse-on-surface: var(--geo-gray-900);
+  --interactive-hover: rgba(129,140,248,0.10);
+  --interactive-focus: rgba(129,140,248,0.14);
+  --interactive-press: rgba(129,140,248,0.18);
+  --error: var(--geo-red-400);
+  --error-container: rgba(127,29,29,0.4);
+  --on-error: var(--geo-red-900);
+  --on-error-container: var(--geo-red-100);
+  --shadow-1: 0 1px 2px 0 rgba(0,0,0,0.20);
+  --shadow-2: 0 2px 8px -2px rgba(0,0,0,0.28);
+  --shadow-3: 0 4px 16px -4px rgba(0,0,0,0.36);
+  --shadow-4: 0 8px 24px -8px rgba(0,0,0,0.44);
+  --shadow-5: 0 16px 48px -12px rgba(0,0,0,0.52);
+}
+
+/* Typography Classes */
+.geo-display { font-family: var(--font-display); font-size: 3rem; font-weight: var(--font-weight-display); line-height: var(--line-height-display); letter-spacing: -0.02em; }
+.geo-h1 { font-family: var(--font-heading); font-size: 2.25rem; font-weight: var(--font-weight-h1); line-height: var(--line-height-h1); }
+.geo-h2 { font-family: var(--font-heading); font-size: 1.75rem; font-weight: var(--font-weight-h2); line-height: var(--line-height-h2); }
+.geo-h3 { font-family: var(--font-heading); font-size: 1.375rem; font-weight: var(--font-weight-h3); line-height: var(--line-height-h3); }
+.geo-h4 { font-family: var(--font-heading); font-size: 1.125rem; font-weight: var(--font-weight-h4); line-height: var(--line-height-h4); }
+.geo-body { font-family: var(--font-body); font-size: 0.875rem; font-weight: var(--font-weight-body); line-height: var(--line-height-body); }
+.geo-lead { font-family: var(--font-body); font-size: 1rem; font-weight: var(--font-weight-lead); line-height: var(--line-height-lead); }
+.geo-caption { font-family: var(--font-body); font-size: 0.75rem; font-weight: var(--font-weight-caption); line-height: var(--line-height-caption); }
+.geo-eyebrow { font-family: var(--font-body); font-size: 0.6875rem; font-weight: var(--font-weight-eyebrow); line-height: var(--line-height-eyebrow); letter-spacing: 0.08em; text-transform: uppercase; }
+.geo-mono { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: var(--font-weight-mono); line-height: var(--line-height-mono); }
+.geo-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: var(--font-weight-display); line-height: var(--line-height-display); font-variant-numeric: tabular-nums; }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--color-card);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-ring: var(--ring);
+    --color-sidebar: var(--color-sidebar);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+    --radius-xl: var(--radius-xl);
+  }
+  @layer base {
+    body { background: var(--color-background); color: var(--color-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--color-card); }
+      .text-card { color: var(--color-card); }
+      .border-card { border-color: var(--color-card); }
+      .ring-card { --tw-ring-color: var(--color-card); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-sidebar { background-color: var(--color-sidebar); }
+      .text-sidebar { color: var(--color-sidebar); }
+      .border-sidebar { border-color: var(--color-sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--color-sidebar); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4" style="background: linear-gradient(135deg, var(--geo-indigo-50) 0%, var(--geo-gray-50) 50%, var(--geo-indigo-50) 100%);">
+  <div class="w-full max-w-md">
+    <!-- Logo & Brand -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-xl mb-4" style="background: linear-gradient(135deg, var(--geo-indigo-600) 0%, var(--geo-indigo-500) 100%); box-shadow: 0 8px 24px -8px rgba(99,102,241,0.4);">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-display font-bold text-foreground mb-2">GEO-SAAS 系统</h1>
+      <p class="text-muted-foreground text-sm">OEM 合作伙伴登录入口</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="rounded-lg p-8" style="background: var(--surface); box-shadow: var(--shadow-4);">
+      <form class="space-y-6">
+        <!-- Username -->
+        <div>
+          <label for="username" class="block text-sm font-medium text-foreground mb-2">
+            用户名 / 邮箱
+          </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="w-full px-4 py-3 rounded-md text-foreground bg-background"
+            style="border: 1px solid var(--border); transition: all 0.2s;"
+            placeholder="请输入用户名或邮箱"
+            required
+            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px var(--interactive-focus)';"
+            onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';"
+          >
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-foreground mb-2">
+            密码
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="w-full px-4 py-3 rounded-md text-foreground bg-background"
+            style="border: 1px solid var(--border); transition: all 0.2s;"
+            placeholder="请输入密码"
+            required
+            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px var(--interactive-focus)';"
+            onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';"
+          >
+        </div>
+
+        <!-- Remember & Forgot -->
+        <div class="flex items-center justify-between">
+          <label class="flex items-center">
+            <input type="checkbox" class="w-4 h-4 rounded" style="border: 1px solid var(--border); accent-color: var(--primary);">
+            <span class="ml-2 text-sm text-muted-foreground">记住我</span>
+          </label>
+          <a href="#" class="text-sm" style="color: var(--link);">忘记密码？</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full py-3 px-4 rounded-md font-medium text-base text-white"
+          style="background: linear-gradient(135deg, var(--geo-indigo-600) 0%, var(--geo-indigo-500) 100%); box-shadow: 0 4px 12px -2px rgba(99,102,241,0.3); transition: all 0.2s;"
+          onmouseover="this.style.background='linear-gradient(135deg, var(--geo-indigo-700) 0%, var(--geo-indigo-600) 100%)';"
+          onmouseout="this.style.background='linear-gradient(135deg, var(--geo-indigo-600) 0%, var(--geo-indigo-500) 100%)';"
+        >
+          登 录
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="relative my-6">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t" style="border-color: var(--border);"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-4 text-muted-foreground" style="background: var(--surface);">其他登录方式</span>
+        </div>
+      </div>
+
+      <!-- Alternative Login -->
+      <div class="grid grid-cols-2 gap-3">
+        <button class="flex items-center justify-center px-4 py-2.5 rounded-md transition-colors" style="border: 1px solid var(--border);" onmouseover="this.style.background='var(--muted)';" onmouseout="this.style.background='transparent';">
+          <svg class="w-5 h-5 mr-2 text-muted-foreground" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span class="text-sm text-foreground">GitHub</span>
+        </button>
+        <button class="flex items-center justify-center px-4 py-2.5 rounded-md transition-colors" style="border: 1px solid var(--border);" onmouseover="this.style.background='var(--muted)';" onmouseout="this.style.background='transparent';">
+          <svg class="w-5 h-5 mr-2 text-muted-foreground" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </svg>
+          <span class="text-sm text-foreground">企业微信</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-6">
+      <p class="text-sm text-muted-foreground">
+        还没有账号？
+        <a href="#" class="font-medium" style="color: var(--link);">联系管理员开通</a>
+      </p>
+      <p class="text-xs text-muted-foreground mt-3">
+        © 2026 GEO-SAAS. 保留所有权利.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

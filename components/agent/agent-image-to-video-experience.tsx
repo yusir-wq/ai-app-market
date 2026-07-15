@@ -526,8 +526,9 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
                           {selectedHistoryItem.thumbnail && (
                             <div>
                               <span className="text-xs text-[#697185] block mb-2">参考图片</span>
-                              <div className="w-full rounded-[8px] overflow-hidden border border-[#e7ebf5] bg-[#f0f0f0] flex items-center justify-center" style={{ aspectRatio: '16/9' }}>
-                                <img src={selectedHistoryItem.thumbnail} alt="参考图片" className="w-full h-full object-contain" />
+                              <div className="flex items-center gap-2 text-[13px] text-[#3f4558]/60">
+                                <ImageSquare className="h-4 w-4 text-[#8a91a6]" />
+                                <span>图片文件已上传</span>
                               </div>
                             </div>
                           )}
