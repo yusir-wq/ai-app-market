@@ -57,7 +57,6 @@ export function VideoWatermarkRemovalExperience({ agent, onBack, onViewResult }:
   const [removalType, setRemovalType] = useState('subtitle')
   const [fillMode, setFillMode] = useState('ai-inpaint')
   const [resultTab, setResultTab] = useState<'before' | 'after'>('after')
-  const [historyResultTab, setHistoryResultTab] = useState<'before' | 'after'>('after')
 
   // 框选区域
   interface DrawnRect {
@@ -509,23 +508,12 @@ export function VideoWatermarkRemovalExperience({ agent, onBack, onViewResult }:
               <div className="p-6 overflow-y-auto max-h-[60vh]">
                 <div className="rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] overflow-hidden">
                   <div className="aspect-video bg-gradient-to-br from-[#eef1ff] to-[#f8faff] flex items-center justify-center relative">
-                      {/* 处理前/处理后 Tabs — 右上角悬浮 */}
-                      <Tabs value={historyResultTab} onValueChange={(v) => setHistoryResultTab(v as 'before' | 'after')} className="absolute top-3 right-3 z-10">
-                        <TabsList className="h-8 p-0.5 rounded-[8px] bg-[#eef1ff] border-0 shadow-md">
-                          <TabsTrigger value="before" className="h-7 px-3 rounded-[6px] text-[12px] data-[state=active]:bg-white data-[state=active]:text-[#4f55ec] data-[state=active]:shadow-sm data-[state=inactive]:text-[#3f4558]/60 data-[state=inactive]:bg-transparent">处理前</TabsTrigger>
-                          <TabsTrigger value="after" className="h-7 px-3 rounded-[6px] text-[12px] data-[state=active]:bg-white data-[state=active]:text-[#4f55ec] data-[state=active]:shadow-sm data-[state=inactive]:text-[#3f4558]/60 data-[state=inactive]:bg-transparent">处理后</TabsTrigger>
-                        </TabsList>
-                      </Tabs>
                       <div className="text-center">
                         <div className="w-16 h-16 rounded-full bg-white/80 flex items-center justify-center mx-auto mb-3" style={{ boxShadow: '0 4px 16px rgba(79,85,236,0.12)' }}>
                           <Play className="h-7 w-7 text-[#4f55ec] ml-1" weight="fill" />
                         </div>
-                        <p className="text-sm font-medium text-[#3f4558]">
-                          {historyResultTab === 'before' ? selectedHistoryItem.title : selectedHistoryItem.title}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {historyResultTab === 'before' ? '原始视频' : `去除类型：${selectedHistoryItem.removalType}`}
-                        </p>
+                        <p className="text-sm font-medium text-[#3f4558]">{selectedHistoryItem.title}</p>
+                        <p className="text-xs text-muted-foreground mt-1">去除类型：{selectedHistoryItem.removalType}</p>
                       </div>
                     </div>
                   </div>

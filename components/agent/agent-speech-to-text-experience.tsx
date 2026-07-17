@@ -27,7 +27,7 @@ import {
   ShareNetwork, WarningCircle,
   CheckCircle, SpinnerGap, Calendar, Trash, Copy,
   Lightning, MagicWand, CaretLeft, Play, Pause,
-  PencilSimple, FileText, ArrowsClockwise, PaperPlaneTilt, Robot,
+  PencilSimple, FileText, Robot,
   MusicNote, VideoCamera, ArrowLineDown, X,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
@@ -101,12 +101,10 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
 
   // 智能总结
   const [summaryStarted, setSummaryStarted] = useState(false)
-  const [summaryInput, setSummaryInput] = useState('')
 
   // 切换生成内容摘要时重置总结状态
   useEffect(() => {
     setSummaryStarted(false)
-    setSummaryInput('')
   }, [summarize])
 
   function getFileExtension(name: string) { const last = name.lastIndexOf('.'); return last > -1 ? name.slice(last + 1).toUpperCase() : '' }
@@ -252,12 +250,6 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
 
   // 智能总结
   function handleStartSummary() { setSummaryStarted(true) }
-  function handleSendSummaryMsg() {
-    if (!summaryInput.trim()) return
-    toast.success('已发送指令，正在重新生成总结…')
-    setSummaryInput('')
-  }
-  function handleRegenerateSummary() { toast.success('正在重新生成总结…') }
 
   // 导出转写
   function handleExportTxt() { toast.success('已导出 TXT 文件') }
@@ -541,13 +533,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                     <>
                       <div className="rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] p-5 h-[600px] overflow-y-auto"><pre className="text-sm text-foreground leading-relaxed whitespace-pre-wrap font-sans">{summaryText}</pre></div>
                       <div className="flex items-center gap-1.5 mt-3">
-                        <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={handleRegenerateSummary}><ArrowsClockwise className="h-3.5 w-3.5" />重新生成</Button>
                         <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => handleCopy(summaryText)}><Copy className="h-3.5 w-3.5" />复制</Button>
-                      </div>
-                      {/* 对话输入框 — 发送按钮在内部右侧，整体高40px */}
-                      <div className="mt-4 relative h-10">
-                        <input value={summaryInput} onChange={e => setSummaryInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') handleSendSummaryMsg() }} placeholder="输入指令以调整总结内容…" className="w-full h-full rounded-[8px] border border-[#e7ebf5] bg-[#f8faff] pl-3 pr-10 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary/50" />
-                        <Button size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-[6px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white shrink-0" onClick={handleSendSummaryMsg}><PaperPlaneTilt className="h-3.5 w-3.5" /></Button>
                       </div>
                     </>
                   )}
@@ -643,13 +629,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                     </div>
                     {/* 操作按钮 */}
                     <div className="flex items-center gap-1.5 mt-3">
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><ArrowsClockwise className="h-3.5 w-3.5" />重新生成</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(summaryText); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
-                    </div>
-                    {/* 对话输入框 */}
-                    <div className="mt-4 relative h-10">
-                      <input placeholder="输入指令以调整总结内容…" className="w-full h-full rounded-[8px] border border-[#e7ebf5] bg-[#f8faff] pl-3 pr-10 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary/50" />
-                      <Button size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-[6px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white shrink-0"><PaperPlaneTilt className="h-3.5 w-3.5" /></Button>
                     </div>
                   </div>
                 </div>

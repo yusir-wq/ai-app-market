@@ -27,7 +27,7 @@ import {
   ShareNetwork, WarningCircle,
   SpinnerGap, Trash,
   MagicWand, CaretLeft,
-  Images, ArrowLineDown, Play, X,
+  Images, ImageSquare, ArrowLineDown, Play, X,
   Upload,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
@@ -95,8 +95,8 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
       toast.error('仅支持 JPG、PNG、WebP、GIF、BMP 格式')
       return
     }
-    if (file.size > 100 * 1024 * 1024) {
-      toast.error('图片大小不能超过 100MB')
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('图片大小不能超过 10MB')
       return
     }
     setUploadedFileName(file.name)
@@ -264,8 +264,8 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
                       <div className="w-full h-full border-2 border-dashed rounded-[10px] py-4 px-3 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-2 border-[#e7ebf5] hover:border-primary/30" style={{ background: '#f8faff' }} onClick={() => fileInputRef.current?.click()}>
                         <Images className="text-[#4f55ec]" style={{ fontSize: '40px' }} />
                         <p className="text-[14px] text-[#3f4558]">点击上传</p>
-                        <span className="text-[12px] text-muted-foreground">最大 100MB</span>
-                        <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/bmp" className="hidden" onChange={handleImageUpload} />
+                        <div className="text-[12px] text-muted-foreground leading-relaxed"><p>支持 PNG、JPG、JPEG、WebP</p><p>单张不超过 10MB</p></div>
+                        <input ref={fileInputRef} type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleImageUpload} />
                       </div>
                     )}
                   </div>

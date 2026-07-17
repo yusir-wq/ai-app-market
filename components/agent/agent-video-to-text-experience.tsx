@@ -27,15 +27,16 @@ import {
   ShareNetwork, WarningCircle,
   SpinnerGap, Trash, Copy,
   MagicWand, CaretLeft, Play, Pause,
-  PencilSimple, FileText, ArrowsClockwise, PaperPlaneTilt, Robot,
+  PencilSimple, FileText, Robot,
   ArrowLineDown, X,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
-const COST_POINTS = 20
-const COST_PRICE = 0.02
-const COST_TEXT = `使用费用：${COST_POINTS} 智点/次（约 ${COST_PRICE} 元）`
+const COST_POINTS_DEFAULT = 20
+const COST_POINTS_SUMMARY = 30
+const COST_PRICE_DEFAULT = 0.02
+const COST_PRICE_SUMMARY = 0.03
 
 interface VideoToTextExperienceProps {
   agent: Agent
@@ -75,8 +76,6 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
 
   const [language, setLanguage] = useState('auto')
   const [distinguishSpeaker, setDistinguishSpeaker] = useState(true)
-  const [punctuation, setPunctuation] = useState(true)
-  const [timestamps, setTimestamps] = useState(false)
   const [summarize, setSummarize] = useState(true)
 
   const [isProcessing, setIsProcessing] = useState(false)
@@ -103,7 +102,11 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
 
   // 智能总结
   const [summaryStarted, setSummaryStarted] = useState(false)
-  const [summaryInput, setSummaryInput] = useState('')
+
+  // 切换生成内容摘要时重置总结状态
+  useEffect(() => {
+    setSummaryStarted(false)
+  }, [summarize])
 
   function getFileExtension(name: string) { const last = name.lastIndexOf('.'); return last > -1 ? name.slice(last + 1).toUpperCase() : '' }
   function getFileType(_ext: string) { return '视频' }
@@ -182,6 +185,7 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
     setProgress(100)
     setResultText('会议纪要\n\n发言人1（14:00-14:05）：各位好，今天的会议主要讨论Q4产品规划。首先回顾一下我们Q3的整体表现，AI语音助手V1的市场占有率从15%提升到22%，这个成绩非常令人振奋。\n\n发言人2（14:06-14:12）：确实，企业级AI中台的客户续费率达到了91%，证明我们的产品是真正解决客户痛点的。我建议Q4重点发力海外市场，技术团队已经完成了多语言模型的预训练。\n\n发言人1（14:13-14:18）：同意。另一个方向是垂直行业深耕，特别是医疗和教育领域，我们已经积累了足够多的标杆案例，可以在这个基础上做产品化。\n\n发言人2（14:19-14:25）：关于算力方面，建议推进模型蒸馏和量化压缩，这样可以在有限的资源下覆盖更多客户。预计Q4完成内部测试版并向部分客户开放试点。\n\n📌 核心结论：\n1. Q4重点：海外市场拓展 + 垂直行业深耕\n2. 技术方向：多语言模型 + 模型蒸馏\n3. 里程碑：Q4向部分客户开放试点')
     setSummaryText('📊 会议智能总结\n\n本次会议为Q4产品规划讨论会，参会人员2人，时长约25分钟。\n\n🎯 核心议题\n• Q3成绩回顾：AI语音助手V1市占率从15%升至22%\n• 企业级AI中台客户续费率91%\n• Q4战略方向确定\n\n💡 关键决策\n1. Q4重点发力海外市场，多语言模型已完成预训练\n2. 垂直行业深耕：医疗 + 教育领域\n3. 推进模型蒸馏与量化压缩\n\n⏱️ 时间节点\n• Q4完成内部测试版\n• 向部分客户开放试点\n\n📈 预期目标\n• 海外市场首批上线3个语种\n• 教育行业签约至少5个标杆客户\n• 模型推理成本降低40%')
+    setSummaryStarted(summarize)
     toast.success('转写完成！')
   }
 
@@ -247,12 +251,6 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
 
   // 智能总结
   function handleStartSummary() { setSummaryStarted(true) }
-  function handleSendSummaryMsg() {
-    if (!summaryInput.trim()) return
-    toast.success('已发送指令，正在重新生成总结…')
-    setSummaryInput('')
-  }
-  function handleRegenerateSummary() { toast.success('正在重新生成总结…') }
 
   // 导出转写
   function handleExportTxt() { toast.success('已导出 TXT 文件') }
@@ -372,7 +370,7 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
             <div>
               <span className="text-[17px] font-normal text-[#3f4558] mb-2 inline-block">使用指南</span>
               <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">上传视频文件，AI 自动提取音频并识别语音，转写为高精度文字稿。支持多人对话区分、自动添加标点符号、生成内容摘要，让视频内容即时变文字。</p>
-              <small className="text-[14px] text-[#9ca3b8]">{COST_TEXT}</small>
+              <small className="text-[14px] text-[#9ca3b8]">使用费用：{summarize ? `${COST_POINTS_SUMMARY} 智点/次（约 ${COST_PRICE_SUMMARY} 元）` : `${COST_POINTS_DEFAULT} 智点/次（约 ${COST_PRICE_DEFAULT} 元）`}</small>
             </div>
             <div className="flex items-center justify-center h-full">
               <div
@@ -443,8 +441,6 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
                   </Select>
                 </div>
                 <div className="flex items-center justify-between px-4 py-3.5"><div><span className="text-sm text-[#3f4558]">区分说话人</span><p className="text-[11px] text-muted-foreground mt-0.5">自动识别不同发言人并分别标注</p></div><Switch checked={distinguishSpeaker} onCheckedChange={setDistinguishSpeaker} /></div>
-                <div className="flex items-center justify-between px-4 py-3.5"><div><span className="text-sm text-[#3f4558]">自动添加标点</span><p className="text-[11px] text-muted-foreground mt-0.5">智能匹配句子边界，添加逗号、句号</p></div><Switch checked={punctuation} onCheckedChange={setPunctuation} /></div>
-                <div className="flex items-center justify-between px-4 py-3.5"><div><span className="text-sm text-[#3f4558]">输出时间戳</span><p className="text-[11px] text-muted-foreground mt-0.5">在每段文字前标注对应的时间位置</p></div><Switch checked={timestamps} onCheckedChange={setTimestamps} /></div>
                 <div className="flex items-center justify-between px-4 py-3.5"><div><span className="text-sm text-[#3f4558]">生成内容摘要</span><p className="text-[11px] text-muted-foreground mt-0.5">自动提炼核心观点和待办事项</p></div><Switch checked={summarize} onCheckedChange={setSummarize} /></div>
               </div>
               {file && (
@@ -452,7 +448,7 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
                   <Button onClick={handleGenerate} disabled={isProcessing} className="h-[46px] px-12 rounded-[10px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white font-medium text-[15px] min-w-[200px]" style={{ boxShadow: '0px 12px 28px rgba(87,92,233,0.22)' }}>
                     {isProcessing ? (<span className="flex items-center gap-2"><SpinnerGap className="h-4 w-4 animate-spin" />正在生成...</span>) : (<span className="flex items-center gap-2"><MagicWand className="h-4 w-4" weight="fill" />立即生成</span>)}
                   </Button>
-                  <p className="text-[11px] text-[#b7becf] mt-3">{COST_TEXT}</p>
+                  <p className="text-[11px] text-[#b7becf] mt-3">使用费用：{summarize ? `${COST_POINTS_SUMMARY} 智点/次（约 ${COST_PRICE_SUMMARY} 元）` : `${COST_POINTS_DEFAULT} 智点/次（约 ${COST_PRICE_DEFAULT} 元）`}</p>
                 </div>
               )}
             </div>
@@ -481,7 +477,7 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
         {resultText && !isProcessing && (
           <div className="rounded-[18px] border border-[#f0f2f8] overflow-hidden" style={{ ...CARD_SHADOW, background: 'rgba(255,255,255,0.96)' }} ref={resultRef}>
             <div className="px-6 pt-6 pb-2" style={{ background: 'linear-gradient(180deg, #f8faff 0%, #ffffff 100%)' }}>
-              <div className="flex items-center justify-between"><h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3><span className="text-xs text-[#8a91a6]">消耗 {COST_POINTS} 智点</span></div>
+              <div className="flex items-center justify-between"><h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3><span className="text-xs text-[#8a91a6]">消耗 {summarize ? COST_POINTS_SUMMARY : COST_POINTS_DEFAULT} 智点</span></div>
             </div>
             <div className="p-6 pt-4">
               <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6">
@@ -534,13 +530,7 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
                     <>
                       <div className="rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] p-5 h-[600px] overflow-y-auto"><pre className="text-sm text-foreground leading-relaxed whitespace-pre-wrap font-sans">{summaryText}</pre></div>
                       <div className="flex items-center gap-1.5 mt-3">
-                        <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={handleRegenerateSummary}><ArrowsClockwise className="h-3.5 w-3.5" />重新生成</Button>
                         <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => handleCopy(summaryText)}><Copy className="h-3.5 w-3.5" />复制</Button>
-                      </div>
-                      {/* 对话输入框 — 发送按钮在内部右侧，整体高40px */}
-                      <div className="mt-4 relative h-10">
-                        <input value={summaryInput} onChange={e => setSummaryInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') handleSendSummaryMsg() }} placeholder="输入指令以调整总结内容…" className="w-full h-full rounded-[8px] border border-[#e7ebf5] bg-[#f8faff] pl-3 pr-10 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary/50" />
-                        <Button size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-[6px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white shrink-0" onClick={handleSendSummaryMsg}><PaperPlaneTilt className="h-3.5 w-3.5" /></Button>
                       </div>
                     </>
                   )}
@@ -608,7 +598,7 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
               <div className="px-6 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(180deg, #f0f4ff 0%, #ffffff 100%)' }}>
                 <div className="flex items-center gap-3">
                   <h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3>
-                  <span className="text-xs text-[#8a91a6]">消耗 {COST_POINTS} 智点</span>
+                  <span className="text-xs text-[#8a91a6]">消耗 {summarize ? COST_POINTS_SUMMARY : COST_POINTS_DEFAULT} 智点</span>
                 </div>
                 <button onClick={() => setSelectedHistoryItem(null)} className="text-[#8a91a6] hover:text-[#3f4558] transition-colors"><X className="h-5 w-5" /></button>
               </div>
@@ -645,13 +635,7 @@ export function VideoToTextExperience({ agent, onBack, onViewResult }: VideoToTe
                     </div>
                     {/* 操作按钮 */}
                     <div className="flex items-center gap-1.5 mt-3">
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><ArrowsClockwise className="h-3.5 w-3.5" />重新生成</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => toast.success('已复制到剪贴板')}><Copy className="h-3.5 w-3.5" />复制</Button>
-                    </div>
-                    {/* 对话输入框 */}
-                    <div className="mt-4 relative h-10">
-                      <input placeholder="输入指令以调整总结内容…" className="w-full h-full rounded-[8px] border border-[#e7ebf5] bg-[#f8faff] pl-3 pr-10 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary/50" />
-                      <Button size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-[6px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white shrink-0"><PaperPlaneTilt className="h-3.5 w-3.5" /></Button>
                     </div>
                   </div>
                 </div>

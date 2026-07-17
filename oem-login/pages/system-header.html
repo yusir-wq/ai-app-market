@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统顶部栏 - 客服组件</title>
+    <style id="theme-vars">
+/* @group-priority: primary, success, info, warning, error */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --geo-indigo-50: #eef2ff;
+  --geo-indigo-100: #e0e7ff;
+  --geo-indigo-200: #c7d2fe;
+  --geo-indigo-300: #a5b4fc;
+  --geo-indigo-400: #818cf8;
+  --geo-indigo-500: #6366f1;
+  --geo-indigo-600: #4f46e5;
+  --geo-indigo-700: #4338ca;
+  --geo-indigo-800: #3730a3;
+  --geo-indigo-900: #312e81;
+  --geo-slate-50: #f8fafc;
+  --geo-slate-100: #f1f5f9;
+  --geo-slate-200: #e2e8f0;
+  --geo-slate-300: #cbd5e1;
+  --geo-slate-400: #94a3b8;
+  --geo-slate-500: #64748b;
+  --geo-slate-600: #475569;
+  --geo-slate-700: #334155;
+  --geo-slate-800: #1e293b;
+  --geo-slate-900: #0f172a;
+  --geo-gray-50: #fafbfc;
+  --geo-gray-100: #f4f6f8;
+  --geo-gray-200: #e8ecf0;
+  --geo-gray-300: #d1d8e0;
+  --geo-gray-400: #a0aec0;
+  --geo-gray-500: #718096;
+  --geo-gray-600: #4a5568;
+  --geo-gray-700: #2d3748;
+  --geo-gray-800: #1a202c;
+  --geo-gray-900: #0d1117;
+  --primary: var(--geo-indigo-500);
+  --primary-foreground: #ffffff;
+  --secondary: var(--geo-slate-100);
+  --secondary-foreground: var(--geo-slate-900);
+  --accent: var(--geo-indigo-600);
+  --accent-foreground: #ffffff;
+  --background: #ffffff;
+  --foreground: var(--geo-slate-900);
+  --muted: var(--geo-slate-100);
+  --muted-foreground: var(--geo-slate-500);
+  --border: var(--geo-slate-200);
+  --ring: var(--geo-indigo-500);
+  --bg: var(--geo-gray-50);
+  --fg: var(--geo-slate-900);
+  --rule: var(--geo-slate-200);
+  --link: var(--geo-indigo-600);
+  --surface: #ffffff;
+  --surface-dim: var(--geo-gray-100);
+  --interactive-hover: rgba(99,102,241,0.08);
+  --interactive-focus: rgba(99,102,241,0.12);
+  --interactive-press: rgba(99,102,241,0.16);
+  --error: #ef4444;
+  --error-container: #fef2f2;
+  --on-error: #ffffff;
+  --on-error-container: #7f1d1d;
+  --font-display: 'DM Sans', sans-serif;
+  --font-heading: 'DM Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --shadow-1: 0 1px 2px 0 rgba(15,23,42,0.05);
+  --shadow-2: 0 2px 8px -2px rgba(15,23,42,0.08);
+  --shadow-3: 0 4px 16px -4px rgba(15,23,42,0.12);
+  --shadow-4: 0 8px 24px -8px rgba(15,23,42,0.16);
+  --shadow-5: 0 16px 48px -12px rgba(15,23,42,0.20);
+}
+
+.geo-body { font-family: var(--font-body); font-size: 0.875rem; font-weight: var(--font-weight-body); line-height: var(--line-height-body); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--surface);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-ring: var(--ring);
+  }
+  @layer base {
+    body { background: var(--color-background); color: var(--color-foreground); }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-foreground { color: var(--foreground); }
+      .bg-card { background-color: var(--surface); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-border { border-color: var(--border); }
+    </style>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: var(--font-body); background: var(--bg); }
+
+      /* 系统顶部导航栏 */
+      .sys-topbar {
+        height: 56px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        position: relative;
+        z-index: 100;
+      }
+      .sys-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .sys-logo-mark {
+        width: 32px; height: 32px; border-radius: 8px;
+        background: linear-gradient(135deg, var(--geo-indigo-600), var(--geo-indigo-500));
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 16px;
+        flex-shrink: 0;
+      }
+      .sys-logo-text {
+        font-size: 15px; font-weight: 600; color: var(--foreground);
+        white-space: nowrap;
+      }
+      .sys-logo-text span {
+        color: var(--muted-foreground); font-weight: 400; margin-left: 2px;
+      }
+      .sys-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      /* 客服按钮 */
+      .cs-trigger { position: relative; }
+      .cs-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--background);
+        color: var(--muted-foreground);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: var(--font-body);
+      }
+      .cs-btn:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+        background: var(--geo-indigo-50);
+      }
+      .cs-btn svg { flex-shrink: 0; }
+
+      /* 客服弹窗 - 向下展开 */
+      .cs-popup {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s, visibility 0.2s;
+        pointer-events: none;
+        z-index: 200;
+      }
+      .cs-trigger:hover .cs-popup {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      .cs-popup-inner {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: var(--shadow-4);
+        min-width: 280px;
+      }
+      .cs-popup-header {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--foreground);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .cs-contact-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0;
+      }
+      .cs-contact-row + .cs-contact-row {
+        margin-top: 4px;
+      }
+      .cs-contact-icon {
+        width: 36px; height: 36px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+      .cs-contact-icon.phone { background: var(--geo-indigo-50); color: var(--primary); }
+      .cs-contact-icon.wechat { background: #ecfdf5; color: #16a34a; }
+      .cs-contact-label {
+        font-size: 11px; color: var(--muted-foreground); margin-bottom: 2px;
+      }
+      .cs-contact-value {
+        font-size: 14px; font-weight: 600; color: var(--foreground);
+      }
+      .cs-qrcode-section {
+        margin-top: 16px;
+        text-align: center;
+      }
+      .cs-qrcode-section img {
+        width: 110px; height: 110px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        display: block;
+        margin: 0 auto 8px;
+      }
+      .cs-qrcode-section p {
+        font-size: 11px;
+        color: var(--muted-foreground);
+      }
+
+      /* 用户头像区 */
+      .sys-user {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: background 0.2s;
+      }
+      .sys-user:hover { background: var(--muted); }
+      .sys-avatar {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--geo-indigo-400), var(--geo-indigo-600));
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 13px; font-weight: 600;
+      }
+      .sys-user-name {
+        font-size: 13px; font-weight: 500; color: var(--foreground);
+      }
+      .sys-user-arrow {
+        color: var(--muted-foreground); font-size: 12px;
+      }
+
+      /* 模拟内容区 */
+      .mock-sidebar {
+        width: 220px;
+        background: var(--geo-slate-800);
+        min-height: calc(100vh - 56px);
+        padding: 12px 0;
+      }
+      .mock-sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        color: var(--geo-slate-300);
+        font-size: 13px;
+        cursor: default;
+      }
+      .mock-sidebar-item.active {
+        color: #fff;
+        background: rgba(99,102,241,0.15);
+        border-right: 3px solid var(--primary);
+      }
+      .mock-sidebar-item.sub {
+        padding-left: 44px;
+        font-size: 12px;
+        color: var(--geo-slate-400);
+      }
+      .mock-content {
+        flex: 1;
+        padding: 32px;
+        background: var(--bg);
+        min-height: calc(100vh - 56px);
+      }
+      .mock-content h2 {
+        font-family: var(--font-heading);
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--foreground);
+        margin-bottom: 8px;
+      }
+      .mock-content p {
+        font-size: 13px;
+        color: var(--muted-foreground);
+        margin-bottom: 24px;
+      }
+      .mock-layout { display: flex; }
+      .mock-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 24px;
+      }
+      .mock-field {
+        margin-bottom: 20px;
+      }
+      .mock-field label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--foreground);
+        margin-bottom: 6px;
+      }
+      .mock-field-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 13px;
+        color: var(--foreground);
+        background: var(--background);
+        font-family: var(--font-body);
+      }
+      .mock-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 24px;
+      }
+      .mock-tab {
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted-foreground);
+        cursor: default;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+      }
+      .mock-tab.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+      }
+    </style>
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <div class="sys-topbar">
+    <div class="sys-topbar-left">
+      <div class="sys-logo-mark">G</div>
+      <div class="sys-logo-text">GEO增长平台<span> · 租户端</span></div>
+    </div>
+    <div class="sys-topbar-right">
+      <!-- 客服按钮 -->
+      <div class="cs-trigger">
+        <button class="cs-btn">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
+          联系客服
+        </button>
+        <!-- Hover 弹窗 -->
+        <div class="cs-popup">
+          <div class="cs-popup-inner" style="width: 240px; text-align: center;">
+            <div style="font-size: 15px; font-weight: 600; color: var(--foreground); margin-bottom: 20px;">联系客服</div>
+            <img src="../assets/qrcode-real.png" alt="客服二维码" style="width: 140px; height: 140px; border-radius: 8px; margin: 0 auto; display: block;">
+            <p style="font-size: 12px; color: var(--muted-foreground); margin-top: 12px;">微信扫码联系客服</p>
+            <div style="margin-top: 20px; text-align: left;">
+              <div style="font-size: 12px; color: var(--muted-foreground); margin-bottom: 6px;">电话：400-888-9999</div>
+              <div style="font-size: 12px; color: var(--muted-foreground);">微信：190105057</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 用户信息 -->
+      <div class="sys-user">
+        <div class="sys-avatar">张</div>
+        <span class="sys-user-name">张鑫诚</span>
+        <svg class="sys-user-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模拟系统页面结构（仅做上下文参考） -->
+  <div class="mock-layout">
+    <div class="mock-sidebar">
+      <div class="mock-sidebar-item">项目管理</div>
+      <div class="mock-sidebar-item">效果报表</div>
+      <div class="mock-sidebar-item">产品管理</div>
+      <div class="mock-sidebar-item">客户管理</div>
+      <div class="mock-sidebar-item">代理商管理</div>
+      <div class="mock-sidebar-item">员工管理</div>
+      <div class="mock-sidebar-item active">国内GEO管理</div>
+      <div class="mock-sidebar-item sub">GEO知识库</div>
+      <div class="mock-sidebar-item sub">AI文章生成</div>
+      <div class="mock-sidebar-item sub">GEO文章管理</div>
+      <div class="mock-sidebar-item sub">官媒投稿</div>
+      <div class="mock-sidebar-item">财务流水</div>
+      <div class="mock-sidebar-item">案例库</div>
+      <div class="mock-sidebar-item">系统设置</div>
+      <div class="mock-sidebar-item">账号设置</div>
+    </div>
+    <div class="mock-content">
+      <h2>账号设置</h2>
+      <p>管理您的账号基础信息和实名认证</p>
+      <div class="mock-tabs">
+        <div class="mock-tab active">基础信息</div>
+        <div class="mock-tab">实名认证</div>
+        <div class="mock-tab">权益功能</div>
+      </div>
+      <div class="mock-card">
+        <div class="mock-field">
+          <label>登录账号</label>
+          <div class="mock-field-input" style="background: var(--muted); color: var(--muted-foreground);">YSDLS</div>
+        </div>
+        <div class="mock-field">
+          <label>显示名称</label>
+          <input type="text" class="mock-field-input" value="张鑫诚">
+        </div>
+        <div class="mock-field">
+          <label>当前密码</label>
+          <input type="password" class="mock-field-input" placeholder="请输入当前密码">
+        </div>
+        <div class="mock-field">
+          <label>新密码</label>
+          <input type="password" class="mock-field-input" placeholder="字母+数字，至少6位">
+        </div>
+        <div class="mock-field">
+          <label>确认密码</label>
+          <input type="password" class="mock-field-input" placeholder="请再次输入新密码">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

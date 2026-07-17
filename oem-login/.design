@@ -5,7 +5,7 @@
       "type": "page",
       "name": "OEM 登录页",
       "title": "OEM 登录页",
-      "version": 1,
+      "version": 4,
       "createdAt": 1721030400000,
       "canvasData": {
         "x": 0,
@@ -15,18 +15,178 @@
       "devMetadata": {
         "htmlSrc": "pages/login.html"
       }
+    },
+    {
+      "id": "page-system-header-001",
+      "type": "page",
+      "name": "系统顶部栏 - 客服组件",
+      "title": "系统顶部栏 - 客服组件",
+      "version": 1,
+      "createdAt": 1721030500000,
+      "canvasData": {
+        "x": 624,
+        "y": 0,
+        "group": 0
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/system-header.html"
+      }
+    },
+    {
+      "id": "page-system-settings-001",
+      "type": "page",
+      "name": "系统设置 - 登录页广告",
+      "title": "系统设置 - 登录页广告",
+      "version": 1,
+      "createdAt": 1721030700000,
+      "canvasData": {
+        "x": 1236,
+        "y": -24,
+        "group": 0
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/system-settings.html"
+      }
+    },
+    {
+      "id": "image-006",
+      "type": "image",
+      "name": "轮播图1 - 数据分析",
+      "title": "轮播图1 - 数据分析",
+      "version": 1,
+      "createdAt": 1721030600000,
+      "canvasData": {
+        "x": 0,
+        "y": 420
+      },
+      "devMetadata": {
+        "imageSrc": "assets/banner-1.jpg"
+      }
+    },
+    {
+      "id": "image-007",
+      "type": "image",
+      "name": "轮播图2 - AI内容",
+      "title": "轮播图2 - AI内容",
+      "version": 1,
+      "createdAt": 1721030601000,
+      "canvasData": {
+        "x": 620,
+        "y": 416
+      },
+      "devMetadata": {
+        "imageSrc": "assets/banner-2.jpg"
+      }
+    },
+    {
+      "id": "image-008",
+      "type": "image",
+      "name": "轮播图3 - 全球网络",
+      "title": "轮播图3 - 全球网络",
+      "version": 1,
+      "createdAt": 1721030602000,
+      "canvasData": {
+        "x": 1240,
+        "y": 416
+      },
+      "devMetadata": {
+        "imageSrc": "assets/banner-3.jpg"
+      }
+    },
+    {
+      "id": "image-009",
+      "type": "image",
+      "name": "轮播图4 - 团队协作",
+      "title": "轮播图4 - 团队协作",
+      "version": 1,
+      "createdAt": 1721030603000,
+      "canvasData": {
+        "x": 1860,
+        "y": 416
+      },
+      "devMetadata": {
+        "imageSrc": "assets/banner-4.jpg"
+      }
+    },
+    {
+      "id": "image-010",
+      "type": "image",
+      "name": "轮播图5 - 财务管理",
+      "title": "轮播图5 - 财务管理",
+      "version": 1,
+      "createdAt": 1721030604000,
+      "canvasData": {
+        "x": 2480,
+        "y": 416
+      },
+      "devMetadata": {
+        "imageSrc": "assets/banner-5.jpg"
+      }
+    },
+    {
+      "id": "image-011",
+      "type": "image",
+      "name": "轮播图6 - GEO优化",
+      "title": "轮播图6 - GEO优化",
+      "version": 1,
+      "createdAt": 1721030605000,
+      "canvasData": {
+        "x": 3100,
+        "y": 416
+      },
+      "devMetadata": {
+        "imageSrc": "assets/banner-6.jpg"
+      }
+    },
+    {
+      "id": "image-003",
+      "type": "image",
+      "name": "验证码样本",
+      "title": "验证码样本",
+      "version": 1,
+      "createdAt": 1721030403000,
+      "canvasData": {
+        "x": 3720,
+        "y": 416
+      },
+      "devMetadata": {
+        "imageSrc": "assets/captcha-sample.jpg"
+      }
+    },
+    {
+      "id": "image-004",
+      "type": "image",
+      "name": "GEO-SAAS Logo",
+      "title": "GEO-SAAS Logo",
+      "version": 1,
+      "createdAt": 1721030404000,
+      "canvasData": {
+        "x": 4340,
+        "y": 416
+      },
+      "devMetadata": {
+        "imageSrc": "assets/logo-icon.jpg"
+      }
+    },
+    {
+      "id": "image-005",
+      "type": "image",
+      "name": "客服二维码",
+      "title": "客服二维码",
+      "version": 1,
+      "createdAt": 1721030405000,
+      "canvasData": {
+        "x": 4960,
+        "y": 416
+      },
+      "devMetadata": {
+        "imageSrc": "assets/qrcode-real.png"
+      }
     }
   ],
   "config": {
-    "autoLayout": true,
+    "autoLayout": false,
     "deviceType": "desktop",
-    "designLibrary": {
-      "name": "GEO-SAAS",
-      "id": null,
-      "version": null,
-      "scope": null,
-      "versionSource": null,
-      "path": "../.design_library/geo-saas"
-    }
+    "visualEditorEnabled": false
   }
 }
