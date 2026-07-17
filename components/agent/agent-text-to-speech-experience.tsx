@@ -34,7 +34,7 @@ import {
   FileText,
   UploadSimple,
   MusicNotesSimple,
-  Lightning,
+
   Spinner,
   CaretLeft,
   Star,
@@ -230,10 +230,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
   const [playingBgm, setPlayingBgm] = useState<string | null>(null)
   const [bgmSelectOpen, setBgmSelectOpen] = useState(false)
 
-  // AI写
-  const [aiWriteKeyword, setAiWriteKeyword] = useState('')
-  const [aiWriteGenerating, setAiWriteGenerating] = useState(false)
-
   // 文本编辑
   const [isEditingTranscript, setIsEditingTranscript] = useState(false)
   const [transcriptEditText, setTranscriptEditText] = useState('')
@@ -395,15 +391,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
     return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
   }
 
-  function handleAiWriteGenerate() {
-    if (aiWriteGenerating || !aiWriteKeyword.trim()) return
-    setAiWriteGenerating(true)
-    setTimeout(() => {
-      setText('【' + aiWriteKeyword + '】\n\n针对"' + aiWriteKeyword + '"这一主题，我为您撰写了以下配音文案：\n\n在这个快速迭代的时代，科技创新正以前所未有的速度改变着我们的生活。从清晨智能闹钟的轻柔唤醒，到夜晚智能助手的贴心陪伴，科技已经融入了我们生命中的每一个角落。\n\n想象一下，当你迈进家门的那一刻，灯光自动亮起，温度已经调整到最舒适的度数，就连你最爱的音乐也已经在背景中轻轻流淌……这一切，不再是科幻电影中的场景，而是正在发生的现实。\n\n让我们一起拥抱这个充满无限可能的智能时代，用科技的力量，去创造更美好的明天。')
-      setAiWriteGenerating(false)
-    }, 1500)
-  }
-
   function startEditTranscript() { setTranscriptEditText(resultText); setIsEditingTranscript(true) }
   function saveEditTranscript() { setResultText(transcriptEditText); setIsEditingTranscript(false); toast.success('已保存') }
 
@@ -470,21 +457,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                 <div className="flex items-center justify-between mb-4 shrink-0">
                   <h3 className="text-[18px] font-medium text-[#3f4558]">输入内容</h3>
                   <div className="flex items-center gap-0.5">
-                    {/* AI帮我写 */}
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors"><MagicWand className="h-4 w-4" weight="duotone" />AI帮我写</Button>
-                      </PopoverTrigger>
-                      <PopoverContent side="bottom" align="start" className="w-[360px] p-0 overflow-hidden border-[#E5E9F6] rounded-[12px]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}>
-                        <div className="px-4 py-3 border-b border-[#E5E9F6] bg-[#f8f9fc]"><span className="text-[13px] font-semibold text-[#3f4558]">AI 智能写作</span></div>
-                        <div className="p-4 space-y-3">
-                          <Input value={aiWriteKeyword} onChange={(e) => setAiWriteKeyword(e.target.value)} placeholder="输入关键词，使用AI帮写生成完整故事内容" className="h-9 text-[13px] rounded-[12px] border-[#e7ebf5] focus-visible:ring-[#4f55ec]/20 focus-visible:border-[#4f55ec]/30" onKeyDown={(e) => e.key === 'Enter' && handleAiWriteGenerate()} />
-                          <Button className="w-full h-9 text-[13px] gap-2 rounded-[10px] bg-[#4f55ec] hover:bg-[#4f55ec]/80" onClick={handleAiWriteGenerate} disabled={aiWriteGenerating}>
-                            {aiWriteGenerating ? (<><Spinner className="h-4 w-4 animate-spin" />生成中...</>) : (<><MagicWand className="h-4 w-4" weight="fill" />生成<span className="flex items-center gap-1 ml-1 text-xs font-normal opacity-70"><span className="w-px h-3 bg-white/30" /><Lightning className="h-3 w-3" weight="fill" />1</span></>)}
-                          </Button>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
                     {/* 随机故事 */}
                     <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] gap-1 rounded-[7px] text-[#3f4558]/60 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.04] transition-colors" onClick={() => handleQuickFill('random-story')}><BookOpen className="h-4 w-4" weight="duotone" />随机故事</Button>
                     {/* 上传txt */}

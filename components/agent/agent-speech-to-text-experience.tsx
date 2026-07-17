@@ -483,7 +483,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
               <div className="flex items-center justify-between"><h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3><span className="text-xs text-[#8a91a6]">消耗 {summarize ? COST_POINTS_SUMMARY : COST_POINTS_DEFAULT} 智点</span></div>
             </div>
             <div className="p-6 pt-4">
-              <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6">
+              <div className={`grid grid-cols-1 ${summarize ? 'md:grid-cols-[3fr_2fr]' : ''} gap-6`}>
                 {/* 左侧：转写内容 */}
                 <div>
                   <h4 className="text-sm font-medium text-[#3f4558] mb-3">转写内容</h4>
@@ -520,6 +520,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                   <p className="text-xs text-muted-foreground/80 mt-[7px] flex items-center gap-1"><WarningCircle className="h-3 w-3" />AI生成内容，仅供参考，请勿用于违法违规用途。</p>
                 </div>
                 {/* 右侧：智能总结 */}
+                {summarize && (
                 <div>
                   <h4 className="text-sm font-medium text-[#3f4558] mb-3">智能总结</h4>
                   {!summaryStarted ? (
@@ -538,6 +539,7 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                     </>
                   )}
                 </div>
+                )}
               </div>
             </div>
           </div>
