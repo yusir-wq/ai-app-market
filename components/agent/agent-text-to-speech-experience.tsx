@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
@@ -746,14 +746,14 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
 
           {/* 删除确认弹窗 */}
           <AlertDialog open={!!deleteConfirmId} onOpenChange={(open) => !open && setDeleteConfirmId(null)}>
-            <AlertDialogContent className="rounded-[16px]">
+            <AlertDialogContent className="rounded-[12px] max-w-[420px]">
               <AlertDialogHeader>
-                <AlertDialogTitle className="text-center text-base font-medium">确认删除？</AlertDialogTitle>
-                <AlertDialogDescription className="text-center text-xs text-muted-foreground">删除后不可恢复，确定要删除这条生成记录吗？</AlertDialogDescription>
+                <AlertDialogTitle className="text-[18px] font-medium text-[#111827]">确认删除</AlertDialogTitle>
+                <AlertDialogDescription className="text-[14px] text-[#6B7280]">删除后，这个文件将被彻底清除且无法找回，确认要删除吗？</AlertDialogDescription>
               </AlertDialogHeader>
-              <AlertDialogFooter className="flex gap-3 sm:justify-center">
-                <AlertDialogCancel className="h-9 rounded-[8px] text-sm mt-0">取消</AlertDialogCancel>
-                <AlertDialogAction className="h-9 rounded-[8px] text-sm bg-destructive hover:bg-destructive/80" onClick={confirmDelete}>删除</AlertDialogAction>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="h-10 rounded-[8px] text-sm border-[#E5E7EB] text-[#374151] bg-white">取消</AlertDialogCancel>
+                <AlertDialogAction onClick={confirmDelete} className="h-10 rounded-[8px] text-sm bg-[#4F46E5] hover:bg-[#4F46E5]/80 text-white">确认删除</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

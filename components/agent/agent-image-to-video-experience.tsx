@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -73,6 +73,7 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
 
   const [history, setHistory] = useState(mockHistory)
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
+  const [downloadConfirmId, setDownloadConfirmId] = useState<string | null>(null)
   const [selectedHistoryItem, setSelectedHistoryItem] = useState<typeof history[0] | null>(null)
   const [activeTab, setActiveTab] = useState<'intro' | 'experience'>('experience')
 
@@ -458,7 +459,7 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
                     <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
                   </div>
                   <div className="flex items-center gap-1 ml-auto shrink-0">
-                    <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); toast.success('下载完成'); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); setDownloadConfirmId(item.id); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
                     <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] text-[#9ca2b5] hover:text-destructive gap-1" onClick={(e) => { e.stopPropagation(); handleDeleteHistory(item.id); }}><Trash className="h-3.5 w-3.5" />删除</Button>
                   </div>
                 </div>
@@ -470,14 +471,28 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
 
         {/* 删除确认弹窗 */}
         <AlertDialog open={deleteConfirmId !== null} onOpenChange={(open) => { if (!open) setDeleteConfirmId(null) }}>
-          <AlertDialogContent className="rounded-[12px] max-w-[400px]">
+          <AlertDialogContent className="rounded-[12px] max-w-[420px]">
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-base text-foreground">确认删除</AlertDialogTitle>
-              <AlertDialogDescription className="text-sm text-muted-foreground">删除后无法恢复。确认要删除这条记录吗？</AlertDialogDescription>
+              <AlertDialogTitle className="text-[18px] font-medium text-[#111827]">确认删除</AlertDialogTitle>
+              <AlertDialogDescription className="text-[14px] text-[#6B7280]">删除后，这个文件将被彻底清除且无法找回，确认要删除吗？</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="h-9 rounded-[10px] text-sm">取消</AlertDialogCancel>
-              <AlertDialogAction onClick={confirmDelete} className="h-9 rounded-[10px] text-sm bg-destructive hover:bg-destructive/90 text-white">删除</AlertDialogAction>
+              <AlertDialogCancel className="h-10 rounded-[8px] text-sm border-[#E5E7EB] text-[#374151] bg-white">取消</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="h-10 rounded-[8px] text-sm bg-[#4F46E5] hover:bg-[#4F46E5]/80 text-white">确认删除</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* 下载确认弹窗 */}
+        <AlertDialog open={downloadConfirmId !== null} onOpenChange={(open) => { if (!open) setDownloadConfirmId(null) }}>
+          <AlertDialogContent className="rounded-[12px] max-w-[420px]">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-[18px] font-medium text-[#111827]">确认下载</AlertDialogTitle>
+              <AlertDialogDescription className="text-[14px] text-[#6B7280]">下载即表示您对上传素材拥有合法使用权，知悉该图片为AI生成/编辑内容，并自行承担使用责任。</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="h-10 rounded-[8px] text-sm border-[#E5E7EB] text-[#374151] bg-white">取消</AlertDialogCancel>
+              <AlertDialogAction onClick={() => { setDownloadConfirmId(null); toast.success('下载完成'); }} className="h-10 rounded-[8px] text-sm bg-[#4F46E5] hover:bg-[#4F46E5]/80 text-white">确认并下载</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

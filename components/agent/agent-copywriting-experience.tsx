@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -523,14 +523,14 @@ SoundPro X1 搭载了全新一代自适应主动降噪芯片，能够实时感�
 
         {/* 删除确认弹窗 */}
         <AlertDialog open={deleteConfirmId !== null} onOpenChange={(open) => { if (!open) setDeleteConfirmId(null) }}>
-          <AlertDialogContent className="rounded-[16px] max-w-[400px]">
+          <AlertDialogContent className="rounded-[12px] max-w-[420px]">
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-base text-[#3f4558]">确认删除</AlertDialogTitle>
-              <AlertDialogDescription className="text-sm text-muted-foreground">删除后无法恢复。确认要删除这条记录吗？</AlertDialogDescription>
+              <AlertDialogTitle className="text-[18px] font-medium text-[#111827]">确认删除</AlertDialogTitle>
+              <AlertDialogDescription className="text-[14px] text-[#6B7280]">删除后，这个文件将被彻底清除且无法找回，确认要删除吗？</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="h-9 rounded-[8px] text-sm">取消</AlertDialogCancel>
-              <AlertDialogAction onClick={confirmDelete} className="h-9 rounded-[8px] text-sm bg-destructive hover:bg-destructive/90 text-white">删除</AlertDialogAction>
+              <AlertDialogCancel className="h-10 rounded-[8px] text-sm border-[#E5E7EB] text-[#374151] bg-white">取消</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="h-10 rounded-[8px] text-sm bg-[#4F46E5] hover:bg-[#4F46E5]/80 text-white">确认删除</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

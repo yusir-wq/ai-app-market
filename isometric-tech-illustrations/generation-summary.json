@@ -1,0 +1,55 @@
+{
+  "skillProvenance": {
+    "name": "solo-design",
+    "version": "2026.07.06.8",
+    "version_source": "skill-version.json",
+    "runtime_skill_dir": "c:\\Users\\yf\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+    "recorded_at": "2026-07-20T12:00:00.000Z"
+  },
+  "operation": "create-image-project",
+  "assetCount": 6,
+  "assets": [
+    {
+      "filename": "cloud-data-center.jpg",
+      "title": "云计算数据中心",
+      "deliverableType": "illustration",
+      "intendedAspect": "1200x1080",
+      "status": "generated"
+    },
+    {
+      "filename": "ai-neural-network.jpg",
+      "title": "AI 神经网络",
+      "deliverableType": "illustration",
+      "intendedAspect": "1200x1080",
+      "status": "generated"
+    },
+    {
+      "filename": "cybersecurity-shield.jpg",
+      "title": "网络安全防御系统",
+      "deliverableType": "illustration",
+      "intendedAspect": "1200x1080",
+      "status": "generated"
+    },
+    {
+      "filename": "iot-smart-city.jpg",
+      "title": "物联网智慧城市",
+      "deliverableType": "illustration",
+      "intendedAspect": "1200x1080",
+      "status": "generated"
+    },
+    {
+      "filename": "blockchain-network.jpg",
+      "title": "区块链分布式网络",
+      "deliverableType": "illustration",
+      "intendedAspect": "1200x1080",
+      "status": "generated"
+    },
+    {
+      "filename": "big-data-analytics.jpg",
+      "title": "大数据分析看板",
+      "deliverableType": "illustration",
+      "intendedAspect": "1200x1080",
+      "status": "generated"
+    }
+  ]
+}

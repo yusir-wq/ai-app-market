@@ -1,0 +1,93 @@
+{
+  "data": [
+    {
+      "id": "image-001",
+      "title": "云计算数据中心",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1753027200000,
+      "devMetadata": {
+        "imageSrc": "assets/cloud-data-center.jpg"
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "image-002",
+      "title": "AI 神经网络",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1753027201000,
+      "devMetadata": {
+        "imageSrc": "assets/ai-neural-network.jpg"
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "image-003",
+      "title": "网络安全防御系统",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1753027202000,
+      "devMetadata": {
+        "imageSrc": "assets/cybersecurity-shield.jpg"
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "image-004",
+      "title": "物联网智慧城市",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1753027203000,
+      "devMetadata": {
+        "imageSrc": "assets/iot-smart-city.jpg"
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "image-005",
+      "title": "区块链分布式网络",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1753027204000,
+      "devMetadata": {
+        "imageSrc": "assets/blockchain-network.jpg"
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "image-006",
+      "title": "大数据分析看板",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1753027205000,
+      "devMetadata": {
+        "imageSrc": "assets/big-data-analytics.jpg"
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "freeSize",
+    "projectName": "3D等轴科技插画"
+  }
+}
