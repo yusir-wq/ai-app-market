@@ -34,9 +34,15 @@ import {
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
-const COST_POINTS = 30
-const COST_PRICE = 0.03
-const COST_TEXT = `使用费用：${COST_POINTS} 智点/次（约 ${COST_PRICE} 元）`
+function getCostText(promptOptimize: boolean) {
+  if (promptOptimize) {
+    return '预估费用：10010智点/次（约10.10元）'
+  }
+  return '预估费用：10000智点/次（约10.00元）'
+}
+function getCostPoints(promptOptimize: boolean) {
+  return promptOptimize ? 10010 : 10000
+}
 
 interface CopywritingToVideoExperienceProps {
   agent: Agent
@@ -66,10 +72,9 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
   const [resultScript, setResultScript] = useState('')
   const [resultVideoTitle, setResultVideoTitle] = useState('')
 
-  const [aspectRatio, setAspectRatio] = useState('auto')
   const [resolution, setResolution] = useState('1080P')
   const [videoDuration, setVideoDuration] = useState(10)
-  const [backgroundMusic, setBackgroundMusic] = useState(true)
+  const [promptOptimize, setPromptOptimize] = useState(true)
 
   const [history, setHistory] = useState(mockHistory)
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
@@ -226,7 +231,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
             <div>
               <span className="text-[17px] font-normal text-[#3f4558] mb-2 inline-block">使用指南</span>
               <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">输入视频文案内容，AI 自动生成分镜脚本并合成视频画面。支持多种画面比例和清晰度选择，让文字创意快速变为生动视频。</p>
-              <small className="text-[14px] text-[#9ca3b8]">{COST_TEXT}</small>
+              <small className="text-[14px] text-[#9ca3b8]">{getCostText(promptOptimize)}</small>
             </div>
             <div className="flex items-center justify-center h-full">
               <div
@@ -258,18 +263,13 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
             <div className="p-6 h-full flex flex-col">
               <h3 className="text-[18px] font-medium text-[#3f4558] mb-3 shrink-0">生成设置</h3>
               <div className="rounded-[14px] border border-[#e7ebf5] bg-muted/20 divide-y divide-[#e7ebf5] overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">画面比例</span>
-                  <Select value={aspectRatio} onValueChange={setAspectRatio}>
-                    <SelectTrigger className="w-[140px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40 shadow-none"><SelectValue /></SelectTrigger>
-                    <SelectContent className="rounded-[12px] border-[#E5E9F6]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}><SelectItem value="auto">自适应</SelectItem><SelectItem value="9:16">9:16</SelectItem><SelectItem value="16:9">16:9</SelectItem><SelectItem value="1:1">1:1</SelectItem></SelectContent>
-                  </Select>
-                </div>
                 <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">清晰度</span>
                   <Select value={resolution} onValueChange={setResolution}>
                     <SelectTrigger className="w-[140px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40 shadow-none"><SelectValue /></SelectTrigger>
                     <SelectContent className="rounded-[12px] border-[#E5E9F6]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}><SelectItem value="540P">540P</SelectItem><SelectItem value="720P">720P</SelectItem><SelectItem value="1080P">1080P</SelectItem></SelectContent>
                   </Select>
                 </div>
+                <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">提示词优化</span><Switch checked={promptOptimize} onCheckedChange={setPromptOptimize} /></div>
                 <div className="px-4 py-3.5">
                   <div className="flex items-center justify-between mb-2"><span className="text-sm text-[#3f4558]">视频时长</span></div>
                   <div className="flex items-center gap-3">
@@ -277,14 +277,13 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                     <span className="inline-flex items-center justify-center min-w-[36px] h-5 px-1.5 text-[11px] font-medium text-muted-foreground bg-muted/60 rounded-md tabular-nums shrink-0">{videoDuration}秒</span>
                   </div>
                 </div>
-                <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">声音</span><Switch checked={backgroundMusic} onCheckedChange={setBackgroundMusic} /></div>
               </div>
               {copywriting.trim() && (
                 <div className="flex flex-col items-center pt-4 mt-auto shrink-0">
                   <Button onClick={handleGenerate} disabled={isProcessing} className="h-[46px] px-12 rounded-[10px] bg-[#4f55ec] hover:bg-[#4f55ec]/80 text-white font-medium text-[15px] min-w-[200px]" style={{ boxShadow: '0px 12px 28px rgba(87,92,233,0.22)' }}>
                     {isProcessing ? (<span className="flex items-center gap-2"><SpinnerGap className="h-4 w-4 animate-spin" />正在生成...</span>) : (<span className="flex items-center gap-2"><MagicWand className="h-4 w-4" weight="fill" />立即生成</span>)}
                   </Button>
-                  <p className="text-[11px] text-[#b7becf] mt-3">{COST_TEXT}</p>
+                  <p className="text-[11px] text-[#b7becf] mt-3">{getCostText(promptOptimize)}</p>
                 </div>
               )}
             </div>
@@ -313,7 +312,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
         {resultScript && !isProcessing && (
           <div className="rounded-[18px] border border-[#f0f2f8] overflow-hidden" style={{ ...CARD_SHADOW, background: 'rgba(255,255,255,0.96)' }} ref={resultRef}>
             <div className="px-6 pt-6 pb-2" style={{ background: 'linear-gradient(180deg, #f8faff 0%, #ffffff 100%)' }}>
-              <div className="flex items-center justify-between"><h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3><span className="text-xs text-[#8a91a6]">消耗 {COST_POINTS} 智点</span></div>
+              <div className="flex items-center justify-between"><h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3><span className="text-xs text-[#8a91a6]">消耗 {getCostPoints(promptOptimize)} 智点</span></div>
             </div>
             <div className="p-6 pt-4">
               <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6 items-stretch">
@@ -327,7 +326,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                           <Play className="h-7 w-7 text-[#4f55ec] ml-1" weight="fill" />
                         </div>
                         <p className="text-sm font-medium text-[#3f4558]">{resultVideoTitle}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{videoDuration}s · {resolution} · {aspectRatio === 'auto' ? '自适应' : aspectRatio}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{videoDuration}s · {resolution}</p>
                       </div>
                     </div>
                   </div>
@@ -349,10 +348,10 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                     </div>
                   ) : (
                     <>
-                      <div className="rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] p-5 flex-1 overflow-y-auto"><pre className="text-sm text-foreground leading-relaxed whitespace-pre-wrap font-sans">{resultScript}</pre></div>
+                      <div className="rounded-[12px] border border-[#e7ebf5] bg-[#f8faff] p-5 flex-1 overflow-y-auto"><pre className="text-sm text-foreground leading-relaxed whitespace-pre-wrap font-sans">{promptOptimize ? resultScript : copywriting}</pre></div>
                       <div className="flex items-center gap-1.5 mt-3">
                         <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={startEditScript}><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
-                        <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => handleCopy(resultScript)}><Copy className="h-3.5 w-3.5" />复制</Button>
+                        <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => handleCopy(promptOptimize ? resultScript : copywriting)}><Copy className="h-3.5 w-3.5" />复制</Button>
                         <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={handleExportScript}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
                       </div>
                       <div className="mt-[7px] h-[16px]"></div>
@@ -393,14 +392,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                     <span className="text-xs text-[#a0a7b8] block">清晰度</span>
                     <span className="text-sm text-[#697185]">{item.resolution}</span>
                   </div>
-                  <div className="w-[70px] shrink-0">
-                    <span className="text-xs text-[#a0a7b8] block">画面比例</span>
-                    <span className="text-sm text-[#697185]">{item.aspectRatio}</span>
-                  </div>
-                  <div className="w-[50px] shrink-0">
-                    <span className="text-xs text-[#a0a7b8] block">声音</span>
-                    <span className="text-sm text-[#697185]">{item.hasSound ? '有' : '无'}</span>
-                  </div>
+                  
                   <div className="w-[120px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">创建时间</span>
                     <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
@@ -438,7 +430,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
               <div className="px-6 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(180deg, #f0f4ff 0%, #ffffff 100%)' }}>
                 <div className="flex items-center gap-3">
                   <h3 className="text-[18px] font-medium text-[#3f4558]">生成结果</h3>
-                  <span className="text-xs text-[#8a91a6]">消耗 {COST_POINTS} 智点</span>
+                  <span className="text-xs text-[#8a91a6]">消耗 {getCostPoints(promptOptimize)} 智点</span>
                 </div>
                 <button onClick={() => setSelectedHistoryItem(null)} className="text-[#8a91a6] hover:text-[#3f4558] transition-colors"><X className="h-5 w-5" /></button>
               </div>
@@ -455,7 +447,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                             <Play className="h-7 w-7 text-[#4f55ec] ml-1" weight="fill" />
                           </div>
                           <p className="text-sm font-medium text-[#3f4558]">{selectedHistoryItem.title}</p>
-                          <p className="text-xs text-muted-foreground mt-1">{selectedHistoryItem.duration} · {selectedHistoryItem.resolution} · {selectedHistoryItem.aspectRatio}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{selectedHistoryItem.duration} · {selectedHistoryItem.resolution}</p>
                         </div>
                       </div>
                     </div>
