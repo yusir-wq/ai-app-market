@@ -376,11 +376,7 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
               {history.map(item => (
                 <div key={item.id} className="px-4 py-3 flex items-center gap-3 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
                   <img src={item.thumbnail} alt={item.title} className="w-[76px] h-[58px] rounded-[8px] shrink-0 object-cover" />
-                  <div className="w-[160px] shrink-0 min-w-0">
-                    <span className="text-xs text-[#a0a7b8] block">视频名称</span>
-                    <span className="text-sm text-[#697185] truncate block">{item.title}</span>
-                  </div>
-                  <div className="w-[180px] shrink-0 min-w-0">
+                  <div className="w-[240px] shrink-0 min-w-0">
                     <span className="text-xs text-[#a0a7b8] block">视频文案</span>
                     <span className="text-sm text-[#697185] truncate block">{item.copywriting}</span>
                   </div>

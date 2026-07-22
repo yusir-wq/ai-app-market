@@ -65,10 +65,8 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
   const [progress, setProgress] = useState(0)
   const [resultVideoTitle, setResultVideoTitle] = useState('')
 
-  const [aspectRatio, setAspectRatio] = useState('auto')
   const [resolution, setResolution] = useState('1080P')
   const [videoDuration, setVideoDuration] = useState(10)
-  const [backgroundMusic, setBackgroundMusic] = useState(true)
   const [prompt, setPrompt] = useState('')
 
   const [history, setHistory] = useState(mockHistory)
@@ -292,18 +290,6 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
             <div className="p-6 h-full flex flex-col">
               <h3 className="text-[18px] font-medium text-[#3f4558] mb-3 shrink-0">生成设置</h3>
               <div className="rounded-[14px] border border-[#e7ebf5] bg-muted/20 divide-y divide-[#e7ebf5] overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">画面比例</span>
-                  <Select value={aspectRatio} onValueChange={setAspectRatio}>
-                    <SelectTrigger className="w-[120px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40 shadow-none"><SelectValue /></SelectTrigger>
-                    <SelectContent className="rounded-[12px] border-[#E5E9F6]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}>
-                      <SelectItem value="auto">自适应</SelectItem>
-                      <SelectItem value="16:9">16:9</SelectItem>
-                      <SelectItem value="9:16">9:16</SelectItem>
-                      <SelectItem value="1:1">1:1</SelectItem>
-                      <SelectItem value="4:3">4:3</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
                 <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">清晰度</span>
                   <Select value={resolution} onValueChange={setResolution}>
                     <SelectTrigger className="w-[120px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40 shadow-none"><SelectValue /></SelectTrigger>
@@ -319,9 +305,6 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
                     <input type="range" min={5} max={30} step={1} value={videoDuration} onChange={(e) => setVideoDuration(Number(e.target.value))} className="w-[80px] accent-[#4f55ec]" />
                     <span className="text-sm text-[#3f4558] w-8 text-right">{videoDuration}s</span>
                   </div>
-                </div>
-                <div className="flex items-center justify-between px-4 py-3.5"><span className="text-sm text-[#3f4558]">背景音乐</span>
-                  <Switch checked={backgroundMusic} onCheckedChange={setBackgroundMusic} />
                 </div>
               </div>
               {uploadedImage && (
@@ -401,9 +384,7 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
                           <span className="text-xs text-[#697185] block mb-2">生成设置</span>
                           <div className="flex flex-wrap gap-1.5">
                             <span className="inline-flex items-center text-[11px] font-medium text-[#4f55ec] bg-[#4f55ec]/[0.06] px-2 py-0.5 rounded-md">{videoDuration}s</span>
-                            <span className="inline-flex items-center text-[11px] font-medium text-[#4f55ec] bg-[#4f55ec]/[0.06] px-2 py-0.5 rounded-md">{aspectRatio === 'auto' ? '16:9' : aspectRatio}</span>
                             <span className="inline-flex items-center text-[11px] font-medium text-[#4f55ec] bg-[#4f55ec]/[0.06] px-2 py-0.5 rounded-md">{resolution}</span>
-                            {backgroundMusic && <span className="inline-flex items-center text-[11px] font-medium text-[#4f55ec] bg-[#4f55ec]/[0.06] px-2 py-0.5 rounded-md">BGM</span>}
                           </div>
                         </div>
                       </div>
@@ -442,10 +423,6 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
               {history.map(item => (
                 <div key={item.id} className="px-4 py-3 flex items-center gap-3 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
                   <img src={item.thumbnail} alt={item.title} className="w-[76px] h-[58px] rounded-[8px] shrink-0 object-cover" />
-                  <div className="w-[160px] shrink-0 min-w-0">
-                    <span className="text-xs text-[#a0a7b8] block">视频名称</span>
-                    <span className="text-sm text-[#697185] truncate block">{item.title}</span>
-                  </div>
                   <div className="w-[70px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">时长</span>
                     <span className="text-sm text-[#697185]">{item.duration}</span>
@@ -552,9 +529,7 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
                             <span className="text-xs text-[#697185] block mb-2">生成设置</span>
                             <div className="flex flex-wrap gap-1.5">
                               <span className="inline-flex items-center text-[11px] font-medium text-[#4f55ec] bg-[#4f55ec]/[0.06] px-2 py-0.5 rounded-md">{videoDuration}s</span>
-                              <span className="inline-flex items-center text-[11px] font-medium text-[#4f55ec] bg-[#4f55ec]/[0.06] px-2 py-0.5 rounded-md">{aspectRatio === 'auto' ? '16:9' : aspectRatio}</span>
                               <span className="inline-flex items-center text-[11px] font-medium text-[#4f55ec] bg-[#4f55ec]/[0.06] px-2 py-0.5 rounded-md">{resolution}</span>
-                              {backgroundMusic && <span className="inline-flex items-center text-[11px] font-medium text-[#4f55ec] bg-[#4f55ec]/[0.06] px-2 py-0.5 rounded-md">BGM</span>}
                             </div>
                           </div>
                         </div>
@@ -577,7 +552,6 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
                 </div>
                 {/* 文件信息 */}
                 <div className="mt-4 flex items-center gap-4 text-xs text-[#8a91a6]">
-                  <span>文件名称：{selectedHistoryItem.title}</span>
                   <span>创建时间：{formatTime(selectedHistoryItem.time)}</span>
                 </div>
               </div>
