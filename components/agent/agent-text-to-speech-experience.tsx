@@ -6,11 +6,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
 import {
-  Select,
-  SelectContent,
-  SelectTrigger,
-} from '@/components/ui/select'
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -32,8 +27,6 @@ import {
   MagicWand,
   BookOpen,
   FileText,
-  UploadSimple,
-  MusicNotesSimple,
 
   Spinner,
   CaretLeft,
@@ -71,17 +64,6 @@ const voicePresets = [
 // ============================================================
 // Background Music Options
 // ============================================================
-
-const bgmOptions = [
-  { value: 'none', label: '无背景音乐', duration: '' },
-  { value: 'light', label: '阳光明媚', duration: '01:18' },
-  { value: 'inspire', label: '逐梦前行', duration: '02:05' },
-  { value: 'upbeat', label: '元气满满', duration: '00:52' },
-  { value: 'cinematic', label: '史诗之旅', duration: '01:45' },
-  { value: 'lofi', label: '午后咖啡馆', duration: '02:30' },
-  { value: 'classical', label: '月光花园', duration: '03:12' },
-  { value: 'electronic', label: '未来脉搏', duration: '01:33' },
-]
 
 // ============================================================
 // Mock History
@@ -196,14 +178,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
   const [voice, setVoice] = useState('female-gentle')
   const [speed, setSpeed] = useState(1.0)
   const [volume, setVolume] = useState(100)
-  const [bgm, setBgm] = useState('')
-  const [bgmFile, setBgmFile] = useState<File | null>(null)
-
-  // BGM 播放器
-  const [bgmPlaying, setBgmPlaying] = useState(false)
-  const [bgmCurrentTime, setBgmCurrentTime] = useState(0)
-  const [bgmDuration] = useState(120) // 模拟 120 秒
-  const bgmTimer = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // 处理
   const [isProcessing, setIsProcessing] = useState(false)
@@ -227,8 +201,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
 
   // 声音试听
   const [playingVoice, setPlayingVoice] = useState<string | null>(null)
-  const [playingBgm, setPlayingBgm] = useState<string | null>(null)
-  const [bgmSelectOpen, setBgmSelectOpen] = useState(false)
 
   // 文本编辑
   const [isEditingTranscript, setIsEditingTranscript] = useState(false)
@@ -316,9 +288,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
   const togglePreview = (voiceValue: string) => {
     if (playingVoice === voiceValue) { setPlayingVoice(null) } else { setPlayingVoice(voiceValue); setTimeout(() => setPlayingVoice(null), 2000) }
   }
-  const toggleBgmPreview = (bgmValue: string) => {
-    if (playingBgm === bgmValue) { setPlayingBgm(null) } else { setPlayingBgm(bgmValue); setTimeout(() => setPlayingBgm(null), 2000) }
-  }
 
   // 快捷填充
   function handleQuickFill(actionId: string) {
@@ -336,59 +305,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
       reader.readAsText(uploadedFile)
     }
     e.target.value = ''
-  }
-
-  function handleBgmUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const uploadedFile = e.target.files?.[0]
-    if (uploadedFile) {
-      setBgm('custom')
-      setBgmFile(uploadedFile)
-      setBgmCurrentTime(0)
-      setBgmPlaying(false)
-      if (bgmTimer.current) { clearInterval(bgmTimer.current); bgmTimer.current = null }
-      // 保持气泡开启
-      setBgmSelectOpen(true)
-    }
-    e.target.value = ''
-  }
-
-  function toggleBgmPlay() {
-    if (bgmPlaying) {
-      if (bgmTimer.current) { clearInterval(bgmTimer.current); bgmTimer.current = null }
-      setBgmPlaying(false)
-    } else {
-      setBgmPlaying(true)
-      bgmTimer.current = setInterval(() => {
-        setBgmCurrentTime(prev => {
-          const next = prev + 0.1
-          if (next >= bgmDuration) { clearInterval(bgmTimer.current!); bgmTimer.current = null; setBgmPlaying(false); return 0 }
-          return next
-        })
-      }, 100)
-    }
-  }
-
-  function handleBgmProgressChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const wasPlaying = bgmPlaying
-    if (bgmTimer.current) { clearInterval(bgmTimer.current); bgmTimer.current = null }
-    setBgmPlaying(false)
-    setBgmCurrentTime(parseFloat(e.target.value))
-    if (wasPlaying) {
-      setBgmPlaying(true)
-      bgmTimer.current = setInterval(() => {
-        setBgmCurrentTime(prev => {
-          const next = prev + 0.1
-          if (next >= bgmDuration) { clearInterval(bgmTimer.current!); bgmTimer.current = null; setBgmPlaying(false); return 0 }
-          return next
-        })
-      }, 100)
-    }
-  }
-
-  function formatBgmTime(s: number) {
-    const m = Math.floor(s / 60)
-    const sec = Math.floor(s % 60)
-    return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
   }
 
   function startEditTranscript() { setTranscriptEditText(resultText); setIsEditingTranscript(true) }
@@ -436,7 +352,7 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
             <div className="h-[230px] px-[26px] py-[22px] grid grid-cols-1 md:grid-cols-[0.74fr_1fr] gap-6 items-center">
               <div>
                 <span className="text-[17px] font-normal text-[#3f4558] mb-2 inline-block">使用指南</span>
-                <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">输入文字内容，AI 即刻生成带情感的自然人声。支持多音色切换、语速音量调节、背景音乐混音，满足配音、有声书、播客等多种场景。</p>
+                <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">输入文字内容，AI 即刻生成带情感的自然人声。支持多音色切换、语速音量调节，满足配音、有声书、播客等多种场景。</p>
                 <small className="text-[14px] text-[#9ca3b8]">{COST_TEXT}</small>
               </div>
               <div className="flex items-center justify-center h-full">
@@ -484,129 +400,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                     {voicePresets.map((v) => (
                       <VoiceRow key={v.value} voice={v} isSelected={voice === v.value} isPlaying={playingVoice === v.value} onSelect={() => setVoice(v.value)} onTogglePlay={() => togglePreview(v.value)} speed={speed} volume={volume} onSpeedChange={setSpeed} onVolumeChange={setVolume} />
                     ))}
-                  </div>
-                </div>
-                {/* 背景音乐 */}
-                <div className="mt-3 shrink-0">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[13px] font-medium text-[#3f4558]/60 shrink-0">背景音乐</span>
-                    <Select open={bgmSelectOpen} onOpenChange={setBgmSelectOpen} value={bgm} onValueChange={(v) => { setBgm(v) }}>
-                      <SelectTrigger className="flex-1 h-8 rounded-[11px] border border-[#e7ebf5] bg-white text-[13px] hover:bg-[#4f55ec]/[0.04] transition-colors px-3 shadow-none focus-visible:ring-[#4f55ec]/20 focus-visible:ring-1">
-                        {bgm === 'custom' ? <span className="text-[#3f4558] truncate">白噪音.mp3</span> : bgm ? <span className="text-[#3f4558]">{bgmOptions.find(o => o.value === bgm)?.label || bgm}</span> : <span className="text-[#3f4558]/50">选择背景音乐</span>}
-                      </SelectTrigger>
-                      <SelectContent align="start" className="w-[480px] p-2 border-[#E5E9F6] rounded-[12px]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}>
-                        <div className="grid grid-cols-2 gap-2">
-                          {/* 上传本地音乐 */}
-                          {bgm === 'custom' ? (
-                            <div
-                              className={cn('group flex flex-col gap-1 px-2.5 py-2 rounded-md cursor-pointer transition-colors', bgm === 'custom' ? 'bg-[#F3F5FF] text-[#4F55EC]' : 'text-[#3f4558] hover:bg-[#4f55ec]/[0.03]')}
-                              onClick={() => setBgm('custom')}
-                            >
-                              {/* 第一行：图标 + 名称 */}
-                              <div className="flex items-center gap-2">
-                                <div
-                                  className="shrink-0 w-5 h-5 relative"
-                                  onClick={(e) => { e.stopPropagation(); toggleBgmPlay() }}
-                                >
-                                  <MusicNotesSimple className={cn('absolute inset-0 h-5 w-5 transition-opacity duration-200', bgmPlaying ? 'opacity-0' : 'opacity-100 group-hover:opacity-0')} />
-                                  <div className={cn('absolute inset-0 h-5 w-5 rounded flex items-center justify-center transition-opacity duration-200', bgmPlaying ? 'opacity-100 bg-[#3f4558]/10' : 'opacity-0 group-hover:opacity-100 group-hover:bg-[#3f4558]/[0.05]')}>
-                                    {bgmPlaying ? <Pause className="h-4 w-4" weight="fill" /> : <Play className="h-4 w-4 ml-px" weight="fill" />}
-                                  </div>
-                                </div>
-                                <span className="text-[13px] font-medium block truncate">白噪音.mp3</span>
-                              </div>
-                              {/* 第二行：选中时显示播放控制，未选中时显示时长 */}
-                              {bgm === 'custom' ? (
-                                <div className="flex items-center gap-2 pl-7">
-                                  <button
-                                    onClick={(e) => { e.stopPropagation(); toggleBgmPlay() }}
-                                    className="shrink-0 w-[14px] h-[14px] flex items-center justify-center text-[#4F55EC] hover:text-[#4f55ec]/80 transition-colors"
-                                  >
-                                    {bgmPlaying ? <Pause className="h-[14px] w-[14px]" weight="fill" /> : <Play className="h-[14px] w-[14px] ml-[1px]" weight="fill" />}
-                                  </button>
-                                  <div className="flex-1 relative">
-                                    <div className="w-full h-1 rounded-full bg-[#e7ebf5]" />
-                                    <div
-                                      className="absolute top-0 left-0 h-1 rounded-full bg-[#4f55ec]"
-                                      style={{ width: bgmPlaying ? '60%' : '0%' }}
-                                    />
-                                  </div>
-                                  <span className="text-[11px] text-[#8a91a6] whitespace-nowrap shrink-0">02:30</span>
-                                </div>
-                              ) : (
-                                <div className="pl-7">
-                                  <span className="text-[12px] text-[#70788D] block">02:30</span>
-                                </div>
-                              )}
-                            </div>
-                          ) : (
-                            <label
-                              className="flex items-center gap-2 px-2.5 py-2 rounded-md cursor-pointer hover:bg-[#4f55ec]/[0.04] transition-colors text-[#3f4558]/60 hover:text-[#3f4558] border border-dashed border-[#E5E9F6]"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <UploadSimple className="h-4 w-4 shrink-0" weight="duotone" />
-                              <span className="text-[13px]">上传本地音乐</span>
-                              <input type="file" accept=".mp3,.wav,.m4a,.flac" className="hidden" onChange={handleBgmUpload} />
-                            </label>
-                          )}
-                          {/* 预设选项 */}
-                          {bgmOptions.map((opt) => {
-                            const isBgmPlaying = playingBgm === opt.value
-                            const isSelected = bgm === opt.value
-                            return (
-                              <div
-                                key={opt.value}
-                                onClick={() => setBgm(opt.value)}
-                                className={cn('group flex flex-col gap-1 px-2.5 py-2 rounded-md cursor-pointer transition-colors', isSelected ? 'bg-[#F3F5FF] text-[#4F55EC]' : 'text-[#3f4558] hover:bg-[#4f55ec]/[0.03]')}
-                              >
-                                {/* 第一行：图标 + 名称 */}
-                                <div className="flex items-center gap-2">
-                                  <div
-                                    className="shrink-0 w-5 h-5 relative"
-                                    onClick={(e) => { e.stopPropagation(); if (opt.value !== 'none') toggleBgmPreview(opt.value) }}
-                                  >
-                                    {opt.value === 'none' ? (
-                                      <span className="absolute inset-0 flex items-center justify-center text-[10px]">—</span>
-                                    ) : (
-                                      <>
-                                        <MusicNotesSimple className={cn('absolute inset-0 h-5 w-5 transition-opacity duration-200', isBgmPlaying ? 'opacity-0' : 'opacity-100 group-hover:opacity-0')} />
-                                        <div className={cn('absolute inset-0 h-5 w-5 rounded flex items-center justify-center transition-opacity duration-200', isBgmPlaying ? 'opacity-100 bg-[#3f4558]/10' : 'opacity-0 group-hover:opacity-100 group-hover:bg-[#3f4558]/[0.05]')}>
-                                          {isBgmPlaying ? <Pause className="h-4 w-4" weight="fill" /> : <Play className="h-4 w-4 ml-px" weight="fill" />}
-                                        </div>
-                                      </>
-                                    )}
-                                  </div>
-                                  <span className="text-[13px] font-medium block truncate">{opt.label}</span>
-                                </div>
-                                {/* 第二行：选中时显示播放控制，未选中时显示时长 */}
-                                {isSelected && opt.value !== 'none' ? (
-                                  <div className="flex items-center gap-2 pl-7">
-                                    <button
-                                      onClick={(e) => { e.stopPropagation(); toggleBgmPreview(opt.value) }}
-                                      className="shrink-0 w-[14px] h-[14px] flex items-center justify-center text-[#4F55EC] hover:text-[#4f55ec]/80 transition-colors"
-                                    >
-                                      {isBgmPlaying ? <Pause className="h-[14px] w-[14px]" weight="fill" /> : <Play className="h-[14px] w-[14px] ml-[1px]" weight="fill" />}
-                                    </button>
-                                    <div className="flex-1 relative">
-                                      <div className="w-full h-1 rounded-full bg-[#e7ebf5]" />
-                                      <div
-                                        className="absolute top-0 left-0 h-1 rounded-full bg-[#4f55ec]"
-                                        style={{ width: isBgmPlaying ? '60%' : '0%' }}
-                                      />
-                                    </div>
-                                    <span className="text-[11px] text-[#8a91a6] whitespace-nowrap shrink-0">{opt.duration}</span>
-                                  </div>
-                                ) : (
-                                  <div className="pl-7">
-                                    <span className={cn('text-[12px] block', opt.duration ? 'text-[#70788D]' : 'text-transparent')}>{opt.duration || '占位'}</span>
-                                  </div>
-                                )}
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </SelectContent>
-                    </Select>
                   </div>
                 </div>
                 {/* 立即生成 */}
@@ -675,10 +468,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                         <div className="flex items-center gap-1.5">
                           <span className="text-[12px] text-[#a0a7b8]">声音</span>
                           <span className="text-[13px] text-[#3f4558] font-medium">{voicePresets.find(v => v.value === voice)?.label || voice}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[12px] text-[#a0a7b8]">背景音乐</span>
-                          <span className="text-[13px] text-[#3f4558] font-medium">{bgm === 'custom' ? '白噪音.mp3' : bgmOptions.find(o => o.value === bgm)?.label || '无背景音乐'}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           <span className="text-[12px] text-[#a0a7b8]">文件名称</span>
@@ -791,10 +580,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                       <div className="flex items-center gap-1.5">
                         <span className="text-[12px] text-[#a0a7b8]">声音</span>
                         <span className="text-[13px] text-[#3f4558] font-medium">知夏 · 温柔女声</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[12px] text-[#a0a7b8]">背景音乐</span>
-                        <span className="text-[13px] text-[#3f4558] font-medium">无背景音乐</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-[12px] text-[#a0a7b8]">音频格式</span>
