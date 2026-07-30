@@ -28,7 +28,7 @@ import {
   SpinnerGap, Trash,
   MagicWand, CaretLeft,
   Images, ImageSquare, ArrowLineDown, Play, X,
-  Upload,
+  Upload, CheckCircle,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -56,6 +56,8 @@ const mockHistory = [
   { id: 'h1', title: '瀑布动态效果.mp4', status: 'completed' as const, time: '2026-06-15 14:30', duration: '15s', resolution: '1080P', resultId: 'result-image-to-video', thumbnail: '/thumbnails/thumb-waterfall.jpg', result: '图片动态效果描述\n\n画面内容：瀑布水流从静止状态逐渐加速，水流倾泻而下，水雾在阳光下形成彩虹效果。\n运镜方式：镜头缓慢推进，从远景逐渐拉近至瀑布中景。\n动态效果：水流粒子模拟，水雾扩散效果，光影变化。' },
   { id: 'h2', title: '产品揭幕动画.mp4', status: 'completed' as const, time: '2026-06-12 09:15', duration: '10s', resolution: '1080P', resultId: 'result-image-to-video', thumbnail: '/thumbnails/thumb-product-lights.jpg', result: '图片动态效果描述\n\n画面内容：产品图从左到右缓慢推进，灯光逐一亮起，营造科技感揭幕仪式。\n运镜方式：水平平移镜头，从左至右。\n动态效果：灯光渐亮效果，金属反光变化。' },
   { id: 'h3', title: '风景延时效果.mp4', status: 'completed' as const, time: '2026-06-10 16:00', duration: '8s', resolution: '720P', resultId: 'result-image-to-video', thumbnail: '/thumbnails/thumb-landscape-clouds.jpg', result: '图片动态效果描述\n\n画面内容：风景照中的云朵缓缓飘动，湖面泛起微波，打造延时摄影效果。\n运镜方式：固定机位，延时拍摄。\n动态效果：云朵流动，水面波纹，光影变化。' },
+  { id: 'h4', title: '花卉绽放动画.mp4', status: 'expired' as const, time: '2024-12-01 10:00', duration: '12s', resolution: '1080P', resultId: '', thumbnail: '/thumbnails/thumb-flower-bloom.jpg', result: '花卉绽放动态效果（超过30天已失效）' },
+  { id: 'h5', title: '城市夜景延时.mp4', status: 'expired' as const, time: '2024-11-15 14:30', duration: '20s', resolution: '1080P', resultId: '', thumbnail: '/thumbnails/thumb-city-night.jpg', result: '城市夜景延时效果（超过30天已失效）' },
 ]
 
 export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToVideoExperienceProps) {
@@ -421,22 +423,42 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
             <div className="px-6 pb-6">
               <div className="rounded-[14px] border border-[#e7ebf5] divide-y divide-[#e7ebf5] overflow-hidden [&>*:last-child]:border-b-0">
               {history.map(item => (
-                <div key={item.id} className="px-4 py-3 flex items-center gap-3 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
+                <div key={item.id} className="px-4 py-3 flex items-center gap-4 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
                   <img src={item.thumbnail} alt={item.title} className="w-[76px] h-[58px] rounded-[8px] shrink-0 object-cover" />
                   <div className="w-[70px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">时长</span>
                     <span className="text-sm text-[#697185]">{item.duration}</span>
                   </div>
-                  <div className="w-[70px] shrink-0">
+                  <div className="w-[80px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">清晰度</span>
                     <span className="text-sm text-[#697185]">{item.resolution}</span>
                   </div>
-                  <div className="w-[120px] shrink-0">
+                  <div className="w-[140px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">创建时间</span>
                     <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
                   </div>
+                  <div className="w-[90px] shrink-0">
+                    <span className="text-xs text-[#a0a7b8] block">状态</span>
+                    {item.status === 'completed' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                        <CheckCircle className="h-3.5 w-3.5" weight="fill" />完成
+                      </span>
+                    ) : item.status === 'expired' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-gray-500 font-medium">
+                        <WarningCircle className="h-3.5 w-3.5" weight="fill" />已失效
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-xs text-blue-500 font-medium">
+                        <SpinnerGap className="h-3.5 w-3.5 animate-spin" weight="fill" />处理中
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-1 ml-auto shrink-0">
-                    <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); setDownloadConfirmId(item.id); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    {item.status !== 'expired' ? (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); setDownloadConfirmId(item.id); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    ) : (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-gray-100 text-gray-400 cursor-not-allowed shadow-none" disabled><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    )}
                     <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] text-[#9ca2b5] hover:text-destructive gap-1" onClick={(e) => { e.stopPropagation(); handleDeleteHistory(item.id); }}><Trash className="h-3.5 w-3.5" />删除</Button>
                   </div>
                 </div>

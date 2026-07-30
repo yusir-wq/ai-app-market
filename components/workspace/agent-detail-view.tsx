@@ -41,6 +41,7 @@ import {
   Copy,
   Trash2,
   Download,
+  Clock,
 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -58,7 +59,7 @@ interface AgentDetailViewProps {
 interface HistoryTask {
   id: string
   title: string
-  status: 'completed' | 'failed' | 'processing'
+  status: 'completed' | 'failed' | 'processing' | 'expired'
   createdAt: string
   resultPreview: string
   resultId: string
@@ -68,11 +69,14 @@ interface HistoryTask {
 const mockHistoryTasks: Record<string, HistoryTask[]> = {
   'speech-to-text': [
     { id: 'ht-1', title: 'meeting-recording.mp3', status: 'completed', createdAt: '2024-01-15 14:30', resultPreview: '会议讨论了Q4产品规划，确定了三个主要方向：一是继续深化AI语音识别在医疗、教育、金融等垂直行业的应用；二是加强多语言模型训练，支持50种以上语言的实时转写和翻译；三是在用户体验层面引入智能分段、自动摘要、关键词提取等新功能模块。会议还重点探讨了如何在有限算力条件下，通过模型蒸馏和量化压缩来实现产品落地，预计Q4将完成内部测试版本并向部分客户开放试点。', resultId: 'result-speech-to-text' },
+    { id: 'ht-expired-1', title: 'interview-2023.mp3', status: 'expired', createdAt: '2023-12-20 10:00', resultPreview: '视频转写结果（已失效）', resultId: '' },
+    { id: 'ht-expired-2', title: 'webinar-recording.mp3', status: 'expired', createdAt: '2023-11-15 15:30', resultPreview: '会议记录转写（超过30天已失效）', resultId: '' },
   ],
   'text-to-speech': [
     { id: 'ht-2', title: '请帮我写一段关于智能科技改变生活的品牌宣传文案，要求语言生动、富有感染力，适合用于视频配音，让听众沉浸其中。', status: 'completed', createdAt: '2024-01-14 09:15', resultPreview: '音频文件：product-ad.mp3', resultId: 'result-text-to-speech' },
     { id: 'ht-10', title: '萤火虫的秘密\n深夜，九岁的阿布悄悄溜出外婆家，提着一盏熄灭的马灯走向神秘的黑森林。\n他想抓住传说中能实现愿望的"黄金萤火虫"，来治好外婆的眼睛。', status: 'completed', createdAt: '2024-01-13 16:30', resultPreview: '温柔的AI女声演绎品牌故事…', resultId: 'result-text-to-speech-2' },
     { id: 'ht-11', title: '在这个快速迭代的时代，科技创新正以前所未有的速度改变着我们的生活。从清晨智能闹钟的轻柔唤醒，到夜晚智能助手的贴心陪伴，科技已经融入了我们生命中的每一个角落。', status: 'completed', createdAt: '2024-01-12 11:00', resultPreview: '已生成3章节课程旁白音频…', resultId: 'result-text-to-speech-3' },
+    { id: 'ht-expired-3', title: '产品介绍旁白（已失效）', status: 'expired', createdAt: '2023-10-05 14:20', resultPreview: '音频已过期，无法下载', resultId: '' },
   ],
   'video-to-text': [
     { id: 'ht-3', title: 'product-launch-2024.mp4', status: 'completed', createdAt: '2024-01-13 15:20', resultPreview: '各位来宾，欢迎参加我们2024年度新品发布会。今天我将为大家介绍三款全新产品。第一款是我们最新研发的智能语音助手V2，它采用了全新的端侧AI芯片，响应速度提升了300%，支持离线唤醒和连续对话。无论是在嘈杂的地铁还是安静的办公室，它都能精准识别你的指令。第二款产品是面向B端的企业级AI中台。可以帮助企业在不招募AI团队的情况下，快速搭建自己的智能客服、智能推荐和智能质检系统。目前已经有超过200家企业接入使用。', resultId: 'result-video-to-text', videoThumbnail: '/thumbnails/thumb-business-conference.jpg' },
@@ -571,6 +575,10 @@ export function AgentDetailView({ agent, onBack, onViewResult, prefillText }: Ag
                               <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-destructive flex items-center justify-center">
                                 <X className="h-4 w-4 text-white" />
                               </div>
+                            ) : task.status === 'expired' ? (
+                              <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-gray-400 flex items-center justify-center">
+                                <Clock className="h-3.5 w-3.5 text-white" />
+                              </div>
                             ) : (
                               <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
                                 <Loader2 className="h-4 w-4 text-white animate-spin" />
@@ -627,12 +635,16 @@ export function AgentDetailView({ agent, onBack, onViewResult, prefillText }: Ag
                                 ? 'bg-gradient-to-br from-emerald-400 to-emerald-600'
                                 : task.status === 'failed'
                                   ? 'bg-gradient-to-br from-red-400 to-rose-600'
-                                  : 'bg-gradient-to-br from-blue-400 to-indigo-600'
+                                  : task.status === 'expired'
+                                    ? 'bg-gradient-to-br from-gray-400 to-gray-500'
+                                    : 'bg-gradient-to-br from-blue-400 to-indigo-600'
                             }`}>
                               {task.status === 'completed' ? (
                                 <CheckCircle2 className="h-5 w-5 text-white" />
                               ) : task.status === 'failed' ? (
                                 <X className="h-5 w-5 text-white" />
+                              ) : task.status === 'expired' ? (
+                                <Clock className="h-4 w-4 text-white" />
                               ) : (
                                 <Loader2 className="h-5 w-5 text-white animate-spin" />
                               )}
@@ -648,7 +660,9 @@ export function AgentDetailView({ agent, onBack, onViewResult, prefillText }: Ag
                                       ? 'secondary'
                                       : task.status === 'failed'
                                         ? 'destructive'
-                                        : 'default'
+                                        : task.status === 'expired'
+                                          ? 'outline'
+                                          : 'default'
                                   }
                                   className="text-[10px] shrink-0 mt-0.5"
                                 >
@@ -656,7 +670,9 @@ export function AgentDetailView({ agent, onBack, onViewResult, prefillText }: Ag
                                     ? '已完成'
                                     : task.status === 'failed'
                                       ? '失败'
-                                      : '处理中'}
+                                      : task.status === 'expired'
+                                        ? '已失效'
+                                        : '处理中'}
                                 </Badge>
                               </div>
                               <p className="text-xs text-muted-foreground line-clamp-5 mb-1.5 flex-1">

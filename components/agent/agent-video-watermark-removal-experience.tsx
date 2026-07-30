@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Agent } from '@/lib/mock-data'
 import { AgentVideoWatermarkRemovalIntro } from '@/components/agent/agent-video-watermark-removal-intro'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
-import { Star, ShareNetwork, WarningCircle, SpinnerGap, Trash, MagicWand, CaretLeft, Eraser, ArrowLineDown, Play, X, Upload, Subtitles, PlusCircle } from '@phosphor-icons/react'
+import { Star, ShareNetwork, WarningCircle, SpinnerGap, Trash, MagicWand, CaretLeft, Eraser, ArrowLineDown, Play, X, Upload, Subtitles, PlusCircle, CheckCircle } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -45,6 +45,8 @@ const mockHistory = [
   { id: 'h1', title: '教程视频去水印.mp4', status: 'completed' as const, time: '2026-06-15 14:30', duration: '5:20', removalType: '去水印', resultId: 'result-video-watermark-removal', thumbnail: '/thumbnails/thumb-online-course.jpg' },
   { id: 'h2', title: '品牌视频清理.mp4', status: 'completed' as const, time: '2026-06-12 09:15', duration: '2:30', removalType: '去字幕', resultId: 'result-video-watermark-removal', thumbnail: '/thumbnails/thumb-brand-story.jpg' },
   { id: 'h3', title: 'VLOG去标记.mov', status: 'completed' as const, time: '2026-06-10 16:00', duration: '8:45', removalType: '智能识别', resultId: 'result-video-watermark-removal', thumbnail: '/thumbnails/thumb-vlog-social.jpg' },
+  { id: 'h4', title: '会议视频去水印.mp4', status: 'expired' as const, time: '2024-12-01 10:00', duration: '12:30', removalType: '去水印', resultId: '', thumbnail: '/thumbnails/thumb-team-meeting.jpg' },
+  { id: 'h5', title: '产品发布会清理.mov', status: 'expired' as const, time: '2024-11-15 14:30', duration: '45:00', removalType: '去字幕', resultId: '', thumbnail: '/thumbnails/thumb-product-launch.jpg' },
 ]
 
 export function VideoWatermarkRemovalExperience({ agent, onBack, onViewResult }: VideoWatermarkRemovalExperienceProps) {
@@ -468,8 +470,28 @@ export function VideoWatermarkRemovalExperience({ agent, onBack, onViewResult }:
                     <span className="text-xs text-[#a0a7b8] block">创建时间</span>
                     <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
                   </div>
+                  <div className="w-[70px] shrink-0">
+                    <span className="text-xs text-[#a0a7b8] block">状态</span>
+                    {item.status === 'completed' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                        <CheckCircle className="h-3.5 w-3.5" weight="fill" />完成
+                      </span>
+                    ) : item.status === 'expired' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-gray-500 font-medium">
+                        <WarningCircle className="h-3.5 w-3.5" weight="fill" />已失效
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-xs text-blue-500 font-medium">
+                        <SpinnerGap className="h-3.5 w-3.5 animate-spin" weight="fill" />处理中
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-1 ml-auto shrink-0">
-                    <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); setDownloadConfirmId(item.id); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    {item.status !== 'expired' ? (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); setDownloadConfirmId(item.id); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    ) : (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-gray-100 text-gray-400 cursor-not-allowed shadow-none" disabled><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    )}
                     <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] text-[#9ca2b5] hover:text-destructive gap-1" onClick={(e) => { e.stopPropagation(); handleDeleteHistory(item.id); }}><Trash className="h-3.5 w-3.5" />删除</Button>
                   </div>
                 </div>

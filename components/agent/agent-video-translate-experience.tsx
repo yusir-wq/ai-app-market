@@ -28,7 +28,7 @@ import {
   SpinnerGap, Trash,
   MagicWand, CaretLeft,
   Translate, ArrowLineDown, Play, Pause, X,
-  Upload, GearSix, Copy, PlusCircle,
+  Upload, GearSix, Copy, PlusCircle, CheckCircle,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -171,6 +171,8 @@ const mockHistory = [
   { id: 'h1', title: '产品介绍视频翻译.mp4', status: 'completed' as const, time: '2026-06-15 14:30', duration: '2:30', sourceLang: '中文', targetLang: '英文', resultId: 'result-video-translate', thumbnail: '/thumbnails/thumb-smartwatch.jpg', result: '翻译完成\n\n源语言：中文\n目标语言：英文\n翻译模式：字幕+配音\n\n已生成英文字幕和配音版本。' },
   { id: 'h2', title: '教程视频翻译.mp4', status: 'completed' as const, time: '2026-06-12 09:15', duration: '5:20', sourceLang: '英文', targetLang: '中文', resultId: 'result-video-translate', thumbnail: '/thumbnails/thumb-online-course.jpg', result: '翻译完成\n\n源语言：英文\n目标语言：中文\n翻译模式：仅字幕\n\n已生成中文字幕文件。' },
   { id: 'h3', title: '会议录像翻译.mov', status: 'completed' as const, time: '2026-06-10 16:00', duration: '15:00', sourceLang: '中文', targetLang: '日文', resultId: 'result-video-translate', thumbnail: '/thumbnails/thumb-business-conference.jpg', result: '翻译完成\n\n源语言：中文\n目标语言：日文\n翻译模式：字幕+配音\n\n已生成日文字幕和配音版本。' },
+  { id: 'h4', title: '产品发布会视频.mp4', status: 'expired' as const, time: '2024-12-01 10:00', duration: '8:30', sourceLang: '中文', targetLang: '韩文', resultId: '', thumbnail: '/thumbnails/thumb-product-launch.jpg', result: '产品发布会视频翻译（超过30天已失效）' },
+  { id: 'h5', title: '培训课程视频.mp4', status: 'expired' as const, time: '2024-11-15 14:30', duration: '12:00', sourceLang: '英文', targetLang: '中文', resultId: '', thumbnail: '/thumbnails/thumb-training.jpg', result: '培训课程视频翻译（超过30天已失效）' },
 ]
 
 export function VideoTranslateExperience({ agent, onBack, onViewResult }: VideoTranslateExperienceProps) {
@@ -517,9 +519,9 @@ export function VideoTranslateExperience({ agent, onBack, onViewResult }: VideoT
             <div className="px-6 pb-6">
               <div className="rounded-[14px] border border-[#e7ebf5] divide-y divide-[#e7ebf5] overflow-hidden [&>*:last-child]:border-b-0">
               {history.map(item => (
-                <div key={item.id} className="px-4 py-3 flex items-center gap-3 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
+                <div key={item.id} className="px-4 py-3 flex items-center gap-4 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
                   <img src={item.thumbnail} alt={item.title} className="w-[76px] h-[58px] rounded-[8px] shrink-0 object-cover" />
-                  <div className="w-[160px] shrink-0 min-w-0">
+                  <div className="w-[180px] shrink-0 min-w-0">
                     <span className="text-xs text-[#a0a7b8] block">文件名</span>
                     <span className="text-sm text-[#697185] truncate block">{item.title}</span>
                   </div>
@@ -531,16 +533,36 @@ export function VideoTranslateExperience({ agent, onBack, onViewResult }: VideoT
                     <span className="text-xs text-[#a0a7b8] block">源语言</span>
                     <span className="text-sm text-[#697185]">{item.sourceLang}</span>
                   </div>
-                  <div className="w-[70px] shrink-0">
+                  <div className="w-[80px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">目标语言</span>
                     <span className="text-sm text-[#697185]">{item.targetLang}</span>
                   </div>
-                  <div className="w-[120px] shrink-0">
+                  <div className="w-[130px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">创建时间</span>
                     <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
                   </div>
+                  <div className="w-[90px] shrink-0">
+                    <span className="text-xs text-[#a0a7b8] block">状态</span>
+                    {item.status === 'completed' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                        <CheckCircle className="h-3.5 w-3.5" weight="fill" />完成
+                      </span>
+                    ) : item.status === 'expired' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-gray-500 font-medium">
+                        <WarningCircle className="h-3.5 w-3.5" weight="fill" />已失效
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-xs text-blue-500 font-medium">
+                        <SpinnerGap className="h-3.5 w-3.5 animate-spin" weight="fill" />处理中
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-1 ml-auto shrink-0">
-                    <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); setDownloadConfirmId(item.id); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    {item.status !== 'expired' ? (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); setDownloadConfirmId(item.id); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    ) : (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-gray-100 text-gray-400 cursor-not-allowed shadow-none" disabled><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    )}
                     <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] text-[#9ca2b5] hover:text-destructive gap-1" onClick={(e) => { e.stopPropagation(); handleDeleteHistory(item.id); }}><Trash className="h-3.5 w-3.5" />删除</Button>
                   </div>
                 </div>

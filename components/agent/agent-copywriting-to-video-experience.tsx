@@ -29,7 +29,7 @@ import {
   SpinnerGap, Trash, Copy,
   MagicWand, CaretLeft,
   PencilSimple, FileText,
-  VideoCamera, ArrowLineDown, Play, X,
+  VideoCamera, ArrowLineDown, Play, X, CheckCircle,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -63,6 +63,8 @@ const mockHistory = [
   { id: 'h1', title: '产品宣传视频', copywriting: '全新产品发布，展示创新科技与轻薄设计...', status: 'completed' as const, time: '2026-06-15 14:30', duration: '15s', resolution: '1080P', aspectRatio: '16:9', hasSound: true, resultId: 'result-copywriting-to-video', thumbnail: '/thumbnails/thumb-product-lights.jpg', result: '视频文案\n\n【第1镜】开场（0-3秒）\n画面：黑色背景渐亮，产品 Logo 缓缓浮现\n旁白：「创新科技，触手可及」\n\n【第2镜】产品外观展示（3-7秒）\n画面：产品 360 度旋转展示，白色极简背景\n旁白：「全新设计，轻薄机身仅 6.9mm」' },
   { id: 'h2', title: '教育课程介绍视频', copywriting: '在线教育平台推广，突出名师授课和个性化学习...', status: 'completed' as const, time: '2026-06-12 09:15', duration: '12s', resolution: '720P', aspectRatio: '16:9', hasSound: true, resultId: 'result-copywriting-to-video', thumbnail: '/thumbnails/thumb-online-course.jpg', result: '分镜脚本\n\n【第1镜】开场（0-3秒）\n画面：校园全景，阳光洒在教学楼上\n旁白：「知识改变命运，教育成就未来」\n\n【第2镜】课程特色展示（3-7秒）\n画面：师生互动场景，多媒体教室\n旁白：「名师在线授课，个性化学习方案」' },
   { id: 'h3', title: '电商商品展示视频', copywriting: '商品特写展示，强调品质工艺和使用场景...', status: 'completed' as const, time: '2026-06-10 16:00', duration: '8s', resolution: '1080P', aspectRatio: '1:1', hasSound: false, resultId: 'result-copywriting-to-video', thumbnail: '/thumbnails/thumb-smartwatch.jpg', result: '分镜脚本\n\n【第1镜】开场（0-2秒）\n画面：商品特写，缓慢旋转展示\n旁白：「品质生活，从细节开始」\n\n【第2镜】功能展示（2-5秒）\n画面：使用场景演示，多角度切换\n旁白：「匠心工艺，每一个细节都经过精心打磨」' },
+  { id: 'h4', title: '节日促销视频', copywriting: '圣诞节促销活动宣传片...', status: 'expired' as const, time: '2024-12-01 10:00', duration: '10s', resolution: '1080P', aspectRatio: '16:9', hasSound: true, resultId: '', thumbnail: '/thumbnails/thumb-holiday-sale.jpg', result: '圣诞节促销活动视频脚本（超过30天已失效）' },
+  { id: 'h5', title: '新品发布会视频', copywriting: '年度新品发布会开场视频...', status: 'expired' as const, time: '2024-11-15 14:30', duration: '20s', resolution: '1080P', aspectRatio: '16:9', hasSound: true, resultId: '', thumbnail: '/thumbnails/thumb-product-launch.jpg', result: '新品发布会视频脚本（超过30天已失效）' },
 ]
 
 export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: CopywritingToVideoExperienceProps) {
@@ -376,25 +378,44 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
               {history.map(item => (
                 <div key={item.id} className="px-4 py-3 flex items-center gap-3 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
                   <img src={item.thumbnail} alt={item.title} className="w-[76px] h-[58px] rounded-[8px] shrink-0 object-cover" />
-                  <div className="w-[240px] shrink-0 min-w-0">
+                  <div className="w-[180px] shrink-0 min-w-0">
                     <span className="text-xs text-[#a0a7b8] block">视频文案</span>
                     <span className="text-sm text-[#697185] truncate block">{item.copywriting}</span>
                   </div>
-                  <div className="w-[70px] shrink-0">
+                  <div className="w-[60px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">时长</span>
                     <span className="text-sm text-[#697185]">{item.duration}</span>
                   </div>
-                  <div className="w-[70px] shrink-0">
+                  <div className="w-[60px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">清晰度</span>
                     <span className="text-sm text-[#697185]">{item.resolution}</span>
                   </div>
-                  
-                  <div className="w-[120px] shrink-0">
+                  <div className="w-[90px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">创建时间</span>
                     <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
                   </div>
+                  <div className="w-[70px] shrink-0">
+                    <span className="text-xs text-[#a0a7b8] block">状态</span>
+                    {item.status === 'completed' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                        <CheckCircle className="h-3.5 w-3.5" weight="fill" />完成
+                      </span>
+                    ) : item.status === 'expired' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-gray-500 font-medium">
+                        <WarningCircle className="h-3.5 w-3.5" weight="fill" />已失效
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-xs text-blue-500 font-medium">
+                        <SpinnerGap className="h-3.5 w-3.5 animate-spin" weight="fill" />处理中
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-1 ml-auto shrink-0">
-                    <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); toast.success('下载完成'); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    {item.status !== 'expired' ? (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); toast.success('下载完成'); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    ) : (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-gray-100 text-gray-400 cursor-not-allowed shadow-none" disabled><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                    )}
                     <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] text-[#9ca2b5] hover:text-destructive gap-1" onClick={(e) => { e.stopPropagation(); handleDeleteHistory(item.id); }}><Trash className="h-3.5 w-3.5" />删除</Button>
                   </div>
                 </div>
@@ -460,7 +481,6 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
                     </div>
                     {/* 操作按钮 */}
                     <div className="flex items-center gap-1.5 mt-3">
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(selectedHistoryItem.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
                       <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('已导出 TXT 文件')}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
                     </div>

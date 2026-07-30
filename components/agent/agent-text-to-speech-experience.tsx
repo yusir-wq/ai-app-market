@@ -27,7 +27,8 @@ import {
   MagicWand,
   BookOpen,
   FileText,
-
+  CheckCircle,
+  SpinnerGap,
   Spinner,
   CaretLeft,
   Star,
@@ -73,6 +74,8 @@ const mockHistory = [
   { id: 'h1', title: '产品宣传文案.mp3', status: 'completed' as const, time: '2026-06-15 14:30', size: '3.2 MB', result: '在这个快速迭代的时代，科技创新正以前所未有的速度改变着我们的生活…', resultId: 'result-text-to-speech' },
   { id: 'h2', title: '有声书章节 1.mp3', status: 'completed' as const, time: '2026-06-12 09:15', size: '8.7 MB', result: '深夜，九岁的阿布悄悄溜出外婆家，提着一盏熄灭的马灯走向神秘的黑森林…', resultId: 'result-text-to-speech' },
   { id: 'h3', title: '新闻播报稿.mp3', status: 'completed' as const, time: '2026-06-10 16:00', size: '2.1 MB', result: '各位听众朋友大家好，欢迎收听今日新闻播报。今天的主要内容有…', resultId: 'result-text-to-speech' },
+  { id: 'h4', title: '广告配音（已失效）.mp3', status: 'expired' as const, time: '2024-12-01 10:00', size: '4.5 MB', result: '品牌宣传配音（已过期无法下载）', resultId: '' },
+  { id: 'h5', title: '课程旁白（已失效）.mp3', status: 'expired' as const, time: '2024-11-15 14:30', size: '12.3 MB', result: '在线课程旁白（超过30天已失效）', resultId: '' },
 ]
 
 // ============================================================
@@ -510,20 +513,40 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                 {history.map(item => (
                   <div key={item.id} className="px-4 py-3 flex items-center gap-4 hover:bg-[#fbfcff] transition-colors bg-white cursor-pointer" onClick={() => setSelectedHistoryItem(item)}>
                     <div className="w-[76px] h-[58px] rounded-[8px] bg-gradient-to-br from-[#f3f0ff] to-[#f8faff] border border-[#e7ebf5] flex items-center justify-center shrink-0 overflow-hidden relative"><SpeakerHigh className="h-5 w-5 text-[#7c3aed]/50" weight="fill" /></div>
-                    <div className="w-[200px] shrink-0 min-w-0">
+                    <div className="w-[180px] shrink-0 min-w-0">
                       <span className="text-xs text-[#a0a7b8] block">输入内容</span>
                       <span className="text-sm text-[#697185] truncate block">{item.result.length > 20 ? item.result.slice(0, 20) + '...' : item.result}</span>
                     </div>
-                    <div className="w-[180px] shrink-0 min-w-0">
+                    <div className="w-[150px] shrink-0 min-w-0">
                       <span className="text-xs text-[#a0a7b8] block">文件名称</span>
                       <span className="text-sm text-[#697185] truncate block">{item.title}</span>
                     </div>
-                    <div className="w-[130px] shrink-0">
+                    <div className="w-[100px] shrink-0">
                       <span className="text-xs text-[#a0a7b8] block">创建时间</span>
                       <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
                     </div>
+                    <div className="w-[80px] shrink-0">
+                      <span className="text-xs text-[#a0a7b8] block">状态</span>
+                      {item.status === 'completed' ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                          <CheckCircle className="h-3.5 w-3.5" weight="fill" />完成
+                        </span>
+                      ) : item.status === 'expired' ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-gray-500 font-medium">
+                          <WarningCircle className="h-3.5 w-3.5" weight="fill" />已失效
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs text-blue-500 font-medium">
+                          <SpinnerGap className="h-3.5 w-3.5 animate-spin" weight="fill" />处理中
+                        </span>
+                      )}
+                    </div>
                     <div className="flex items-center gap-1 ml-auto shrink-0">
-                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); toast.success('下载完成'); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                      {item.status !== 'expired' ? (
+                        <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); toast.success('下载完成'); }}><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                      ) : (
+                        <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-gray-100 text-gray-400 cursor-not-allowed shadow-none" disabled><ArrowLineDown className="h-3.5 w-3.5" />下载</Button>
+                      )}
                       <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] text-[#9ca2b5] hover:text-destructive gap-1" onClick={(e) => { e.stopPropagation(); handleDeleteHistory(item.id); }}><Trash className="h-3.5 w-3.5" />删除</Button>
                     </div>
                   </div>
@@ -569,7 +592,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                     </div>
                     {/* 操作按钮 */}
                     <div className="flex items-center gap-1.5 mt-3">
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(selectedHistoryItem.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
                       <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('下载完成')}><ArrowLineDown className="h-3.5 w-3.5" />下载 MP3</Button>
                     </div>
@@ -597,7 +619,6 @@ export function TextToSpeechExperience({ agent, onBack, onViewResult }: TextToSp
                   </div>
                   {/* 文件信息 - 靠在一起 */}
                   <div className="mt-4 flex items-center gap-4 text-xs text-[#8a91a6]">
-                    <span>内容：{selectedHistoryItem.result.length > 20 ? selectedHistoryItem.result.slice(0, 20) + '...' : selectedHistoryItem.result}</span>
                     <span>创建时间：{formatTime(selectedHistoryItem.time)}</span>
                   </div>
                   {/* 提示信息 */}

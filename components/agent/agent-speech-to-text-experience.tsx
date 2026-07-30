@@ -66,6 +66,8 @@ const mockHistory = [
   { id: 'h1', title: 'meeting-recording.mp3', status: 'completed' as const, time: '2026-06-15 14:30', size: '12.3 MB', result: '会议讨论了 Q4 产品规划，确定了三个主要方向……', resultId: 'result-speech-to-text' },
   { id: 'h2', title: 'interview-zhang.mp3', status: 'completed' as const, time: '2026-06-12 09:15', size: '8.7 MB', result: '受访者张总介绍了公司数字化转型的三个阶段……', resultId: 'result-speech-to-text' },
   { id: 'h3', title: 'lecture-ai.mp3', status: 'completed' as const, time: '2026-06-10 16:00', size: '22.1 MB', result: '大家好，欢迎来到 AI 基础入门课程……', resultId: 'result-speech-to-text' },
+  { id: 'h4', title: 'webinar-2024.mp3', status: 'expired' as const, time: '2024-12-01 10:00', size: '15.6 MB', result: '线上研讨会录音转写（已失效）', resultId: '' },
+  { id: 'h5', title: 'podcast-ep1.mp3', status: 'expired' as const, time: '2024-11-20 15:30', size: '28.3 MB', result: '播客第一期内容转写（超过30天已失效）', resultId: '' },
 ]
 
 export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechToTextExperienceProps) {
@@ -562,16 +564,36 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                     <span className="text-xs text-[#a0a7b8] block">文件名称</span>
                     <span className="text-sm text-[#697185] truncate block">{item.title}</span>
                   </div>
-                  <div className="w-[500px] shrink-0 min-w-0">
+                  <div className="w-[400px] shrink-0 min-w-0">
                     <span className="text-xs text-[#a0a7b8] block">转写内容</span>
                     <span className="text-sm text-[#697185] truncate block">{item.result}</span>
                   </div>
-                  <div className="w-[130px] shrink-0">
+                  <div className="w-[120px] shrink-0">
                     <span className="text-xs text-[#a0a7b8] block">创建时间</span>
                     <span className="text-xs text-[#697185]">{formatTime(item.time)}</span>
                   </div>
+                  <div className="w-[80px] shrink-0">
+                    <span className="text-xs text-[#a0a7b8] block">状态</span>
+                    {item.status === 'completed' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                        <CheckCircle className="h-3.5 w-3.5" weight="fill" />完成
+                      </span>
+                    ) : item.status === 'expired' ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-gray-500 font-medium">
+                        <WarningCircle className="h-3.5 w-3.5" weight="fill" />已失效
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-xs text-blue-500 font-medium">
+                        <SpinnerGap className="h-3.5 w-3.5 animate-spin" weight="fill" />处理中
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-1 ml-auto shrink-0">
-                    <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(item.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
+                    {item.status !== 'expired' ? (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-white text-[#596176] hover:bg-[#f3f5ff] hover:border-[#dfe3ff] hover:text-[#596176] shadow-none" onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(item.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
+                    ) : (
+                      <Button variant="outline" size="sm" className="h-[34px] px-[14px] rounded-[8px] text-[13px] font-normal gap-1.5 border-[#e2e6f3] bg-gray-100 text-gray-400 cursor-not-allowed shadow-none" disabled><Copy className="h-3.5 w-3.5" />复制</Button>
+                    )}
                     <Button variant="ghost" size="sm" className="h-[34px] px-2 text-[13px] text-[#9ca2b5] hover:text-destructive gap-1" onClick={(e) => { e.stopPropagation(); handleDeleteHistory(item.id); }}><Trash className="h-3.5 w-3.5" />删除</Button>
                   </div>
                 </div>
@@ -618,7 +640,6 @@ export function SpeechToTextExperience({ agent, onBack, onViewResult }: SpeechTo
                     </div>
                     {/* 操作按钮 */}
                     <div className="flex items-center gap-1.5 mt-3">
-                      <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5"><PencilSimple className="h-3.5 w-3.5" />编辑</Button>
                       <Button variant="ghost" size="sm" className="h-[34px] px-3 rounded-[7px] text-sm text-muted-foreground hover:text-foreground gap-1.5" onClick={() => { navigator.clipboard.writeText(selectedHistoryItem.result); toast.success('已复制到剪贴板'); }}><Copy className="h-3.5 w-3.5" />复制</Button>
                       <Button variant="outline" size="sm" className="h-[34px] px-3 rounded-[8px] text-[13px] gap-1.5 border-[#e2e6f3] text-[#596176] bg-white hover:bg-[#4f55ec]/[0.06] shadow-none" onClick={() => toast.success('已导出 TXT 文件')}><FileText className="h-3.5 w-3.5" />导出 TXT</Button>
                     </div>
