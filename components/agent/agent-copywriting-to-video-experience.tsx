@@ -48,6 +48,7 @@ interface CopywritingToVideoExperienceProps {
   agent: Agent
   onBack: () => void
   onViewResult?: (resultId: string, fileName?: string) => void
+  onNavigateToAgent?: (agentId: string) => void
 }
 
 function formatTime(dateStr: string) {
@@ -67,7 +68,7 @@ const mockHistory = [
   { id: 'h5', title: '新品发布会视频', copywriting: '年度新品发布会开场视频...', status: 'expired' as const, time: '2024-11-15 14:30', duration: '20s', resolution: '1080P', aspectRatio: '16:9', hasSound: true, resultId: '', thumbnail: '/thumbnails/thumb-product-launch.jpg', result: '新品发布会视频脚本（超过30天已失效）' },
 ]
 
-export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: CopywritingToVideoExperienceProps) {
+export function CopywritingToVideoExperience({ agent, onBack, onViewResult, onNavigateToAgent }: CopywritingToVideoExperienceProps) {
   const [copywriting, setCopywriting] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -204,6 +205,13 @@ export function CopywritingToVideoExperience({ agent, onBack, onViewResult }: Co
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <span 
+              className="text-[13px] text-[#596176] cursor-pointer hover:text-[#4f55ec] transition-colors"
+              onClick={() => onNavigateToAgent?.('topic-to-copywriting')}
+            >
+              不会写文案？输入主题，AI 帮你写 →
+            </span>
+            <div className="w-px h-5 bg-[#e7ebf5] mx-1" />
             <Button
               variant="outline"
               size="sm"

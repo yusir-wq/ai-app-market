@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <radialGradient id="hair-longhuhu" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FFF6B8"/>
+      <stop offset="100%" stop-color="#F5E06F"/>
+    </radialGradient>
+    <radialGradient id="face-longhuhu" cx="40%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#FFE8DA"/>
+      <stop offset="100%" stop-color="#F5C8B5"/>
+    </radialGradient>
+  </defs>
+  <rect width="48" height="48" fill="#FFD6C4"/>
+  <circle cx="24" cy="25" r="23" fill="url(#hair-longhuhu)"/>
+  <circle cx="24" cy="28" r="19" fill="url(#face-longhuhu)"/>
+  <circle cx="18" cy="27" r="2.3" fill="#3A2E2A"/>
+  <circle cx="30" cy="27" r="2.3" fill="#3A2E2A"/>
+  <path d="M 22 32 Q 24 33 26 32" stroke="#D48C8C" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <circle cx="15" cy="31" r="2.5" fill="#FF9999" opacity="0.35"/>
+  <circle cx="33" cy="31" r="2.5" fill="#FF9999" opacity="0.35"/>
+</svg>

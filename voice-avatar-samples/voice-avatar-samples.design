@@ -1,0 +1,79 @@
+{
+  "data": [
+    {
+      "id": "image-001",
+      "title": "女声甜美 - 元气甜美女",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1782990000000,
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      },
+      "devMetadata": {
+        "imageSrc": "assets/avatar-longhua.svg"
+      }
+    },
+    {
+      "id": "image-002",
+      "title": "女声沉稳 - 沉稳权威女",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1782990000000,
+      "canvasData": {
+        "x": 620,
+        "y": 0
+      },
+      "devMetadata": {
+        "imageSrc": "assets/avatar-longxiaoxia.svg"
+      }
+    },
+    {
+      "id": "image-003",
+      "title": "男声青年 - 智慧青年男",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1782990000000,
+      "canvasData": {
+        "x": 1240,
+        "y": 0
+      },
+      "devMetadata": {
+        "imageSrc": "assets/avatar-longcheng.svg"
+      }
+    },
+    {
+      "id": "image-004",
+      "title": "男声浑厚 - 沉稳质感男",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1782990000000,
+      "canvasData": {
+        "x": 1872,
+        "y": -24
+      },
+      "devMetadata": {
+        "imageSrc": "assets/avatar-longsanshu.svg"
+      }
+    },
+    {
+      "id": "image-005",
+      "title": "儿童音 - 天真烂漫女童",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1782990000000,
+      "canvasData": {
+        "x": 2480,
+        "y": 0
+      },
+      "devMetadata": {
+        "imageSrc": "assets/avatar-longhuhu.svg"
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": false,
+    "deviceType": "freeSize",
+    "projectName": "音色头像占位样板"
+  }
+}

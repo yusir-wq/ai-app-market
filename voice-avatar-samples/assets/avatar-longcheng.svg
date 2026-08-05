@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <radialGradient id="hair-longcheng" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#A5E6D6"/>
+      <stop offset="100%" stop-color="#6BBFA9"/>
+    </radialGradient>
+    <radialGradient id="face-longcheng" cx="40%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#F9DDB0"/>
+      <stop offset="100%" stop-color="#E2B77E"/>
+    </radialGradient>
+  </defs>
+  <rect width="48" height="48" fill="#FDF2B8"/>
+  <circle cx="24" cy="24" r="23" fill="url(#hair-longcheng)"/>
+  <circle cx="24" cy="27" r="19" fill="url(#face-longcheng)"/>
+  <circle cx="18" cy="26" r="2" fill="#3A2E2A"/>
+  <circle cx="30" cy="26" r="2" fill="#3A2E2A"/>
+  <path d="M 21.5 31 Q 24 32 26.5 31" stroke="#A67C7C" stroke-width="1" fill="none" stroke-linecap="round"/>
+</svg>

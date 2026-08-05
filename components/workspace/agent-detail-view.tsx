@@ -50,6 +50,7 @@ interface AgentDetailViewProps {
   onBack: () => void
   onViewResult?: (resultId: string, fileName?: string) => void
   prefillText?: string
+  onNavigateToAgent?: (agentId: string) => void
 }
 
 // ============================================================
@@ -166,7 +167,7 @@ function getHistoryTasks(agentId: string): HistoryTask[] {
   return mockHistoryTasks[agentId] || mockHistoryTasks['speech-to-text'] || []
 }
 
-export function AgentDetailView({ agent, onBack, onViewResult, prefillText }: AgentDetailViewProps) {
+export function AgentDetailView({ agent, onBack, onViewResult, prefillText, onNavigateToAgent }: AgentDetailViewProps) {
   const [activeTab, setActiveTab] = useState<string>('experience')
   const [file, setFile] = useState<File | null>(null)
   const [text, setText] = useState(prefillText || '')
@@ -399,12 +400,14 @@ export function AgentDetailView({ agent, onBack, onViewResult, prefillText }: Ag
           agent={agent}
           onBack={onBack}
           onViewResult={onViewResult}
+          onNavigateToAgent={onNavigateToAgent}
         />
       ) : agent.id === 'image-to-video' ? (
         <ImageToVideoExperience
           agent={agent}
           onBack={onBack}
           onViewResult={onViewResult}
+          onNavigateToAgent={onNavigateToAgent}
         />
       ) : agent.id === 'video-translate' ? (
         <VideoTranslateExperience

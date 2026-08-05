@@ -1379,6 +1379,10 @@ export function Workspace() {
               setViewMode('agent-home')
             }}
             prefillText={prefillAgentText}
+            onNavigateToAgent={(agentId) => {
+              setSelectedAgentId(agentId)
+              setPrefillAgentText('')
+            }}
             onViewResult={(resultId, fileName) => {
               setSelectedResultId(resultId)
               setSelectedResultFileName(fileName || null)

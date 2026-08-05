@@ -41,6 +41,7 @@ interface ImageToVideoExperienceProps {
   agent: Agent
   onBack: () => void
   onViewResult?: (resultId: string, fileName?: string) => void
+  onNavigateToAgent?: (agentId: string) => void
 }
 
 function formatTime(dateStr: string) {
@@ -60,7 +61,7 @@ const mockHistory = [
   { id: 'h5', title: '城市夜景延时.mp4', status: 'expired' as const, time: '2024-11-15 14:30', duration: '20s', resolution: '1080P', resultId: '', thumbnail: '/thumbnails/thumb-city-night.jpg', result: '城市夜景延时效果（超过30天已失效）' },
 ]
 
-export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToVideoExperienceProps) {
+export function ImageToVideoExperience({ agent, onBack, onViewResult, onNavigateToAgent }: ImageToVideoExperienceProps) {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
   const [uploadedFileName, setUploadedFileName] = useState<string>('')
   const [isProcessing, setIsProcessing] = useState(false)
@@ -198,6 +199,13 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <span 
+              className="text-[13px] text-[#596176] cursor-pointer hover:text-[#4f55ec] transition-colors"
+              onClick={() => onNavigateToAgent?.('topic-to-copywriting')}
+            >
+              不会写文案？输入主题，AI 帮你写 →
+            </span>
+            <div className="w-px h-5 bg-[#e7ebf5] mx-1" />
             <Button
               variant="outline"
               size="sm"
@@ -247,40 +255,50 @@ export function ImageToVideoExperience({ agent, onBack, onViewResult }: ImageToV
           <div className="rounded-[12px] border border-[#f0f2f8] bg-white overflow-hidden" style={CARD_SHADOW}>
             <div className="p-6 h-full flex flex-col">
               <h3 className="text-[18px] font-medium text-[#3f4558] mb-3 shrink-0">输入参考图与文案</h3>
-              <div className="flex-1 flex flex-col md:flex-row gap-4" style={{ maxHeight: '319.5px' }}>
-                {/* 参考图上传区 */}
-                <div className="flex flex-col shrink-0 md:w-[220px]">
-                  <div className="h-full relative">
+              <div className="flex flex-col gap-3">
+                {/* 合并的图片上传区 + 提示词输入 - 视觉上是一个组件，上下布局 */}
+                <div className="rounded-[10px] border border-[#e7ebf5] bg-[#F8FAFF] overflow-hidden">
+                  {/* 图片上传区 - 80x80px，左上角 */}
+                  <div className="p-3">
                     {uploadedImage ? (
-                      <div className="relative w-full h-full rounded-[10px] border border-[#e7ebf5] bg-[#F8FAFF] overflow-hidden">
-                        <img src={uploadedImage} alt="已上传图片" className="w-full h-full object-contain" />
+                      <div 
+                        className="w-[80px] h-[80px] rounded-[8px] border border-[#e7ebf5] bg-white overflow-hidden cursor-pointer group relative"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <img src={uploadedImage} alt="已上传图片" className="w-full h-full object-cover" />
+                        {/* hover显示大图 */}
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                          <p className="text-white text-xs">点击更换</p>
+                        </div>
+                        {/* 移除按钮 */}
                         <button
-                          onClick={() => { setUploadedImage(null); setUploadedFileName('') }}
-                          className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center text-white transition-colors"
+                          onClick={(e) => { e.stopPropagation(); setUploadedImage(null); setUploadedFileName('') }}
+                          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center text-white transition-colors"
                         >
                           <X className="h-3 w-3" />
                         </button>
                       </div>
                     ) : (
-                      <div className="w-full h-full border-2 border-dashed rounded-[10px] py-4 px-3 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-2 border-[#e7ebf5] hover:border-primary/30" style={{ background: '#f8faff' }} onClick={() => fileInputRef.current?.click()}>
-                        <Images className="text-[#4f55ec]" style={{ fontSize: '40px' }} />
-                        <p className="text-[14px] text-[#3f4558]">点击上传</p>
-                        <div className="text-[12px] text-muted-foreground leading-relaxed"><p>支持 PNG、JPG、JPEG、WebP</p><p>单张不超过 10MB</p></div>
-                        <input ref={fileInputRef} type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleImageUpload} />
+                      <div 
+                        className="w-[80px] h-[80px] rounded-[8px] bg-white flex items-center justify-center cursor-pointer transition-all hover:bg-gray-50"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Images className="text-[#4f55ec]" style={{ fontSize: '28px' }} />
                       </div>
                     )}
+                    <input ref={fileInputRef} type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleImageUpload} />
                   </div>
-                </div>
-                {/* 提示词输入 */}
-                <div className="flex flex-col flex-1 min-w-0">
-                  <div className="flex-1 relative">
+                  
+                  {/* 提示词输入 - 固定高度240px */}
+                  <div className="px-3 pb-3 relative">
                     <textarea
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value.slice(0, 1000))}
                       placeholder="描述你想要的动态效果，例如：水流缓缓流动，云朵飘动，树叶摇曳..."
-                      className="w-full h-full min-h-[120px] rounded-[10px] border border-[#e7ebf5] bg-[#F8FAFF] p-3 text-sm text-foreground leading-relaxed resize-none outline-none focus:border-[#4f55ec]/50 placeholder:text-muted-foreground/35"
+                      className="w-full rounded-[8px] bg-transparent text-sm text-foreground leading-relaxed resize-none outline-none focus:placeholder:text-muted-foreground/25"
+                      style={{ height: '180px' }}
                     />
-                    <span className="absolute bottom-3 right-3 text-[11px] text-[#b7becf]">{prompt.length}/1000</span>
+                    <span className="absolute bottom-5 right-5 text-[11px] text-[#b7becf]">{prompt.length}/1000</span>
                   </div>
                 </div>
               </div>
