@@ -43,9 +43,16 @@ $sourceFiles = @(
   'pnpm-workspace.yaml',
   'next-env.d.ts',
   'eslint.config.mjs',
+  'app/api/rewards/display/route.ts',
+  'app/api/rewards/pending/route.ts',
   'lib/mock-data.ts',
+  'lib/reward-store.ts',
   'components/chat/markdown-content.tsx',
   'components/workspace/mcp-service-list.tsx',
+  'components/workspace/nav-panel.tsx',
+  'components/workspace/new-user-benefit-toast.tsx',
+  'components/workspace/new-user-benefit-toast.module.css',
+  'components/workspace/workspace.tsx',
   'components/agent/agent-image-to-video-intro.tsx',
   'components/agent/agent-input-area.tsx',
   'components/agent/agent-result-area.tsx',
@@ -67,6 +74,7 @@ $sourceFiles = @(
   'components/prototypes/tool-conversion/prototype-types.ts',
   'components/prototypes/tool-conversion/prototype.css',
   'public/prototype-assets/chinaz-hero-image-expand.jpg',
+  'public/prototype-assets/chinaz-hero-image-background.jpg',
   'public/prototype-assets/chinaz-logo.png',
   'public/prototype-assets/chinaz-scene-01.jpg',
   'public/prototype-assets/chinaz-scene-02.jpg',
@@ -91,7 +99,33 @@ $sourceFiles = @(
   'public/prototype-assets/chinaz-scene-21.jpg',
   'public/prototype-assets/chinaz-scene-22.jpg',
   'public/prototype-assets/chinaz-scene-23.jpg',
-  'public/prototype-assets/chinaz-scene-24.jpg'
+  'public/prototype-assets/chinaz-scene-24.jpg',
+  'public/prototype-assets/cutouts/cat-subject.png',
+  'public/prototype-assets/rewards/task-reward-chest-modal.png',
+  'public/prototype-assets/background-scenes/scene-01.jpg',
+  'public/prototype-assets/background-scenes/scene-02.jpg',
+  'public/prototype-assets/background-scenes/scene-03.jpg',
+  'public/prototype-assets/background-scenes/scene-04.jpg',
+  'public/prototype-assets/background-scenes/scene-05.jpg',
+  'public/prototype-assets/background-scenes/scene-06.jpg',
+  'public/prototype-assets/background-scenes/scene-07.jpg',
+  'public/prototype-assets/background-scenes/scene-08.jpg',
+  'public/prototype-assets/background-scenes/scene-09.jpg',
+  'public/prototype-assets/background-scenes/scene-10.jpg',
+  'public/prototype-assets/background-scenes/scene-11.jpg',
+  'public/prototype-assets/background-scenes/scene-12.jpg',
+  'public/prototype-assets/background-scenes/scene-13.jpg',
+  'public/prototype-assets/background-scenes/scene-14.jpg',
+  'public/prototype-assets/background-scenes/scene-15.jpg',
+  'public/prototype-assets/background-scenes/scene-16.jpg',
+  'public/prototype-assets/background-scenes/scene-17.jpg',
+  'public/prototype-assets/background-scenes/scene-18.jpg',
+  'public/prototype-assets/background-scenes/scene-19.jpg',
+  'public/prototype-assets/background-scenes/scene-20.jpg',
+  'public/prototype-assets/background-scenes/scene-21.jpg',
+  'public/prototype-assets/background-scenes/scene-22.jpg',
+  'public/prototype-assets/background-scenes/scene-23.jpg',
+  'public/prototype-assets/background-scenes/scene-24.jpg'
 )
 
 try {
@@ -102,7 +136,18 @@ try {
 
   $sshBase = @('-p', $serverPort, '-o', 'StrictHostKeyChecking=accept-new')
   $scpBase = @('-P', $serverPort, '-o', 'StrictHostKeyChecking=accept-new')
-  & ssh @sshBase "$serverUser@$serverHost" "mkdir -p '$RemotePath/app/prototypes/tool-conversion' '$RemotePath/components/prototypes/tool-conversion' '$RemotePath/public/prototype-assets'"
+  $remoteDirectories = @(
+    'app/api/rewards',
+    'app/prototypes/tool-conversion',
+    'components/prototypes/tool-conversion',
+    'components/workspace',
+    'lib',
+    'public/prototype-assets',
+    'public/prototype-assets/background-scenes',
+    'public/prototype-assets/cutouts',
+    'public/prototype-assets/rewards'
+  ) | ForEach-Object { "'$RemotePath/$_'" }
+  & ssh @sshBase "$serverUser@$serverHost" "mkdir -p $($remoteDirectories -join ' ')"
   if ($LASTEXITCODE -ne 0) { throw '无法创建服务器部署目录。' }
 
   foreach ($relativePath in $sourceFiles) {

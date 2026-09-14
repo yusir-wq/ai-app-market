@@ -8,7 +8,6 @@ import {
   ArrowLeft,
   Briefcase,
   CaretDown,
-  CaretLeft,
   CaretRight,
   ChatCenteredText,
   CheckCircle,
@@ -23,6 +22,7 @@ import {
   Headset,
   Heart,
   ImageSquare,
+  ImagesSquare,
   Info,
   Lightning,
   MagicWand,
@@ -38,13 +38,19 @@ import {
   WarningCircle,
   X,
 } from "@phosphor-icons/react";
-import { prototypeConfig, scenes } from "./prototype-config";
+import {
+  backgroundScenes,
+  backgroundToolConfig,
+  prototypeConfig,
+  scenes,
+} from "./prototype-config";
 import type {
   EventLog,
   PrototypeState,
   SourceStatus,
   Variant,
 } from "./prototype-types";
+import { NewUserBenefitToast } from "@/components/workspace/new-user-benefit-toast";
 import "./prototype.css";
 
 const states: { value: PrototypeState; label: string }[] = [
@@ -91,6 +97,31 @@ const historyItems = [
   },
 ];
 
+// Review-only fixtures for the task-reward chest. This is intentionally
+// separate from the one-time new-user benefit shown after login.
+const prototypeTaskRewards = [
+  {
+    rewardId: "prototype:first-chat",
+    taskName: "首次使用AI聊天",
+    points: 100,
+    icon: "chat" as const,
+  },
+  {
+    rewardId: "prototype:first-image",
+    taskName: "首次使用AI图像",
+    points: 200,
+    icon: "image" as const,
+  },
+  {
+    rewardId: "prototype:first-video",
+    taskName: "首次使用AI文案生视频",
+    points: 1000,
+    icon: "video" as const,
+  },
+];
+
+const cutoutPreviewImage = "/prototype-assets/cutouts/cat-subject.png";
+
 function SelectControl<T extends string>({
   label,
   value,
@@ -127,12 +158,14 @@ export function ConversionPrototype() {
   const pathname = usePathname();
   const query = useSearchParams();
   const stateParam = query.get("state") as PrototypeState;
+  const initialToolKey = query.get("tool") === "background" ? "background" : "expand";
   const [state, setState] = useState<PrototypeState>(
     validStates.has(stateParam) ? stateParam : "guest-ready",
   );
   const [variant, setVariant] = useState<Variant>(
     query.get("variant") === "baseline" ? "baseline" : "optimized",
   );
+  const [toolKey, setToolKey] = useState<"expand" | "background">(initialToolKey);
   const [source, setSource] = useState<SourceStatus>(
     query.get("variant") === "baseline" ? "empty" : "carried",
   );
@@ -147,18 +180,25 @@ export function ConversionPrototype() {
       "insufficient-balance",
     ].includes(stateParam),
   );
-  const [sceneId, setSceneId] = useState(scenes[0].id);
+  const [sceneId, setSceneId] = useState(
+    initialToolKey === "background" ? backgroundScenes[0].id : scenes[0].id,
+  );
   const [showCompare, setShowCompare] = useState(true);
   const [autoCutout, setAutoCutout] = useState(true);
-  const [chestEnabled, setChestEnabled] = useState(false);
-  const [chestOpen, setChestOpen] = useState(false);
+  const [chestEnabled, setChestEnabled] = useState(query.get("reward") === "task");
+  const [backgroundColor, setBackgroundColor] = useState("自动推荐");
+  const [backgroundRatio, setBackgroundRatio] = useState("接近原图");
+  const [taskChestOpen, setTaskChestOpen] = useState(query.get("reward") === "task");
+  const [newUserOpen, setNewUserOpen] = useState(false);
   const [newUser, setNewUser] = useState(true);
-  const [toolbarOpen, setToolbarOpen] = useState(false);
+  // Keep the prototype review console visible so login/guest and task states
+  // can be switched directly from the upper-right control area.
+  const [toolbarOpen, setToolbarOpen] = useState(true);
   const [sourceError, setSourceError] = useState(false);
   const [zoomScene, setZoomScene] = useState<string | null>(null);
-  const [split, setSplit] = useState(53);
+  const [resultTab, setResultTab] = useState<"result" | "original">("result");
   const [toast, setToast] = useState("");
-  const [logs, setLogs] = useState<EventLog[]>(() => [
+  const [, setLogs] = useState<EventLog[]>(() => [
     {
       name: "tool_landing_view",
       detail: `source=material · variant=${variant} · imageCarried=true`,
@@ -170,15 +210,23 @@ export function ConversionPrototype() {
   const timerIds = useRef<ReturnType<typeof setTimeout>[]>([]);
   const resultRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLButtonElement>(null);
-  const scene = scenes.find((item) => item.id === sceneId) ?? scenes[0];
+  const activeConfig = toolKey === "background" ? backgroundToolConfig : prototypeConfig.tool;
+  const activeScenes = toolKey === "background" ? backgroundScenes : scenes;
+  const scene = activeScenes.find((item) => item.id === sceneId) ?? activeScenes[0];
+  const showFreeCutoutPreview =
+    toolKey === "background" && source !== "empty" && autoCutout;
 
   const syncUrl = useCallback(
-    (nextState: PrototypeState, nextVariant = variant) => {
-      router.replace(`${pathname}?variant=${nextVariant}&state=${nextState}`, {
+    (
+      nextState: PrototypeState,
+      nextVariant = variant,
+      nextTool: "expand" | "background" = toolKey,
+    ) => {
+      router.replace(`${pathname}?variant=${nextVariant}&state=${nextState}&tool=${nextTool}`, {
         scroll: false,
       });
     },
-    [pathname, router, variant],
+    [pathname, router, toolKey, variant],
   );
   const log = useCallback(
     (name: string, detail: string) =>
@@ -204,12 +252,32 @@ export function ConversionPrototype() {
     },
     [clearTimers, syncUrl],
   );
+  const switchTool = useCallback(
+    (nextTool: "expand" | "background") => {
+      if (nextTool === toolKey) return;
+      clearTimers();
+      const nextScenes = nextTool === "background" ? backgroundScenes : scenes;
+      setToolKey(nextTool);
+      setSceneId(nextScenes[0].id);
+      setState("guest-ready");
+      setSourceError(false);
+      setIntentId(null);
+      consumedIntent.current = null;
+      setResultTab("result");
+      setTaskChestOpen(false);
+      setNewUserOpen(false);
+      syncUrl("guest-ready", variant, nextTool);
+      log("tool_switch", `tool=${nextTool}`);
+    },
+    [clearTimers, log, syncUrl, toolKey, variant],
+  );
 
   useEffect(() => () => clearTimers(), [clearTimers]);
 
   const finish = useCallback(
     (success: boolean) => {
       const next = success ? "success" : "failed-refunded";
+      if (success) setResultTab("result");
       setState(next);
       syncUrl(next);
       log(
@@ -227,7 +295,7 @@ export function ConversionPrototype() {
         ),
       );
       if (success && chestEnabled)
-        timerIds.current.push(setTimeout(() => setChestOpen(true), 450));
+        timerIds.current.push(setTimeout(() => setTaskChestOpen(true), 450));
     },
     [chestEnabled, log, syncUrl],
   );
@@ -290,7 +358,7 @@ export function ConversionPrototype() {
     syncUrl("login-success");
     if (newUser) {
       setNewUser(false);
-      setChestOpen(true);
+      setNewUserOpen(true);
     }
     const id = intentId;
     log("login_success", `trigger=generate · intentId=${id ?? "none"}`);
@@ -308,6 +376,8 @@ export function ConversionPrototype() {
     setSource("carried");
     setSourceError(false);
     setNewUser(true);
+    setTaskChestOpen(false);
+    setNewUserOpen(false);
     setLogs([]);
     setIntentId(null);
     syncUrl("guest-ready");
@@ -344,12 +414,18 @@ export function ConversionPrototype() {
             AI图像工具
           </button>
           <nav className="tc-sidebar-nav" aria-label="AI图像工具菜单">
-            <button className="active">
+            <button
+              className={toolKey === "expand" ? "active" : ""}
+              onClick={() => switchTool("expand")}
+            >
               <FrameCorners size={21} weight="regular" />
               AI扩图
             </button>
-            <button>
-              <ImageSquare size={21} />
+            <button
+              className={toolKey === "background" ? "active" : ""}
+              onClick={() => switchTool("background")}
+            >
+              <ImagesSquare size={21} weight="regular" />
               AI换背景
             </button>
             <button>
@@ -382,7 +458,7 @@ export function ConversionPrototype() {
                   <HandCoins size={18} weight="regular" />
                   充值智点
                 </button>
-                <button className="tc-invite">
+                <button className="tc-invite" data-reward-entry>
                   <Gift size={20} weight="regular" />
                   <span>做任务赚智点</span>
                 </button>
@@ -413,8 +489,12 @@ export function ConversionPrototype() {
           <section className="tc-surface">
             <header className="tc-online-topbar">
               <div className="tc-online-title">
-                <FrameCorners size={24} weight="regular" />
-                <span>AI 扩图</span>
+                {toolKey === "background" ? (
+                  <ImagesSquare size={24} weight="regular" />
+                ) : (
+                  <FrameCorners size={24} weight="regular" />
+                )}
+                <span>{activeConfig.name.replace("AI", "AI ")}</span>
               </div>
               <div className="tc-online-actions">
                 <button>
@@ -431,13 +511,13 @@ export function ConversionPrototype() {
               <section className="tc-hero">
                 <div className="tc-hero-note">
                   <span>使用指南</span>
-                  <p>{prototypeConfig.tool.description}</p>
-                  {loggedIn && <small>使用费用：490 智点/次（约 0.49 元）</small>}
+                  <p>{activeConfig.description}</p>
+                  {loggedIn && <small>使用费用：{activeConfig.costPoints} 智点/次（约 0.49 元）</small>}
                 </div>
                 <div className="tc-hero-visual">
                   <Image
-                    src="/prototype-assets/chinaz-hero-image-expand.jpg"
-                    alt="AI扩图示例"
+                    src={activeConfig.heroImage}
+                    alt={`${activeConfig.name}示例`}
                     fill
                     sizes="720px"
                     priority
@@ -486,17 +566,71 @@ export function ConversionPrototype() {
                     <Info size={14} />
                     上传即表示您确认拥有图片及其中人物、商品、素材的合法授权，并承诺不用于违法违规用途。
                   </p>
-                  <div className="tc-settings">
+                  <div className={`tc-settings ${toolKey === "background" ? "is-background-settings" : ""}`}>
                     <div className="tc-settings-title">生成设置</div>
-                    <div className="tc-setting-row">
-                      <span>最终输出尺寸</span>
-                      <b>1920 x 1080</b>
-                    </div>
-                    <button className="tc-style-row">
-                      <span>风格</span>
-                      <b>{scene.name}</b>
-                      <CaretDown size={15} />
-                    </button>
+                    {toolKey === "background" ? (
+                      <>
+                        <SelectControl
+                          label="背景色"
+                          value={backgroundColor}
+                          onChange={setBackgroundColor}
+                          options={[
+                            "自动推荐",
+                            "白色",
+                            "浅灰",
+                            "深灰",
+                            "黑色",
+                            "米白",
+                            "米色",
+                            "浅蓝",
+                            "天蓝",
+                            "深蓝",
+                            "青绿色",
+                            "薄荷绿",
+                            "墨绿色",
+                            "浅粉",
+                            "玫瑰粉",
+                            "红色",
+                            "橙色",
+                            "黄色",
+                            "金色",
+                            "奶茶色",
+                            "香槟色",
+                            "暖灰",
+                            "咖色",
+                            "蓝紫",
+                            "紫色",
+                            "红金",
+                            "黑金",
+                            "蓝银",
+                            "粉紫",
+                            "绿金",
+                            "彩色",
+                          ].map((value) => ({ value, label: value }))}
+                        />
+                        <SelectControl
+                          label="比例"
+                          value={backgroundRatio}
+                          onChange={setBackgroundRatio}
+                          options={["接近原图", "1:1", "4:3", "3:4", "16:9", "9:16"].map((value) => ({
+                            value,
+                            label: value,
+                          }))}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <div className="tc-setting-row">
+                          <span>最终输出尺寸</span>
+                          <b>1920 x 1080</b>
+                        </div>
+                        <button className="tc-style-row" type="button">
+                          <span>风格</span>
+                          <b>{scene.name}</b>
+                          <CaretDown size={15} />
+                        </button>
+                      </>
+                    )}
                   </div>
                   <div className="tc-action">
                     <button
@@ -512,7 +646,7 @@ export function ConversionPrototype() {
                       ) : (
                         <>
                           <MagicWand size={19} weight="regular" />
-                          {prototypeConfig.tool.generateLabel}
+                          {activeConfig.generateLabel}
                         </>
                       )}
                     </button>
@@ -525,19 +659,21 @@ export function ConversionPrototype() {
                     )}
                   </div>
                 </aside>
-                <div className="tc-gallery">
+                <div className={`tc-gallery ${toolKey === "background" ? "is-background-gallery" : ""}`}>
                   <div className="tc-section-head">
                     <div>
                       <b>风格</b>
                       <span>
-                        {variant === "optimized"
-                          ? "选择一种画面氛围，预览扩图效果"
-                          : ""}
+                        {variant === "optimized" && toolKey === "background"
+                          ? "选择背景后即时合成预览，无需生成"
+                          : variant === "optimized"
+                            ? "选择一种画面氛围，预览扩图效果"
+                            : ""}
                       </span>
                     </div>
                   </div>
                   <div className="tc-scene-grid">
-                    {scenes.map((item) => (
+                    {activeScenes.map((item) => (
                       <article
                         key={item.id}
                         className={`tc-scene ${sceneId === item.id ? "selected" : ""}`}
@@ -545,7 +681,7 @@ export function ConversionPrototype() {
                           setSceneId(item.id);
                           log(
                             "scene_card_click",
-                            `sceneId=${item.id} · position=${scenes.indexOf(item) + 1} · variant=${variant}`,
+                            `tool=${toolKey} · sceneId=${item.id} · position=${activeScenes.indexOf(item) + 1} · variant=${variant}`,
                           );
                         }}
                       >
@@ -560,19 +696,35 @@ export function ConversionPrototype() {
                         >
                           <FrameCorners size={17} weight="regular" />
                         </button>
-                        <span className="tc-scene-visual">
+                        <span
+                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""}`}
+                        >
                           <Image
                             src={item.image}
                             alt={item.name}
                             fill
                             sizes="(max-width: 960px) 50vw, 250px"
+                            className="tc-scene-background"
                           />
+                          {showFreeCutoutPreview && (
+                            <>
+                              <Image
+                                src={cutoutPreviewImage}
+                                alt="已抠出的上传主体"
+                                fill
+                                sizes="(max-width: 960px) 45vw, 220px"
+                                className="tc-cutout-subject"
+                              />
+                            </>
+                          )}
                         </span>
                         <div>
                           <b>{item.name}</b>
-                          <span>
-                            {item.ratio === "16:9" ? "1920 x 1080" : item.ratio}
-                          </span>
+                          {item.ratio && (
+                            <span>
+                              {item.ratio === "16:9" ? "1920 x 1080" : item.ratio}
+                            </span>
+                          )}
                         </div>
                       </article>
                     ))}
@@ -624,12 +776,53 @@ export function ConversionPrototype() {
                     <div className="tc-result-layout">
                       <div className="tc-result-visual">
                         <div className="tc-single-result">
-                          <Image
-                            src="/thumbnails/thumb-cat-window.jpg"
-                            alt="生成结果"
-                            fill
-                            sizes="1000px"
-                          />
+                          {toolKey === "background" && resultTab === "result" ? (
+                            <>
+                              <Image
+                                src={scene.result}
+                                alt={`${scene.name}背景`}
+                                fill
+                                sizes="1000px"
+                                className="tc-result-background"
+                              />
+                              <Image
+                                src={cutoutPreviewImage}
+                                alt="已适配背景的上传主体"
+                                fill
+                                sizes="760px"
+                                className="tc-result-cutout-subject"
+                              />
+                            </>
+                          ) : (
+                            <Image
+                              src={resultTab === "original" ? "/thumbnails/thumb-cat-window.jpg" : scene.result}
+                              alt={resultTab === "original" ? "生成前原图" : "生成结果"}
+                              fill
+                              sizes="1000px"
+                            />
+                          )}
+                          {variant === "optimized" && showCompare && (
+                            <div className="tc-result-tabs" role="tablist" aria-label="结果查看方式">
+                              <button
+                                type="button"
+                                role="tab"
+                                aria-selected={resultTab === "result"}
+                                className={resultTab === "result" ? "active" : ""}
+                                onClick={() => setResultTab("result")}
+                              >
+                                生成效果
+                              </button>
+                              <button
+                                type="button"
+                                role="tab"
+                                aria-selected={resultTab === "original"}
+                                className={resultTab === "original" ? "active" : ""}
+                                onClick={() => setResultTab("original")}
+                              >
+                                查看原图
+                              </button>
+                            </div>
+                          )}
                         </div>
                         <p className="tc-result-note">
                           <Info size={13} />
@@ -637,7 +830,7 @@ export function ConversionPrototype() {
                         </p>
                       </div>
                       <aside className="tc-result-meta">
-                        <h3>生成成功!</h3>
+                        <h3>生成成功！</h3>
                         <p>AI生成内容，仅供参考，请勿用于违法违规用途。</p>
                         <div className="tc-result-facts">
                           <span>
@@ -663,53 +856,6 @@ export function ConversionPrototype() {
                         </button>
                       </aside>
                     </div>
-                    {variant === "optimized" && showCompare && (
-                      <details className="tc-compare-details">
-                        <summary>查看原图与结果对比</summary>
-                        <div className="tc-compare">
-                          <Image
-                            src="/thumbnails/thumb-cat-window.jpg"
-                            alt="生成前原图"
-                            fill
-                            sizes="1000px"
-                          />
-                          <div
-                            className="tc-result-after"
-                            style={{ width: `${split}%` }}
-                          >
-                            <Image
-                              src={scene.result}
-                              alt="生成后结果"
-                              fill
-                              sizes="1000px"
-                            />
-                          </div>
-                          <input
-                            aria-label="拖动查看前后对比"
-                            type="range"
-                            min="0"
-                            max="100"
-                            value={split}
-                            onChange={(event) =>
-                              setSplit(Number(event.target.value))
-                            }
-                          />
-                          <span
-                            className="tc-compare-line"
-                            style={{ left: `${split}%` }}
-                          >
-                            <i>
-                              <CaretLeft size={14} weight="regular" />
-                            </i>
-                            <i>
-                              <CaretRight size={14} weight="regular" />
-                            </i>
-                          </span>
-                          <b className="tc-before">原图</b>
-                          <b className="tc-after">生成效果</b>
-                        </div>
-                      </details>
-                    )}
                   </div>
                 )}
               </section>
@@ -820,11 +966,19 @@ export function ConversionPrototype() {
                 <input
                   type="checkbox"
                   checked={Boolean(enabled)}
-                  onChange={(event) =>
-                    (setEnabled as (value: boolean) => void)(
-                      event.target.checked,
-                    )
-                  }
+                  onChange={(event) => {
+                    const checked = event.target.checked;
+                    (setEnabled as (value: boolean) => void)(checked);
+                    if (label === "演示自动抠图") {
+                      log("cutout_demo_toggle", `enabled=${checked}`);
+                      setToast(checked ? "已启用自动抠图演示" : "已关闭自动抠图演示");
+                      timerIds.current.push(setTimeout(() => setToast(""), 1800));
+                    }
+                    if (label === "展示宝箱奖励") {
+                      setTaskChestOpen(checked);
+                      log("reward_chest_toggle", `enabled=${checked}`);
+                    }
+                  }}
                 />
                 <span>{String(label)}</span>
               </label>
@@ -842,20 +996,6 @@ export function ConversionPrototype() {
             <Copy size={15} />
             复制当前状态链接
           </button>
-          <div className="tc-log">
-            <b>演示事件日志</b>
-            {logs.length ? (
-              logs.map((item, index) => (
-                <p key={`${item.time}-${index}`}>
-                  <time>{item.time}</time>
-                  <span>{item.name}</span>
-                  <small>{item.detail}</small>
-                </p>
-              ))
-            ) : (
-              <em>开始操作后将在这里记录事件顺序</em>
-            )}
-          </div>
         </aside>
       ) : (
         <button
@@ -921,7 +1061,7 @@ export function ConversionPrototype() {
               </button>
               <button
                 onClick={() => {
-                  setChestOpen(true);
+                  setTaskChestOpen(true);
                   changeState("guest-ready");
                 }}
               >
@@ -933,7 +1073,7 @@ export function ConversionPrototype() {
       )}
       {zoomScene && (
         <div
-          className="tc-modal-backdrop"
+          className="tc-modal-backdrop tc-zoom-backdrop"
           onMouseDown={() => setZoomScene(null)}
         >
           <section
@@ -944,7 +1084,7 @@ export function ConversionPrototype() {
               <X size={22} />
             </button>
             <Image
-              src={scenes.find((item) => item.id === zoomScene)?.image ?? ""}
+              src={activeScenes.find((item) => item.id === zoomScene)?.image ?? ""}
               alt="场景案例大图"
               fill
               sizes="80vw"
@@ -952,16 +1092,16 @@ export function ConversionPrototype() {
           </section>
         </div>
       )}
-      {chestOpen && (
+      {newUserOpen && (
         <div
           className="tc-reward-backdrop"
-          onMouseDown={() => setChestOpen(false)}
+          onMouseDown={() => setNewUserOpen(false)}
         >
           <section
             className="tc-reward-modal"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="tc-reward-title"
+            aria-labelledby="tc-new-user-title"
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="tc-reward-art" aria-hidden="true">
@@ -972,7 +1112,7 @@ export function ConversionPrototype() {
               <span className="tc-reward-orbit tc-reward-orbit-one" />
               <span className="tc-reward-orbit tc-reward-orbit-two" />
             </div>
-            <h2 id="tc-reward-title">新人福利已到账</h2>
+            <h2 id="tc-new-user-title">新人福利已到账</h2>
             <p>送您500智点，AI聊天、做图、做视频都能用，赶紧试一试~</p>
             <div className="tc-reward-amount">
               <Coins size={42} weight="duotone" aria-hidden="true" />
@@ -983,13 +1123,20 @@ export function ConversionPrototype() {
             <button
               className="tc-reward-confirm"
               type="button"
-              onClick={() => setChestOpen(false)}
+              onClick={() => setNewUserOpen(false)}
             >
               开心收下
             </button>
           </section>
         </div>
       )}
+      <NewUserBenefitToast
+        key={taskChestOpen ? "task-reward-open" : "task-reward-closed"}
+        open={taskChestOpen}
+        rewards={prototypeTaskRewards}
+        targetSelector="[data-reward-entry]"
+        onClose={() => setTaskChestOpen(false)}
+      />
       <div className="tc-floating-actions" aria-label="辅助操作">
         <button aria-label="联系客服">
           <Headset size={22} weight="regular" />

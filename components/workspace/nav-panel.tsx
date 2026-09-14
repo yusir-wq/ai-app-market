@@ -214,7 +214,7 @@ export function NavPanel({
           {/* 邀请好友 */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon-sm" onClick={onOpenInvite}>
+              <Button variant="ghost" size="icon-sm" onClick={onOpenInvite} data-reward-entry>
                 <UserPlus className="h-4 w-4 text-muted-foreground" />
               </Button>
             </TooltipTrigger>
@@ -568,6 +568,7 @@ export function NavPanel({
           size="sm"
           className="w-full justify-start gap-2.5 text-muted-foreground hover:text-sidebar-foreground h-8"
           onClick={onOpenInvite}
+          data-reward-entry
         >
           <UserPlus className="h-3.5 w-3.5" />
           <span className="text-xs truncate">邀请好友  |  你与好友都拿奖励</span>

@@ -76,8 +76,9 @@ export function Workspace() {
   const [renameChatId, setRenameChatId] = useState<string | null>(null)
   const [renameNewTitle, setRenameNewTitle] = useState('')
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
-  const [showNewUserBenefitToast, setShowNewUserBenefitToast] = useState(false)
   const [benefitToastDismissedUserId, setBenefitToastDismissedUserId] = useState<string | null>(null)
+  const [rewardChestOpen, setRewardChestOpen] = useState(false)
+  const benefitUserIdRef = useRef<string | null>(null)
 
   // V1.2 多模型状态
   const [selectedModels, setSelectedModels] = useState<Model[]>([])
@@ -104,6 +105,26 @@ export function Workspace() {
 
   // 智点
   const points = user ? Math.floor(user.balance * 1000) : 0
+  const showNewUserBenefitToast = Boolean(
+    isLoggedIn && user?.id && benefitToastDismissedUserId !== user.id,
+  )
+
+  useEffect(() => {
+    benefitUserIdRef.current = user?.id ?? null
+  }, [user?.id])
+
+  // Task/reward producers can announce an arrival without coupling their
+  // execution or balance updates to this presentation layer. The chest then
+  // claims the pending batch from the server and remains open until dismissed.
+  useEffect(() => {
+    const handleTaskRewardArrived = (event: Event) => {
+      const detail = (event as CustomEvent<{ userId?: string }>).detail
+      if (detail?.userId && detail.userId !== user?.phone && detail.userId !== user?.id) return
+      if (isLoggedIn && user?.phone) setRewardChestOpen(true)
+    }
+    window.addEventListener('taskRewardArrived', handleTaskRewardArrived)
+    return () => window.removeEventListener('taskRewardArrived', handleTaskRewardArrived)
+  }, [isLoggedIn, user?.phone])
 
   // 通用导航条组件
   const renderNavBar = () => (
@@ -147,18 +168,6 @@ export function Workspace() {
 
   const activeConversation = conversations.find(c => c.id === activeConversationId)
 
-  useEffect(() => {
-    if (!isLoggedIn || !user?.id) {
-      setShowNewUserBenefitToast(false)
-      setBenefitToastDismissedUserId(null)
-      return
-    }
-
-    if (benefitToastDismissedUserId !== user.id) {
-      setShowNewUserBenefitToast(true)
-    }
-  }, [isLoggedIn, user?.id, benefitToastDismissedUserId])
-
   // 监听从文案生成跳转到文案生视频的事件
   useEffect(() => {
     const handleNavigateToAgent = (event: Event) => {
@@ -178,11 +187,9 @@ export function Workspace() {
   }, [])
 
   const handleCloseNewUserBenefitToast = useCallback(() => {
-    setShowNewUserBenefitToast(false)
-    if (user?.id) {
-      setBenefitToastDismissedUserId(user.id)
-    }
-  }, [user?.id])
+    if (benefitUserIdRef.current) setBenefitToastDismissedUserId(benefitUserIdRef.current)
+    setRewardChestOpen(false)
+  }, [])
 
   // 新建对话
   const handleNewChat = useCallback(() => {
@@ -1464,7 +1471,12 @@ export function Workspace() {
         <LoginModal />
         <RechargeModal />
         <InviteDialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen} userId={user?.id} />
-        <NewUserBenefitToast open={showNewUserBenefitToast} onClose={handleCloseNewUserBenefitToast} />
+        <NewUserBenefitToast
+          key={`${user?.id ?? 'guest'}-${rewardChestOpen ? 'reward' : 'idle'}`}
+          open={showNewUserBenefitToast || rewardChestOpen}
+          userId={user?.phone}
+          onClose={handleCloseNewUserBenefitToast}
+        />
         <MCPQuickCreateModal />
         <MCPQuickConfigModal />
         <MCPServiceDetailModal />

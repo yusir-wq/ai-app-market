@@ -8,9 +8,18 @@ export const prototypeConfig = {
     newUserBenefit: '新用户登录即赠 500 智点',
     costPoints: 490,
     waitHint: '预计需等待一小会儿',
+    heroImage: '/prototype-assets/chinaz-hero-image-expand.jpg',
   },
   layout: { operationRatio: 45, galleryRatio: 55, desktopColumns: 4, tabletColumns: 2, mobileColumns: 1 },
   timings: { submittingMs: 300, generatingMs: 3000, stillGeneratingMs: 8000 },
+} as const
+
+export const backgroundToolConfig = {
+  name: 'AI换背景',
+  description: '上传人物或商品图片，AI 会自动识别主体并替换背景，快速生成白底、摄影棚、家居、商务、节日等展示效果。',
+  generateLabel: '开始换背景',
+  heroImage: '/prototype-assets/chinaz-hero-image-background.jpg',
+  costPoints: 490,
 } as const
 
 export const scenes: Scene[] = [
@@ -38,4 +47,31 @@ export const scenes: Scene[] = [
   { id: 'portrait-poster', name: '竖版宣传图', description: '竖版宣传海报', image: '/prototype-assets/chinaz-scene-22.jpg', result: '/prototype-assets/chinaz-scene-22.jpg', ratio: '1080 x 1350' },
   { id: 'phone-wallpaper', name: '手机壁纸', description: '手机屏幕壁纸', image: '/prototype-assets/chinaz-scene-23.jpg', result: '/prototype-assets/chinaz-scene-23.jpg', ratio: '1080 x 1920' },
   { id: 'desktop-wallpaper', name: '电脑壁纸', description: '桌面屏幕壁纸', image: '/prototype-assets/chinaz-scene-24.jpg', result: '/prototype-assets/chinaz-scene-24.jpg', ratio: '1920 x 1080' },
+]
+
+export const backgroundScenes: Scene[] = [
+  { id: 'background-1', name: '摄影棚背景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-01.jpg', result: '/prototype-assets/background-scenes/scene-01.jpg', ratio: '' },
+  { id: 'background-2', name: '纯色背景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-02.jpg', result: '/prototype-assets/background-scenes/scene-02.jpg', ratio: '' },
+  { id: 'background-3', name: '渐变背景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-03.jpg', result: '/prototype-assets/background-scenes/scene-03.jpg', ratio: '' },
+  { id: 'background-4', name: '电商白底', description: '替换背景', image: '/prototype-assets/background-scenes/scene-04.jpg', result: '/prototype-assets/background-scenes/scene-04.jpg', ratio: '' },
+  { id: 'background-5', name: '商品展示台', description: '替换背景', image: '/prototype-assets/background-scenes/scene-05.jpg', result: '/prototype-assets/background-scenes/scene-05.jpg', ratio: '' },
+  { id: 'background-6', name: '家居室内', description: '替换背景', image: '/prototype-assets/background-scenes/scene-06.jpg', result: '/prototype-assets/background-scenes/scene-06.jpg', ratio: '' },
+  { id: 'background-7', name: '办公空间', description: '替换背景', image: '/prototype-assets/background-scenes/scene-07.jpg', result: '/prototype-assets/background-scenes/scene-07.jpg', ratio: '' },
+  { id: 'background-8', name: '城市街景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-08.jpg', result: '/prototype-assets/background-scenes/scene-08.jpg', ratio: '' },
+  { id: 'background-9', name: '自然风景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-09.jpg', result: '/prototype-assets/background-scenes/scene-09.jpg', ratio: '' },
+  { id: 'background-10', name: '海边度假', description: '替换背景', image: '/prototype-assets/background-scenes/scene-10.jpg', result: '/prototype-assets/background-scenes/scene-10.jpg', ratio: '' },
+  { id: 'background-11', name: '森林草地', description: '替换背景', image: '/prototype-assets/background-scenes/scene-11.jpg', result: '/prototype-assets/background-scenes/scene-11.jpg', ratio: '' },
+  { id: 'background-12', name: '花园花墙', description: '替换背景', image: '/prototype-assets/background-scenes/scene-12.jpg', result: '/prototype-assets/background-scenes/scene-12.jpg', ratio: '' },
+  { id: 'background-13', name: '雪景背景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-13.jpg', result: '/prototype-assets/background-scenes/scene-13.jpg', ratio: '' },
+  { id: 'background-14', name: '夜景霓虹', description: '替换背景', image: '/prototype-assets/background-scenes/scene-14.jpg', result: '/prototype-assets/background-scenes/scene-14.jpg', ratio: '' },
+  { id: 'background-15', name: '科技空间', description: '替换背景', image: '/prototype-assets/background-scenes/scene-15.jpg', result: '/prototype-assets/background-scenes/scene-15.jpg', ratio: '' },
+  { id: 'background-16', name: '商务会议', description: '替换背景', image: '/prototype-assets/background-scenes/scene-16.jpg', result: '/prototype-assets/background-scenes/scene-16.jpg', ratio: '' },
+  { id: 'background-17', name: '咖啡店', description: '替换背景', image: '/prototype-assets/background-scenes/scene-17.jpg', result: '/prototype-assets/background-scenes/scene-17.jpg', ratio: '' },
+  { id: 'background-18', name: '餐桌场景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-18.jpg', result: '/prototype-assets/background-scenes/scene-18.jpg', ratio: '' },
+  { id: 'background-19', name: '运动户外', description: '替换背景', image: '/prototype-assets/background-scenes/scene-19.jpg', result: '/prototype-assets/background-scenes/scene-19.jpg', ratio: '' },
+  { id: 'background-20', name: '节日氛围', description: '替换背景', image: '/prototype-assets/background-scenes/scene-20.jpg', result: '/prototype-assets/background-scenes/scene-20.jpg', ratio: '' },
+  { id: 'background-21', name: '新年国潮', description: '替换背景', image: '/prototype-assets/background-scenes/scene-21.jpg', result: '/prototype-assets/background-scenes/scene-21.jpg', ratio: '' },
+  { id: 'background-22', name: '生日派对', description: '替换背景', image: '/prototype-assets/background-scenes/scene-22.jpg', result: '/prototype-assets/background-scenes/scene-22.jpg', ratio: '' },
+  { id: 'background-23', name: '梦幻柔光', description: '替换背景', image: '/prototype-assets/background-scenes/scene-23.jpg', result: '/prototype-assets/background-scenes/scene-23.jpg', ratio: '' },
+  { id: 'background-24', name: '极简高级', description: '替换背景', image: '/prototype-assets/background-scenes/scene-24.jpg', result: '/prototype-assets/background-scenes/scene-24.jpg', ratio: '' },
 ]
