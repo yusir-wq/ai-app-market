@@ -137,7 +137,8 @@ try {
   $sshBase = @('-p', $serverPort, '-o', 'StrictHostKeyChecking=accept-new')
   $scpBase = @('-P', $serverPort, '-o', 'StrictHostKeyChecking=accept-new')
   $remoteDirectories = @(
-    'app/api/rewards',
+    'app/api/rewards/display',
+    'app/api/rewards/pending',
     'app/prototypes/tool-conversion',
     'components/prototypes/tool-conversion',
     'components/workspace',
