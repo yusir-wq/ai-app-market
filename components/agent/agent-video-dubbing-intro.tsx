@@ -3,25 +3,25 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import {
-  Upload,
-  Volume2,
-  Download,
-  Music,
-  Mic,
+  UploadSimple,
+  SpeakerHigh,
+  DownloadSimple,
+  MusicNote,
+  Microphone,
   Users,
-  Zap,
+  Lightning,
   Globe,
-  Sparkles,
-  Video,
+  Sparkle,
+  VideoCamera,
   Megaphone,
   GraduationCap,
-  Podcast,
-  BookMarked,
-  Clapperboard,
+  Broadcast,
+  BookmarkSimple,
+  FilmStrip,
   FileText,
-  Wand2,
-  ChevronDown,
-} from 'lucide-react'
+  MagicWand,
+  CaretDown as ChevronDown,
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 // ============================================================
@@ -47,17 +47,17 @@ function HeroSection() {
 
 const steps = [
   {
-    icon: Upload,
+    icon: UploadSimple,
     title: '上传视频',
     desc: '拖拽或点击上传MP4、MOV等格式视频文件，支持多种主流格式。',
   },
   {
-    icon: Volume2,
+    icon: SpeakerHigh,
     title: '选择音色 & 参数',
     desc: '5种高品质AI音色随心切换，语速、音量、背景音乐自由搭配。',
   },
   {
-    icon: Download,
+    icon: DownloadSimple,
     title: '生成下载',
     desc: '一键生成带AI配音的视频，支持下载配音视频和独立音频文件。',
   },
@@ -105,32 +105,22 @@ function StepsSection() {
 
 const features = [
   {
-    icon: Mic,
+    icon: Microphone,
     title: '多音色配音',
     desc: '温柔女声、沉稳男声、活泼童声等5种高品质AI音色，满足不同场景需求。',
   },
   {
-    icon: Music,
+    icon: MusicNote,
     title: '背景音乐混音',
     desc: '内置8种背景音乐风格：轻音乐、励志、欢快、电影感等，一键为配音增色。',
   },
   {
-    icon: Users,
-    title: '多音色选择',
-    desc: '5种专业配音音色，满足不同风格需求',
-  },
-  {
-    icon: Zap,
+    icon: Lightning,
     title: '极速生成',
     desc: 'AI自动提取原视频文字并生成配音，AI秒级完成配音合成',
   },
   {
-    icon: Globe,
-    title: '专业音色库',
-    desc: '30+真实人声，覆盖多种风格与场景',
-  },
-  {
-    icon: Sparkles,
+    icon: Sparkle,
     title: '精细参数调节',
     desc: '语速与音量自由控制，精细打磨每一句配音。',
   },
@@ -171,7 +161,7 @@ function FeaturesSection() {
 
 const scenarios = [
   {
-    icon: Video,
+    icon: VideoCamera,
     title: '短视频创作',
     desc: '为短视频快速配上专业配音，告别原生音质限制，提升作品质感和完播率。',
     bg: 'bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/20',
@@ -195,7 +185,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Podcast,
+    icon: Broadcast,
     title: '播客/有声内容',
     desc: '为视频内容生成带感情的播客级配音，让听众沉浸于声音的世界。',
     bg: 'bg-gradient-to-br from-indigo-50 to-fuchsia-50 dark:from-indigo-950/30 dark:to-fuchsia-950/20',
@@ -203,7 +193,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Clapperboard,
+    icon: FilmStrip,
     title: '影视解说',
     desc: '为电影、电视剧解说视频配上富有表现力的旁白配音，增强内容吸引力。',
     bg: 'bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/20',
@@ -211,7 +201,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: BookMarked,
+    icon: BookmarkSimple,
     title: '企业培训',
     desc: '统一企业内部培训视频的配音风格，打造专业、规范的学习内容体系。',
     bg: 'bg-gradient-to-br from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/20',

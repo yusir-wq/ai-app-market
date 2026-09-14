@@ -3,21 +3,21 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import {
-  ImagePlay,
-  Upload,
-  Video,
-  Sparkles,
-  Zap,
+  PlayCircle,
+  UploadSimple,
+  VideoCamera,
+  Sparkle,
+  Lightning,
   Cpu,
   ShoppingBag,
   GraduationCap,
-  Film,
-  TrendingUp,
-  HeartPulse,
-  BadgeCheck,
+  FilmStrip,
+  TrendUp,
+  Heart,
+  SealCheck,
   Clock,
-  ChevronDown,
-} from 'lucide-react'
+  CaretDown as ChevronDown,
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 // ============================================================
@@ -43,17 +43,17 @@ function HeroSection() {
 
 const steps = [
   {
-    icon: Upload,
+    icon: UploadSimple,
     title: '上传图片',
     desc: '上传一张图片，选择视频比例、时长等参数，即可开始生成。',
   },
   {
-    icon: ImagePlay,
+    icon: PlayCircle,
     title: 'AI动态效果生成',
     desc: 'AI 自动理解图片内容，分析画面结构，生成动态效果',
   },
   {
-    icon: Video,
+    icon: VideoCamera,
     title: '预览下载',
     desc: '一键合成完整视频，预览效果后可下载导出，即生成即用。',
   },
@@ -108,7 +108,7 @@ const features = [
     desc: '采用最尖端的AI模型，仅需上传图片，即可生成细节丰富、流畅自然的动态视频内容',
   },
   {
-    icon: ImagePlay,
+    icon: PlayCircle,
     title: '无需拍摄剪辑',
     desc: '采用先进的AI技术，只需上传一张图片，即可自动生成高质量视频内容',
   },
@@ -118,17 +118,17 @@ const features = [
     desc: '支持生成3-15秒的视频，无需繁琐的视频制作流程，节省时间和资源',
   },
   {
-    icon: Zap,
+    icon: Lightning,
     title: '效率提升',
     desc: '视频创作效率大幅提升，无需专业设备和团队，一个人就能完成',
   },
   {
-    icon: Sparkles,
+    icon: Sparkle,
     title: '创意无边界',
     desc: 'AI帮您实现各种创意想法，支持多种视频比例和清晰度选择',
   },
   {
-    icon: BadgeCheck,
+    icon: SealCheck,
     title: '专业级品质',
     desc: '视频画质清晰、视觉效果精美，支持最高1080P的分辨率选择',
   },
@@ -185,7 +185,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Film,
+    icon: FilmStrip,
     title: '影视&创意视频',
     desc: '创意图片动画化、概念演示，AI简化视频制作流程，降低创作门槛',
     bg: 'bg-gradient-to-br from-fuchsia-50 to-pink-50 dark:from-fuchsia-950/30 dark:to-pink-950/20',
@@ -193,7 +193,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: TrendingUp,
+    icon: TrendUp,
     title: '短视频创作',
     desc: '抖音、快手等短视频平台，AI快速制作精美动态内容，吸引眼球，提升播放量',
     bg: 'bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20',
@@ -201,7 +201,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: HeartPulse,
+    icon: Heart,
     title: '个人纪念视频',
     desc: '旅行照片、家庭回忆、节日祝福，AI制作温馨动态视频，保留珍贵回忆',
     bg: 'bg-gradient-to-br from-rose-50 to-red-50 dark:from-rose-950/30 dark:to-red-950/20',
@@ -209,7 +209,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Sparkles,
+    icon: Sparkle,
     title: '创意想法实现',
     desc: 'AI支持各种创意想法的实现，无需担心技术门槛，轻松将静态图片变成动态视频',
     bg: 'bg-gradient-to-br from-slate-100 to-gray-100 dark:from-slate-900/50 dark:to-gray-900/30',

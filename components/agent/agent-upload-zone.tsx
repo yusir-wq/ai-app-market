@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Upload, X, FileAudio, FileVideo, FileImage, FileText, AlertCircle } from 'lucide-react'
+import { UploadSimple, X, FileAudio, FileVideo, FileImage, FileText, Warning } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 interface AgentUploadZoneProps {
@@ -120,7 +120,7 @@ export function AgentUploadZone({
                     : 'border-border hover:border-primary/30 hover:bg-accent/50'
                 )}
               >
-                <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+                <UploadSimple className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
                 <p className="text-sm text-foreground mb-1">
                   拖拽文件到此处，或
                   <label className="text-primary cursor-pointer hover:underline mx-1">
@@ -182,7 +182,7 @@ export function AgentUploadZone({
         {/* 错误提示 */}
         {error && (
           <div className="flex items-center gap-2 mt-3 p-3 rounded-md bg-destructive/10 text-destructive text-sm">
-            <AlertCircle className="h-4 w-4 shrink-0" />
+            <Warning className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}

@@ -3,23 +3,23 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import {
-  Upload,
+  UploadSimple,
   Eraser,
-  Download,
-  Target,
-  Zap,
+  DownloadSimple,
+  Crosshair,
+  Lightning,
   Monitor,
   ShieldCheck,
   Briefcase,
   GraduationCap,
-  Video,
-  Gamepad2,
-  Share2,
-  Clapperboard,
-  CropIcon,
-  ChevronDown,
-  Sparkles,
-} from 'lucide-react'
+  VideoCamera,
+  GameController,
+  ShareNetwork,
+  FilmStrip,
+  Crop,
+  CaretDown,
+  Sparkle,
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 // ============================================================
@@ -45,17 +45,17 @@ function HeroSection() {
 
 const steps = [
   {
-    icon: Upload,
+    icon: UploadSimple,
     title: '上传视频',
     desc: '拖拽或点击上传MP4、MOV等格式视频文件，无需安装任何软件。',
   },
   {
-    icon: CropIcon,
+    icon: Crop,
     title: '框选 & 去除',
     desc: '简单框选视频水印区域，AI将智能无痕擦除水印。',
   },
   {
-    icon: Download,
+    icon: DownloadSimple,
     title: '下载视频',
     desc: '直接下载无水印视频，即可分享至各平台。',
   },
@@ -108,7 +108,7 @@ const features = [
     desc: 'AI智能移除水印，分析周边画面并重建背景，实现无缝填充与自然修复，编辑痕迹彻底消失。',
   },
   {
-    icon: Zap,
+    icon: Lightning,
     title: '一键极速操作',
     desc: '简单圈选水印即可启动智能去水印流程，全程自动化，人人皆可快速制作专业级无水印视频。',
   },
@@ -159,7 +159,7 @@ function FeaturesSection() {
 
 const scenarios = [
   {
-    icon: Share2,
+    icon: ShareNetwork,
     title: '内容再利用',
     desc: '轻松擦除素材网站或社交平台视频的品牌水印，让精彩片段得以合规、无痕地融入你的创作。',
     bg: 'bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-950/30 dark:to-violet-950/20',
@@ -167,7 +167,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Clapperboard,
+    icon: FilmStrip,
     title: '专业品牌制作',
     desc: '获取干净无标的备用镜头，无缝叠加你的品牌标识与信息，塑造统一、专业的品牌形象。',
     bg: 'bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/20',
@@ -175,7 +175,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Video,
+    icon: VideoCamera,
     title: '个人视频修复',
     desc: '从家庭录像与珍贵回忆中，智能移除日期戳、相机商标等时间痕迹，只留下清晰温情画面。',
     bg: 'bg-gradient-to-br from-fuchsia-50 to-pink-50 dark:from-fuchsia-950/30 dark:to-pink-950/20',
@@ -191,7 +191,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Gamepad2,
+    icon: GameController,
     title: '游戏直播集锦',
     desc: '对游戏与直播内容视频去水印，剪除各类叠加元素，呈现纯粹精彩片段。',
     bg: 'bg-gradient-to-br from-rose-50 to-red-50 dark:from-rose-950/30 dark:to-red-950/20',
@@ -292,7 +292,7 @@ function FAQSection() {
                 onClick={() => setExpandedIndex(isOpen ? null : index)}
                 className="w-full flex items-center gap-2.5 px-4 py-3 text-left transition-colors hover:bg-secondary/30"
               >
-                <ChevronDown className={cn(
+                <CaretDown className={cn(
                   'h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-200',
                   isOpen && 'rotate-180'
                 )} />

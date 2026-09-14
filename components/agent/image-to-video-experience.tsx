@@ -24,24 +24,24 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import {
-  Send,
-  ImagePlay,
+  PaperPlaneTilt as Send,
+  PlayCircle,
   Minus,
   Plus,
-  Volume2,
-  Zap,
-  Loader2,
+  SpeakerHigh,
+  Lightning,
+  Spinner,
   Plus as PlusIcon,
   X,
-  RotateCw,
-  Download,
+  ArrowsClockwise,
+  DownloadSimple,
   Copy,
-  Trash2,
+  Trash,
   ArrowUp,
   Image as ImageIcon,
   Play,
-  CheckCircle2,
-} from 'lucide-react'
+  CheckCircle,
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { Agent } from '@/lib/mock-data'
 import { toast } from 'sonner'
@@ -175,7 +175,7 @@ function ShimmerPlaceholder() {
       <div className="w-72 h-40 rounded-lg overflow-hidden relative bg-muted/40">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" style={{ width: '200%', animation: 'shimmer 1.8s ease-in-out infinite' }} />
         <div className="absolute inset-0 flex items-center justify-center">
-          <Loader2 className="h-6 w-6 text-muted-foreground/40 animate-spin" />
+          <Spinner className="h-6 w-6 text-muted-foreground/40 animate-spin" />
         </div>
       </div>
       <div className="h-2.5 w-48 rounded-full bg-muted/40 animate-pulse" />
@@ -211,7 +211,7 @@ function VideoThumbnail({ turn, agentName }: { turn: ChatTurn; agentName: string
       </div>
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" className="h-7 text-[11px] gap-1 text-muted-foreground/60 hover:text-foreground rounded-md">
-          <Download className="h-3 w-3" />下载
+          <DownloadSimple className="h-3 w-3" />下载
         </Button>
         <Button variant="ghost" size="sm" className="h-7 text-[11px] gap-1 text-muted-foreground/60 hover:text-foreground rounded-md">
           <Copy className="h-3 w-3" />复制
@@ -459,14 +459,14 @@ export function ImageToVideoExperienceArea({
               <DurationStepper value={duration} onChange={(v) => onParamChange('duration', v)} />
               <span className="w-px h-5 bg-border/30" />
               <div className="inline-flex items-center gap-1.5 h-7 px-2 rounded-md border border-border/30 bg-white dark:bg-[#0A0A0E]">
-                <Volume2 className="h-3 w-3 text-muted-foreground/60" />
+                <SpeakerHigh className="h-3 w-3 text-muted-foreground/60" />
                 <span className="text-[11px] text-muted-foreground/60">声音</span>
                 <Switch checked={bgm} onCheckedChange={(checked) => onParamChange('bgm', checked)} className="scale-75" />
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <span className="hidden sm:flex items-center gap-1 text-[11px] text-muted-foreground/50">
-                <Zap className="h-3 w-3" />{agent.costPoints}
+                <Lightning className="h-3 w-3" />{agent.costPoints}
               </span>
               <Button className="h-8 px-3 text-[12px] rounded-lg gap-1.5" onClick={handleChatSend} disabled={!!processingTurnId}>
                 <Send className="h-3.5 w-3.5" />发送
@@ -530,14 +530,14 @@ export function ImageToVideoExperienceArea({
               <DurationStepper value={duration} onChange={(v) => onParamChange('duration', v)} />
               <span className="w-px h-5 bg-border/30" />
               <div className="inline-flex items-center gap-1.5 h-7 px-2 rounded-md border border-border/30 bg-white dark:bg-[#0A0A0E]">
-                <Volume2 className="h-3 w-3 text-muted-foreground/60" />
+                <SpeakerHigh className="h-3 w-3 text-muted-foreground/60" />
                 <span className="text-[11px] text-muted-foreground/60">声音</span>
                 <Switch checked={bgm} onCheckedChange={(checked) => onParamChange('bgm', checked)} className="scale-75" />
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <span className="hidden sm:flex items-center gap-1 text-[11px] text-muted-foreground/50">
-                <Zap className="h-3 w-3" />{agent.costPoints}
+                <Lightning className="h-3 w-3" />{agent.costPoints}
               </span>
               <Button className="h-8 px-3 text-[12px] rounded-lg gap-1.5" onClick={handleSend} disabled={!!processingTurnId}>
                 <Send className="h-3.5 w-3.5" />发送

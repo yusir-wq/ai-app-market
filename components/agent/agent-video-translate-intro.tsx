@@ -3,21 +3,21 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import {
-  Languages,
-  Upload,
-  Settings2,
+  Translate,
+  UploadSimple,
+  Gear,
   FileVideo,
   Globe,
-  Sparkles,
+  Sparkle,
   Subtitles,
-  Volume2,
+  DownloadSimple,
   GraduationCap,
-  TrendingUp,
-  Building2,
+  TrendUp,
+  Buildings,
   Newspaper,
-  ChevronDown,
+  CaretDown,
   ArrowRight,
-} from 'lucide-react'
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 // ============================================================
@@ -31,7 +31,7 @@ function HeroSection() {
         AI视频翻译
       </h1>
       <p className="text-sm text-muted-foreground leading-relaxed">
-        跨越语言障碍，让视频轻松翻译全球任何语言。支持70余种全球主流语言，精准翻译，保留原声情感。
+        跨越语言障碍，让视频轻松翻译全球任何语言。支持70余种全球主流语言，精准翻译，自动生成字幕。
       </p>
     </div>
   )
@@ -43,24 +43,24 @@ function HeroSection() {
 
 const steps = [
   {
-    icon: Upload,
+    icon: UploadSimple,
     title: '上传视频',
     desc: '拖拽或点击上传视频文件，支持MP4、MOV、MKV等主流格式。',
   },
   {
-    icon: Settings2,
+    icon: Gear,
     title: '选择翻译语言',
     desc: '选择目标语言，AI自动翻译',
   },
   {
-    icon: Languages,
+    icon: Translate,
     title: 'AI翻译处理',
-    desc: 'AI自动翻译语音内容，同步生成字幕与配音，保留原视频风格。',
+    desc: 'AI自动识别并翻译语音内容，生成与语音时间轴对齐的翻译字幕。',
   },
   {
     icon: FileVideo,
     title: '生成并下载',
-    desc: '下载翻译后的视频或字幕文件',
+    desc: '在线校对翻译字幕，并下载字幕文件保存',
   },
 ]
 
@@ -107,24 +107,24 @@ function StepsSection() {
 
 const features = [
   {
-    icon: Languages,
+    icon: Translate,
     title: '70+语言支持',
     desc: '覆盖英语、中文、法语、德语、日语、韩语等全球主流语言及方言。',
   },
   {
-    icon: Sparkles,
+    icon: Sparkle,
     title: '精准翻译',
     desc: '高精度AI翻译技术，确保视频原始信息在不同语言间准确无误地传递。',
   },
   {
-    icon: Volume2,
-    title: '配音与字幕同步',
-    desc: '一站式完成视频翻译、字幕生成与AI配音，多种音色任你选。',
+    icon: DownloadSimple,
+    title: '字幕一键导出',
+    desc: '翻译完成后可下载字幕文件，方便二次编辑与归档。',
   },
   {
     icon: Subtitles,
     title: '字幕灵活编辑',
-    desc: '翻译字幕与配音同步生成，字幕样式可自定义',
+    desc: '字幕内容可在线校对编辑，支持下载字幕文件二次加工',
   },
   {
     icon: Globe,
@@ -181,7 +181,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: TrendingUp,
+    icon: TrendUp,
     title: '内容出海',
     desc: '一键将视频翻译成多种语言，发布到海外平台，快速涨粉拓展全球市场。',
     bg: 'bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/20',
@@ -189,7 +189,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Building2,
+    icon: Buildings,
     title: '企业营销',
     desc: '产品宣传视频无需额外找专业翻译，AI全搞定，助力业务拓展到全球市场。',
     bg: 'bg-gradient-to-br from-fuchsia-50 to-pink-50 dark:from-fuchsia-950/30 dark:to-pink-950/20',
@@ -248,7 +248,7 @@ function ScenariosSection() {
 const faqs = [
   {
     q: '如何使用AI视频翻译？',
-    a: '只需4步即可完成视频翻译：1.上传视频文件；2.选择源语言和目标语言以及配音音色；3.试听视频配音并调整字幕；4.生成完整视频并下载保存。',
+    a: '只需4步即可完成视频翻译：1.上传视频文件；2.选择源语言和目标语言；3.查看并校对翻译字幕；4.下载字幕文件保存。',
   },
   {
     q: '支持哪些语言？',
@@ -259,8 +259,8 @@ const faqs = [
     a: '支持常见视频格式，具体限制取决于上传文件的大小和网络环境',
   },
   {
-    q: '翻译后可以只保留字幕不配音吗？',
-    a: '支持灵活选择输出类型，可选择字幕+配音版本或仅字幕版本，满足不同场景需求',
+    q: '翻译完成后可以拿到什么？',
+    a: '可在结果区查看逐句对照的翻译字幕，支持在线编辑与复制，并可下载字幕文件用于后续加工。',
   },
   {
     q: '翻译准确率如何？',
@@ -294,7 +294,7 @@ function FAQSection() {
                 onClick={() => setExpandedIndex(isOpen ? null : index)}
                 className="w-full flex items-center gap-2.5 px-4 py-3 text-left transition-colors hover:bg-secondary/30"
               >
-                <ChevronDown className={cn(
+                <CaretDown className={cn(
                   'h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-200',
                   isOpen && 'rotate-180'
                 )} />

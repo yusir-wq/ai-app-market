@@ -1,0 +1,101 @@
+[
+  {
+    "timestamp": "2026-08-18T16:12:44.219489",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "iPhone14Pro",
+    "issue_type": "触控区域过小",
+    "description": "发现 10 个触控区域小于 44×44px: BUTTON(\"立即体验\") 128×40px; INPUT(\"\") 268×40px; BUTTON(\"\") 28×28px",
+    "screenshot": "./mobile_audit_output\\screenshots\\iPhone14Pro\\首页_触控区域过小.png",
+    "suggestion": "增大按钮 padding 或尺寸，确保触控区域至少 44×44px",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-08-18T16:12:45.548488",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "iPhone14Pro",
+    "issue_type": "字体过小",
+    "description": "发现 10 处字体小于 12px: \"写句话、传张图，直出30秒超长叙事视频，质感高级、运镜流畅，从能生成到能交付\"(7.7903px); \"轻量推理\"(10px); \"推理稳定\"(10px)",
+    "screenshot": "./mobile_audit_output\\screenshots\\iPhone14Pro\\首页_字体过小.png",
+    "suggestion": "正文字体至少 12px（推荐 14-16px），使用 rem/em 单位",
+    "priority": "P2"
+  },
+  {
+    "timestamp": "2026-08-18T16:12:46.782883",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "iPhone14Pro",
+    "issue_type": "图片适配问题",
+    "description": "1 张图片比例变形",
+    "screenshot": "./mobile_audit_output\\screenshots\\iPhone14Pro\\首页_图片问题.png",
+    "suggestion": "图片添加 max-width: 100%; height: auto; 使用响应式图片 srcset",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-08-18T16:12:54.277144",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "iPhoneSE",
+    "issue_type": "触控区域过小",
+    "description": "发现 10 个触控区域小于 44×44px: BUTTON(\"立即体验\") 128×40px; INPUT(\"\") 250×40px; BUTTON(\"\") 28×28px",
+    "screenshot": "./mobile_audit_output\\screenshots\\iPhoneSE\\首页_触控区域过小.png",
+    "suggestion": "增大按钮 padding 或尺寸，确保触控区域至少 44×44px",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-08-18T16:12:54.813718",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "iPhoneSE",
+    "issue_type": "字体过小",
+    "description": "发现 10 处字体小于 12px: \"写句话、传张图，直出30秒超长叙事视频，质感高级、运镜流畅，从能生成到能交付\"(7.6625px); \"轻量推理\"(10px); \"推理稳定\"(10px)",
+    "screenshot": "./mobile_audit_output\\screenshots\\iPhoneSE\\首页_字体过小.png",
+    "suggestion": "正文字体至少 12px（推荐 14-16px），使用 rem/em 单位",
+    "priority": "P2"
+  },
+  {
+    "timestamp": "2026-08-18T16:12:55.352005",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "iPhoneSE",
+    "issue_type": "图片适配问题",
+    "description": "1 张图片比例变形",
+    "screenshot": "./mobile_audit_output\\screenshots\\iPhoneSE\\首页_图片问题.png",
+    "suggestion": "图片添加 max-width: 100%; height: auto; 使用响应式图片 srcset",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-08-18T16:13:02.573855",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "Android",
+    "issue_type": "触控区域过小",
+    "description": "发现 10 个触控区域小于 44×44px: BUTTON(\"立即体验\") 128×40px; INPUT(\"\") 235×40px; BUTTON(\"\") 28×28px",
+    "screenshot": "./mobile_audit_output\\screenshots\\Android\\首页_触控区域过小.png",
+    "suggestion": "增大按钮 padding 或尺寸，确保触控区域至少 44×44px",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-08-18T16:13:03.604210",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "Android",
+    "issue_type": "字体过小",
+    "description": "发现 10 处字体小于 12px: \"写句话、传张图，直出30秒超长叙事视频，质感高级、运镜流畅，从能生成到能交付\"(7.556px); \"轻量推理\"(10px); \"推理稳定\"(10px)",
+    "screenshot": "./mobile_audit_output\\screenshots\\Android\\首页_字体过小.png",
+    "suggestion": "正文字体至少 12px（推荐 14-16px），使用 rem/em 单位",
+    "priority": "P2"
+  },
+  {
+    "timestamp": "2026-08-18T16:13:04.617005",
+    "url": "https://ai.chinaz.cn/",
+    "page_name": "首页",
+    "device": "Android",
+    "issue_type": "图片适配问题",
+    "description": "1 张图片比例变形",
+    "screenshot": "./mobile_audit_output\\screenshots\\Android\\首页_图片问题.png",
+    "suggestion": "图片添加 max-width: 100%; height: auto; 使用响应式图片 srcset",
+    "priority": "P1"
+  }
+]

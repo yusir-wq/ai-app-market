@@ -3,22 +3,22 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import {
-  Upload,
-  Wand2,
+  UploadSimple,
+  MagicWand,
   FileText,
-  Target,
-  Zap,
-  Languages,
+  Crosshair,
+  Lightning,
+  Translate,
   Palette,
   Clock,
-  Video,
+  VideoCamera,
   GraduationCap,
-  Clapperboard,
-  Accessibility,
+  FilmStrip,
+  Hand,
   Briefcase,
-  Scale,
-  ChevronDown,
-} from 'lucide-react'
+  Scales,
+  CaretDown,
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 // ============================================================
@@ -44,19 +44,24 @@ function HeroSection() {
 
 const steps = [
   {
-    icon: Upload,
-    title: '上传文件',
-    desc: '拖拽或点击上传音视频文件，支持MP4、MOV、MP3等主流格式。',
+    icon: UploadSimple,
+    title: '上传视频',
+    desc: '拖拽或点击上传MP4、MOV等格式视频文件，支持多种分辨率。',
   },
   {
-    icon: Wand2,
-    title: '生成字幕',
-    desc: 'AI自动识别20+种语言，实现精准字幕生成，支持一键字幕翻译。',
+    icon: MagicWand,
+    title: 'AI智能识别',
+    desc: '自动识别视频中的语音内容，无需手动输入字幕，一步到位。',
   },
   {
-    icon: FileText,
-    title: '编辑和下载',
-    desc: '内置字幕编辑器调整样式，支持导出视频和SRT字幕文件。',
+    icon: Crosshair,
+    title: '精准字幕同步',
+    desc: '高精度时间轴对齐，确保字幕与语音完美同步，观感更佳。',
+  },
+  {
+    icon: Lightning,
+    title: '极速处理',
+    desc: '高效AI算法，快速生成字幕，节省宝贵时间。',
   },
 ]
 
@@ -102,17 +107,17 @@ function StepsSection() {
 
 const features = [
   {
-    icon: Target,
+    icon: Crosshair,
     title: '高准确度',
     desc: '精准识别视频或音频文件中的语音，即使是复杂音视频也能快速捕捉每一个词。',
   },
   {
-    icon: Zap,
+    icon: Lightning,
     title: 'AI快速上字幕',
     desc: '告别繁琐的人工处理，极速完成字幕生成，为视频制作者节省大量时间。',
   },
   {
-    icon: Languages,
+    icon: Translate,
     title: '一键翻译字幕',
     desc: '内置AI字幕翻译功能，可立即将字幕翻译成20+种语言，轻松服务全球观众。',
   },
@@ -163,7 +168,7 @@ function FeaturesSection() {
 
 const scenarios = [
   {
-    icon: Video,
+    icon: VideoCamera,
     title: '短视频制作',
     desc: '一键生成精准字幕，让视频在社交平台无声播放时依然吸睛，提升传播效果。',
     bg: 'bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-950/30 dark:to-violet-950/20',
@@ -179,7 +184,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Clapperboard,
+    icon: FilmStrip,
     title: '影视后期制作',
     desc: '支持多语言字幕输出，方便影视作品出海发行或在多语环境中使用。',
     bg: 'bg-gradient-to-br from-fuchsia-50 to-pink-50 dark:from-fuchsia-950/30 dark:to-pink-950/20',
@@ -187,7 +192,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Accessibility,
+    icon: Hand,
     title: '无障碍观看',
     desc: '为听障人士和静音观看场景提供清晰字幕，打造更包容的观看体验。',
     bg: 'bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20',
@@ -203,7 +208,7 @@ const scenarios = [
     iconBg: 'bg-white/70 dark:bg-white/10',
   },
   {
-    icon: Scale,
+    icon: Scales,
     title: '专业辅助场景',
     desc: '适用于法律庭审、医学病例分析等专业场景，为视频资料添加准确字幕，便于存档与研究。',
     bg: 'bg-gradient-to-br from-slate-100 to-gray-100 dark:from-slate-900/50 dark:to-gray-900/30',
@@ -300,7 +305,7 @@ function FAQSection() {
                 onClick={() => setExpandedIndex(isOpen ? null : index)}
                 className="w-full flex items-center gap-2.5 px-4 py-3 text-left transition-colors hover:bg-secondary/30"
               >
-                <ChevronDown className={cn(
+                <CaretDown className={cn(
                   'h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-200',
                   isOpen && 'rotate-180'
                 )} />

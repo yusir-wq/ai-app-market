@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Download, Play, Pause } from 'lucide-react'
+import { DownloadSimple, Play, Pause } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 // ============================================================
@@ -111,7 +111,7 @@ function VideoPlayer({ videoUrl }: { videoUrl: string }) {
             </Button>
           </div>
           <Button size="sm" variant="outline" className="h-7 text-[11px] gap-1.5 rounded-md">
-            <Download className="h-3 w-3" />导出视频
+            <DownloadSimple className="h-3 w-3" />导出视频
           </Button>
         </div>
       </div>

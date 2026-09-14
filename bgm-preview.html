@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频配音 · BGM 试听库</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #F5F6FA; color: #111827; padding: 32px 16px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { font-size: 13px; color: #6B7280; margin-bottom: 8px; line-height: 1.6; }
+  .license {
+    font-size: 12px; color: #6B7280; background: #EEF2FF; border: 1px solid #E5E9F6;
+    border-radius: 12px; padding: 12px 16px; margin: 16px 0 28px; line-height: 1.7;
+  }
+  .license a { color: #4F46E5; }
+  h2 {
+    font-size: 15px; color: #4F46E5; margin: 28px 0 12px; display: flex; align-items: center; gap: 8px;
+  }
+  h2::before { content: ""; width: 4px; height: 16px; background: #4F46E5; border-radius: 2px; }
+  .card {
+    background: #fff; border: 1px solid #E5E9F6; border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04); padding: 14px 16px; margin-bottom: 12px;
+  }
+  .card .name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .card .name .en { font-weight: 400; color: #6B7280; font-size: 13px; margin-left: 6px; }
+  .card .desc { font-size: 13px; color: #6B7280; margin-bottom: 10px; }
+  .card .url {
+    font-size: 11px; color: #9CA3AF; word-break: break-all; margin-bottom: 8px; font-family: Consolas, monospace;
+  }
+  audio { width: 100%; height: 36px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AI视频配音 · BGM 试听库</h1>
+  <p class="sub">以下 21 首背景音乐均来自 Kevin MacLeod（incompetech.com），直链已验证可在线流式播放（支持 HTTP Range / 206），可用于配音垫乐、ffmpeg 远程混音。</p>
+  <div class="license">
+    <b>授权说明：</b>全部曲目为 Creative Commons BY 4.0（CC BY 4.0）授权，商用免费。使用时需署名，建议片尾或应用内注明：
+    "Carefree" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 4.0 License。
+    <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">查看授权协议</a>
+  </div>
+
+  <h2>温暖舒缓 · 适合人声优先的配音垫底</h2>
+  <div id="g1"></div>
+  <h2>轻快活泼 · 适合产品介绍、日常内容</h2>
+  <div id="g2"></div>
+  <h2>抒情钢琴 · 适合情感叙述、回忆向</h2>
+  <div id="g3"></div>
+  <h2>爵士律动 · 适合美食、探店、生活方式</h2>
+  <div id="g4"></div>
+  <h2>紧张史诗 · 适合悬念、动作、预告片</h2>
+  <div id="g5"></div>
+</div>
+
+<script>
+const B = 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/';
+const groups = [
+  ['g1', [
+    ['Wholesome', '温暖治愈，木管+弦乐，人声旁白下非常稳的垫底选择'],
+    ['Dreamy%20Flashback', '梦幻氛围，节奏极慢，适合独白、回忆片段'],
+    ['Fireflies%20and%20Stardust', '空灵柔和的铃音+弦乐，适合睡前、治愈类内容'],
+    ['Deliberate%20Thought', '沉思型钢琴+弦乐，适合知识讲解、观点输出'],
+    ['Thinking%20Music', '轻松钢琴小品，适合教程、操作演示'],
+  ]],
+  ['g2', [
+    ['Carefree', '轻松愉快，尤克里里质感，口播开场常用'],
+    ['Wallpaper', '轻快电子，有科技感，适合 AI 产品演示'],
+    ['Daily%20Beetle', '俏皮轻快，适合 vlog、日常记录'],
+    ['Fluffing%20a%20Duck', '滑稽幽默，适合搞笑配音、整活内容'],
+    ['Monkeys%20Spinning%20Monkeys', '短视频神曲级幽默 BGM，欢乐滑稽'],
+    ['Sneaky%20Snitch', '俏皮悬疑，适合"揭秘"类、剧情反转'],
+  ]],
+  ['g3', [
+    ['Piano%20Between', '简约钢琴，情绪留白，适合人物故事'],
+    ['Heartbreaking', '感伤钢琴+弦乐，适合催泪向内容'],
+    ['Bittersweet', '苦乐参半的抒情，适合告别、成长主题'],
+  ]],
+  ['g4', [
+    ['Local%20Forecast%20-%20Elevator', '电梯爵士，慵懒舒适，适合生活类'],
+    ['George%20Street%20Shuffle', '轻快爵士鼓刷+钢琴，适合探店、美食'],
+    ['Groove%20Grove', '律动感强，适合节奏剪辑、卡点'],
+    ['Fretless', '无品贝斯主导，慵懒休闲'],
+  ]],
+  ['g5', [
+    ['Prelude%20and%20Action', '动作紧张，弦乐推进，适合快节奏预告'],
+    ['Rising%20Tide', '层层递进的紧张感，适合悬念铺垫'],
+    ['Darkest%20Child', '黑暗压迫感，适合悬疑、惊悚'],
+  ]],
+];
+
+let html = '';
+for (const [id, tracks] of groups) {
+  let inner = '';
+  for (const [file, desc] of tracks) {
+    const name = decodeURIComponent(file.replace(/\.mp3$/, ''));
+    const url = B + file + '.mp3';
+    inner += `<div class="card">
+      <div class="name">${name}</div>
+      <div class="desc">${desc}</div>
+      <div class="url">${url}</div>
+      <audio controls preload="none" src="${url}"></audio>
+    </div>`;
+  }
+  document.getElementById(id).innerHTML = inner;
+}
+
+// 同时只播一首
+document.addEventListener('play', e => {
+  if (e.target.tagName === 'AUDIO') {
+    document.querySelectorAll('audio').forEach(a => { if (a !== e.target) a.pause(); });
+  }
+}, true);
+</script>
+</body>
+</html>

@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Switch } from '@/components/ui/switch'
 import {
   Select,
   SelectContent,
@@ -27,13 +26,11 @@ import {
   ShareNetwork, WarningCircle,
   SpinnerGap, Trash,
   MagicWand, CaretLeft,
-  Translate, ArrowLineDown, Play, Pause, X,
-  Upload, GearSix, Copy, PlusCircle, CheckCircle,
+  Translate, ArrowLineDown, Play, X,
+  Copy, PlusCircle, CheckCircle,
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Slider } from '@/components/ui/slider'
 
 const COST_POINTS = 30
 const COST_PRICE = 0.03
@@ -63,114 +60,10 @@ const LANGUAGES = [
   { value: 'fr', label: '法语' },
 ]
 
-// 声音预设（与TTS一致）
-const voicePresets = [
-  { value: 'female-gentle', label: '知夏', avatar: '/avatars/voice-zhixia.jpg', tags: ['温暖', '知性', '细腻'], tagColor: 'bg-rose-50 text-rose-600' },
-  { value: 'female-lively', label: '悦晴', avatar: '/avatars/voice-yueqing.jpg', tags: ['欢快', '明亮', '自信'], tagColor: 'bg-pink-50 text-pink-600' },
-  { value: 'male-calm', label: '正宇', avatar: '/avatars/voice-zhengyu.jpg', tags: ['沉稳', '大气', '字正腔圆'], tagColor: 'bg-blue-50 text-blue-600' },
-  { value: 'male-deep', label: '沉言', avatar: '/avatars/voice-chenyan.jpg', tags: ['低沉', '醇厚', '感染力'], tagColor: 'bg-indigo-50 text-indigo-600' },
-  { value: 'child', label: '童童', avatar: '/avatars/voice-tongtong.jpg', tags: ['天真', '灵动', '自然'], tagColor: 'bg-amber-50 text-amber-600' },
-]
-
-// 声音选择下拉组件
-function VoiceSelectDropdown({ voicePresets, selectedVoice, onSelectVoice, playingVoice, onTogglePlay, speed, volume, onSpeedChange, onVolumeChange }: {
-  voicePresets: typeof voicePresets
-  selectedVoice: string
-  onSelectVoice: (v: string) => void
-  playingVoice: string | null
-  onTogglePlay: (v: string) => void
-  speed: number
-  volume: number
-  onSpeedChange: (v: number) => void
-  onVolumeChange: (v: number) => void
-}) {
-  const [open, setOpen] = useState(false)
-  const [settingsVoice, setSettingsVoice] = useState<string | null>(null)
-  const selected = voicePresets.find(v => v.value === selectedVoice)
-
-  return (
-    <Popover open={open} onOpenChange={(v) => { setOpen(v); if (!v) setSettingsVoice(null) }}>
-      <PopoverTrigger asChild>
-        <button className="group w-full flex items-center gap-3 px-3 py-2.5 rounded-[12px] border border-[#e7ebf5] bg-white hover:bg-[#4f55ec]/[0.02] transition-colors">
-          {selected && (
-            <>
-              <img src={selected.avatar} alt={selected.label} className="w-8 h-8 rounded-full object-cover shrink-0" />
-              <div className="flex-1 min-w-0 flex items-center gap-2">
-                <span className="text-[14px] font-medium text-[#3f4558]">{selected.label}</span>
-                {selected.tags.map((tag, i) => (
-                  <span key={i} className={cn('inline-flex items-center text-[10px] px-1.5 py-0.5 rounded-md font-medium', selected.tagColor)}>{tag}</span>
-                ))}
-              </div>
-              <div className="flex items-center gap-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <button onClick={(e) => { e.stopPropagation(); onTogglePlay(selectedVoice) }} className={cn('w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200', playingVoice === selectedVoice ? 'bg-[#3f4558]/10 text-[#3f4558]' : 'text-[#3f4558]/40 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.06]')}>
-                  {playingVoice === selectedVoice ? <Pause className="h-3.5 w-3.5" weight="fill" /> : <Play className="h-3.5 w-3.5 ml-0.5" weight="fill" />}
-                </button>
-                <button onClick={(e) => { e.stopPropagation(); setOpen(true); setSettingsVoice(selectedVoice) }} className={cn('w-7 h-7 rounded-md flex items-center justify-center transition-all duration-200', settingsVoice ? 'bg-[#4f55ec]/[0.06] text-[#4f55ec]' : 'text-[#3f4558]/60 hover:text-[#4f55ec] hover:bg-[#4f55ec]/[0.06]')}>
-                  <GearSix className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            </>
-          )}
-        </button>
-      </PopoverTrigger>
-      <PopoverContent align="start" sideOffset={8} className="w-[380px] rounded-[12px] border-[#E5E9F6] p-2" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}>
-        {settingsVoice ? (
-          <div className="space-y-3">
-            <button onClick={() => setSettingsVoice(null)} className="flex items-center gap-1.5 text-[13px] text-[#3f4558]/60 hover:text-[#3f4558] px-1 py-1">
-              <CaretLeft className="h-3.5 w-3.5" />
-              返回声音列表
-            </button>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="text-[12px] font-medium text-[#3f4558]/60 shrink-0 w-7">语速</span>
-                <Slider value={[speed]} onValueChange={(vals) => onSpeedChange(vals[0])} min={0.5} max={2.0} step={0.1} className="flex-1" />
-                <span className="text-[12px] font-medium tabular-nums text-[#3f4558]/70 shrink-0 w-7 text-right">{speed}x</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[12px] font-medium text-[#3f4558]/60 shrink-0 w-7">音量</span>
-                <Slider value={[volume]} onValueChange={(vals) => onVolumeChange(vals[0])} min={50} max={150} step={10} className="flex-1" />
-                <span className="text-[12px] font-medium tabular-nums text-[#3f4558]/70 shrink-0 w-7 text-right">{volume}%</span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-1 max-h-[280px] overflow-y-auto">
-            {voicePresets.map((v) => {
-              const isSelected = selectedVoice === v.value
-              const isPlaying = playingVoice === v.value
-              return (
-                <div key={v.value} onClick={() => { onSelectVoice(v.value); setOpen(false) }} className={cn('group relative flex items-center gap-3 px-3 py-2.5 rounded-[10px] cursor-pointer transition-all duration-200', isSelected ? 'bg-[#4f55ec]/[0.04] ring-1 ring-[#4f55ec]/[0.12]' : 'hover:bg-[#4f55ec]/[0.03]')}>
-                  <div className="shrink-0">
-                    <img src={v.avatar} alt={v.label} className="w-9 h-9 rounded-full object-cover" />
-                  </div>
-                  <div className="flex-1 min-w-0 flex items-center gap-2">
-                    <span className={cn('text-[14px] font-medium tracking-tight', isSelected ? 'text-[#3f4558]' : 'text-[#3f4558]/80')}>{v.label}</span>
-                    {v.tags.map((tag, i) => (
-                      <span key={i} className={cn('inline-flex items-center text-[10px] px-1.5 py-0.5 rounded-md font-medium', v.tagColor)}>{tag}</span>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <button onClick={(e) => { e.stopPropagation(); onTogglePlay(v.value) }} className={cn('w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200', isPlaying ? 'bg-[#3f4558]/10 text-[#3f4558]' : 'text-[#3f4558]/40 hover:text-[#3f4558] hover:bg-[#3f4558]/[0.06]')}>
-                      {isPlaying ? <Pause className="h-3.5 w-3.5" weight="fill" /> : <Play className="h-3.5 w-3.5 ml-0.5" weight="fill" />}
-                    </button>
-                    <button onClick={(e) => { e.stopPropagation(); setSettingsVoice(v.value) }} className="w-7 h-7 rounded-md flex items-center justify-center transition-all duration-200 text-[#3f4558]/60 hover:text-[#4f55ec] hover:bg-[#4f55ec]/[0.06]">
-                      <GearSix className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </PopoverContent>
-    </Popover>
-  )
-}
-
 const mockHistory = [
-  { id: 'h1', title: '产品介绍视频翻译.mp4', status: 'completed' as const, time: '2026-06-15 14:30', duration: '2:30', sourceLang: '中文', targetLang: '英文', resultId: 'result-video-translate', thumbnail: '/thumbnails/thumb-smartwatch.jpg', result: '翻译完成\n\n源语言：中文\n目标语言：英文\n翻译模式：字幕+配音\n\n已生成英文字幕和配音版本。' },
+  { id: 'h1', title: '产品介绍视频翻译.mp4', status: 'completed' as const, time: '2026-06-15 14:30', duration: '2:30', sourceLang: '中文', targetLang: '英文', resultId: 'result-video-translate', thumbnail: '/thumbnails/thumb-smartwatch.jpg', result: '翻译完成\n\n源语言：中文\n目标语言：英文\n翻译模式：仅字幕\n\n已生成英文字幕文件。' },
   { id: 'h2', title: '教程视频翻译.mp4', status: 'completed' as const, time: '2026-06-12 09:15', duration: '5:20', sourceLang: '英文', targetLang: '中文', resultId: 'result-video-translate', thumbnail: '/thumbnails/thumb-online-course.jpg', result: '翻译完成\n\n源语言：英文\n目标语言：中文\n翻译模式：仅字幕\n\n已生成中文字幕文件。' },
-  { id: 'h3', title: '会议录像翻译.mov', status: 'completed' as const, time: '2026-06-10 16:00', duration: '15:00', sourceLang: '中文', targetLang: '日文', resultId: 'result-video-translate', thumbnail: '/thumbnails/thumb-business-conference.jpg', result: '翻译完成\n\n源语言：中文\n目标语言：日文\n翻译模式：字幕+配音\n\n已生成日文字幕和配音版本。' },
+  { id: 'h3', title: '会议录像翻译.mov', status: 'completed' as const, time: '2026-06-10 16:00', duration: '15:00', sourceLang: '中文', targetLang: '日文', resultId: 'result-video-translate', thumbnail: '/thumbnails/thumb-business-conference.jpg', result: '翻译完成\n\n源语言：中文\n目标语言：日文\n翻译模式：仅字幕\n\n已生成日文字幕文件。' },
   { id: 'h4', title: '产品发布会视频.mp4', status: 'expired' as const, time: '2024-12-01 10:00', duration: '8:30', sourceLang: '中文', targetLang: '韩文', resultId: '', thumbnail: '/thumbnails/thumb-product-launch.jpg', result: '产品发布会视频翻译（超过30天已失效）' },
   { id: 'h5', title: '培训课程视频.mp4', status: 'expired' as const, time: '2024-11-15 14:30', duration: '12:00', sourceLang: '英文', targetLang: '中文', resultId: '', thumbnail: '/thumbnails/thumb-training.jpg', result: '培训课程视频翻译（超过30天已失效）' },
 ]
@@ -182,13 +75,8 @@ export function VideoTranslateExperience({ agent, onBack, onViewResult }: VideoT
   const [progress, setProgress] = useState(0)
   const [resultVideoTitle, setResultVideoTitle] = useState('')
 
-  const [translateMode, setTranslateMode] = useState('full')
   const [sourceLang, setSourceLang] = useState('auto')
   const [targetLang, setTargetLang] = useState('en')
-  const [voice, setVoice] = useState('female-gentle')
-  const [speed, setSpeed] = useState(1.0)
-  const [volume, setVolume] = useState(100)
-  const [playingVoice, setPlayingVoice] = useState<string | null>(null)
 
   const [history, setHistory] = useState(mockHistory)
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
@@ -324,7 +212,7 @@ export function VideoTranslateExperience({ agent, onBack, onViewResult }: VideoT
           <div className="h-[230px] px-[26px] py-[22px] grid grid-cols-1 md:grid-cols-[0.74fr_1fr] gap-6 items-center">
             <div>
               <span className="text-[17px] font-normal text-[#3f4558] mb-2 inline-block">使用指南</span>
-              <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">上传视频，AI 自动识别语音并翻译为目标语言，支持字幕+配音或仅字幕模式，让视频内容跨越语言障碍。</p>
+              <p className="text-[16px] text-muted-foreground leading-[1.7] mb-2.5">上传视频，AI 自动识别语音并翻译为目标语言，生成逐句对齐的翻译字幕，让视频内容跨越语言障碍。</p>
               <small className="text-[14px] text-[#9ca3b8]">{COST_TEXT}</small>
             </div>
             <div className="flex items-center justify-center h-full">
@@ -375,33 +263,11 @@ export function VideoTranslateExperience({ agent, onBack, onViewResult }: VideoT
           <div className="rounded-[16px] border border-[#f0f2f8] bg-white overflow-hidden w-[428px]" ref={scrollRef}>
             <div className="p-6 h-full flex flex-col">
               <h3 className="text-[18px] font-medium text-[#3f4558] mb-3 shrink-0">参数设置</h3>
-              {/* 翻译模式 */}
+              {/* 翻译模式（固定为仅字幕，只读展示） */}
               <div className="shrink-0 mb-3">
                 <span className="text-[13px] font-medium text-[#3f4558]/60 mb-2 block">翻译模式</span>
-                <Select value={translateMode} onValueChange={setTranslateMode}>
-                  <SelectTrigger className="w-[380px] h-9 rounded-[11px] border-[#e7ebf5] text-sm hover:bg-[#4f55ec]/[0.04] focus:ring-2 focus:ring-[#4f55ec]/20 focus:border-[#4f55ec]/40 shadow-none"><SelectValue /></SelectTrigger>
-                  <SelectContent className="rounded-[12px] border-[#E5E9F6]" style={{ boxShadow: 'rgba(43,49,78,0.11) 0px 18px 38px 0px' }}><SelectItem value="full">字幕+配音</SelectItem><SelectItem value="subtitle-only">仅字幕</SelectItem></SelectContent>
-                </Select>
+                <div className="w-[380px] h-9 flex items-center rounded-[11px] border border-[#e7ebf5] bg-[#f8faff] px-3 text-sm text-[#697185] select-none cursor-default">仅字幕</div>
               </div>
-              {/* 选择声音（仅字幕+配音模式显示） */}
-              {translateMode === 'full' && (
-                <div className="shrink-0 mb-3">
-                  <span className="text-[13px] font-medium text-[#3f4558]/60 mb-2 block">选择声音</span>
-                  <div className="w-[380px]">
-                  <VoiceSelectDropdown
-                    voicePresets={voicePresets}
-                    selectedVoice={voice}
-                    onSelectVoice={setVoice}
-                    playingVoice={playingVoice}
-                    onTogglePlay={(v) => setPlayingVoice(playingVoice === v ? null : v)}
-                    speed={speed}
-                    volume={volume}
-                    onSpeedChange={setSpeed}
-                    onVolumeChange={setVolume}
-                  />
-                  </div>
-                </div>
-              )}
               {/* 源语言 */}
               <div className="shrink-0 mb-3">
                 <span className="text-[13px] font-medium text-[#3f4558]/60 mb-2 block">源语言</span>

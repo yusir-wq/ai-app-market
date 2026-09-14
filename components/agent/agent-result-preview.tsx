@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Download, FileText, FileAudio, FileVideo, FileImage, CheckCircle } from 'lucide-react'
+import { DownloadSimple, FileText, FileAudio, FileVideo, FileImage, CheckCircle } from '@phosphor-icons/react'
 
 export type ResultType = 'text' | 'audio' | 'video' | 'image' | 'file'
 
@@ -83,7 +83,7 @@ export function AgentResultPreview({
               </pre>
             </div>
             <Button variant="outline" onClick={onDownload} className="w-full">
-              <Download className="h-4 w-4 mr-2" />
+              <DownloadSimple className="h-4 w-4 mr-2" />
               下载文本文件
             </Button>
           </div>
@@ -100,7 +100,7 @@ export function AgentResultPreview({
               />
             </div>
             <Button variant="outline" onClick={onDownload} className="w-full">
-              <Download className="h-4 w-4 mr-2" />
+              <DownloadSimple className="h-4 w-4 mr-2" />
               下载图片
             </Button>
           </div>
@@ -116,7 +116,7 @@ export function AgentResultPreview({
               </audio>
             </div>
             <Button variant="outline" onClick={onDownload} className="w-full">
-              <Download className="h-4 w-4 mr-2" />
+              <DownloadSimple className="h-4 w-4 mr-2" />
               下载音频文件
             </Button>
           </div>
@@ -132,7 +132,7 @@ export function AgentResultPreview({
               </video>
             </div>
             <Button variant="outline" onClick={onDownload} className="w-full">
-              <Download className="h-4 w-4 mr-2" />
+              <DownloadSimple className="h-4 w-4 mr-2" />
               下载视频文件
             </Button>
           </div>
@@ -150,7 +150,7 @@ export function AgentResultPreview({
               </div>
             </div>
             <Button variant="outline" onClick={onDownload} className="w-full">
-              <Download className="h-4 w-4 mr-2" />
+              <DownloadSimple className="h-4 w-4 mr-2" />
               下载文件
             </Button>
           </div>

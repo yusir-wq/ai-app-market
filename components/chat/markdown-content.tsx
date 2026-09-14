@@ -1,5 +1,7 @@
 'use client'
 
+import type { ReactElement } from 'react'
+
 interface MarkdownContentProps {
   content: string
 }
@@ -8,7 +10,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
   // 简单的 Markdown 渲染器 - 不使用外部库
   const parseMarkdown = (text: string) => {
     const lines = text.split('\n')
-    const elements: JSX.Element[] = []
+    const elements: ReactElement[] = []
     let i = 0
 
     while (i < lines.length) {
@@ -83,7 +85,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
 
   // 处理内联格式 (加粗、斜体等)
   const formatInlineText = (text: string) => {
-    const parts: (string | JSX.Element)[] = []
+    const parts: (string | ReactElement)[] = []
     let lastIndex = 0
 
     // 匹配加粗 **text**

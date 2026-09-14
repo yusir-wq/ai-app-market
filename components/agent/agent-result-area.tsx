@@ -6,28 +6,38 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import {
-  Download,
+  DownloadSimple,
   FileText,
   FileAudio,
   FileVideo,
   FileImage,
-  CheckCircle2,
-  Loader2,
+  CheckCircle,
+  Spinner,
   Copy,
-  Languages,
-  Search,
-  RefreshCw,
+  Translate,
+  MagnifyingGlass,
+  ArrowsClockwise,
   Play,
   Pause,
-  Volume2,
-  ImagePlus,
-  Trash2,
-  ChevronDown,
-  ChevronUp,
-  Sparkles,
+  SpeakerHigh,
+  ImageSquare,
+  Trash,
+  CaretDown,
+  CaretUp,
+  Sparkle,
   Clock,
-  Zap,
-} from 'lucide-react'
+  Lightning,
+  Spinner as Loader2,
+  CheckCircle as CheckCircle2,
+  SpeakerHigh as Volume2,
+  DownloadSimple as Download,
+  ImageSquare as ImagePlus,
+  Trash as Trash2,
+  CaretUp as ChevronUp,
+  ArrowsClockwise as RefreshCw,
+  Sparkle as Sparkles,
+  Lightning as Zap,
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 // ============================================================
@@ -153,7 +163,7 @@ function ProcessingState({
                 {step.label}
               </span>
               {step.status === 'done' && (
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 ml-auto shrink-0" />
+                <CheckCircle className="h-3.5 w-3.5 text-emerald-500 ml-auto shrink-0" />
               )}
             </div>
           ))}
@@ -220,7 +230,7 @@ function TextResult({
             className="h-7 text-xs"
             onClick={() => setActiveTab('translation')}
           >
-            <Languages className="h-3 w-3 mr-1" />
+            <Translate className="h-3 w-3 mr-1" />
             翻译
           </Button>
         </div>
@@ -258,7 +268,7 @@ function TextResult({
             className="h-7 text-xs gap-1"
             onClick={onDownload}
           >
-            <Download className="h-3 w-3" />
+            <DownloadSimple className="h-3 w-3" />
             下载
           </Button>
         </div>
@@ -628,7 +638,7 @@ function StoryboardResult({
                     {isExpanded ? (
                       <ChevronUp className="h-4 w-4" />
                     ) : (
-                      <ChevronDown className="h-4 w-4" />
+                      <CaretDown className="h-4 w-4" />
                     )}
                   </Button>
                 </div>
@@ -658,7 +668,7 @@ function StoryboardResult({
                       size="sm"
                       className="text-xs gap-1"
                     >
-                      <ImagePlus className="h-3 w-3" />
+                      <ImageSquare className="h-3 w-3" />
                       替换画面
                     </Button>
                     <Button
@@ -840,7 +850,7 @@ function ResultHeader({
     video: { label: '视频结果', icon: <FileVideo className="h-4 w-4" /> },
     image: { label: '图片结果', icon: <FileImage className="h-4 w-4" /> },
     file: { label: '文件结果', icon: <FileText className="h-4 w-4" /> },
-    storyboard: { label: '分镜脚本', icon: <Sparkles className="h-4 w-4" /> },
+    storyboard: { label: '分镜脚本', icon: <Sparkle className="h-4 w-4" /> },
   }
 
   const info = typeLabels[type]
@@ -870,7 +880,7 @@ function ResultHeader({
         </div>
       </div>
       <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px]">
-        <CheckCircle2 className="h-3 w-3 mr-1" />
+        <CheckCircle className="h-3 w-3 mr-1" />
         已完成
       </Badge>
     </div>
@@ -983,7 +993,7 @@ export function AgentResultArea({
               className="text-xs text-muted-foreground hover:text-foreground"
               onClick={onRetry}
             >
-              <RefreshCw className="h-3 w-3 mr-1" />
+              <ArrowsClockwise className="h-3 w-3 mr-1" />
               重新生成
             </Button>
           </div>

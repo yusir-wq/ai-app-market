@@ -18,17 +18,17 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import {
-  Send,
-  Wand2,
+  PaperPlaneTilt as Send,
+  MagicWand,
   Minus,
   Plus,
-  Volume2,
-  Zap,
-  Sparkles,
-  AlertCircle,
-  Loader2,
-  CheckCircle2,
-} from 'lucide-react'
+  SpeakerHigh,
+  Lightning,
+  Sparkle,
+  Warning,
+  Spinner,
+  CheckCircle,
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { Agent } from '@/lib/mock-data'
 
@@ -229,17 +229,17 @@ export function CopywritingToVideoExperienceArea({
                 <DurationStepper value={duration} onChange={(v) => onParamChange('duration', v)} />
                 <span className="w-px h-5 bg-border/30" />
                 <div className="inline-flex items-center gap-1.5 h-7 px-2 rounded-md border border-border/30 bg-white dark:bg-[#0A0A0E]">
-                  <Volume2 className="h-3 w-3 text-muted-foreground/60" />
+                  <SpeakerHigh className="h-3 w-3 text-muted-foreground/60" />
                   <span className="text-[11px] text-muted-foreground/60">声音</span>
                   <Switch checked={bgm} onCheckedChange={(checked) => onParamChange('bgm', checked)} className="scale-75" />
                 </div>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <span className="hidden sm:flex items-center gap-1 text-[11px] text-muted-foreground/50">
-                  <Zap className="h-3 w-3" />{agent.costPoints}
+                  <Lightning className="h-3 w-3" />{agent.costPoints}
                 </span>
                 <Button className="h-8 px-3 text-[12px] rounded-lg gap-1.5" onClick={handleSend} disabled={isProcessing}>
-                  {isProcessing ? <><Loader2 className="h-3.5 w-3.5 animate-spin" />生成中</> : <><Send className="h-3.5 w-3.5" />发送</>}
+                  {isProcessing ? <><Spinner className="h-3.5 w-3.5 animate-spin" />生成中</> : <><Send className="h-3.5 w-3.5" />发送</>}
                 </Button>
               </div>
             </div>
@@ -252,16 +252,16 @@ export function CopywritingToVideoExperienceArea({
             <div className="absolute inset-0 bg-[#FBFBFD]/80 dark:bg-[#0F0F12]/80 backdrop-blur-[2px]" />
             <div className="relative z-10 text-center space-y-4">
               <div className="flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground/60" />
+                <Spinner className="h-8 w-8 animate-spin text-muted-foreground/60" />
               </div>
               {progressSteps && progressSteps.length > 0 ? (
                 <div className="space-y-1.5">
                   {progressSteps.map((step, i) => (
                     <div key={i} className="flex items-center gap-2 text-xs">
                       {step.status === 'done' ? (
-                        <CheckCircle2 className="h-3 w-3 text-emerald-500 shrink-0" />
+                        <CheckCircle className="h-3 w-3 text-emerald-500 shrink-0" />
                       ) : step.status === 'running' ? (
-                        <Loader2 className="h-3 w-3 animate-spin text-muted-foreground shrink-0" />
+                        <Spinner className="h-3 w-3 animate-spin text-muted-foreground shrink-0" />
                       ) : (
                         <div className="w-3 h-3 rounded-full border border-border shrink-0" />
                       )}

@@ -1514,7 +1514,7 @@ export const mockAgents: Agent[] = [
     id: 'video-translate',
     name: 'AI视频翻译',
     category: 'video',
-    description: '上传视频，AI自动翻译语音并生成多语言字幕/配音版本',
+    description: '上传视频，AI自动识别语音并生成多语言翻译字幕',
     icon: 'Languages',
     gradient: 'from-indigo-400 to-violet-500',
     scenes: [
@@ -1543,7 +1543,7 @@ export const mockAgents: Agent[] = [
     icon: 'Volume2',
     gradient: 'from-emerald-400 to-teal-500',
     scenes: [
-      { icon: 'Languages', title: '多语言版本', description: '一个视频生成多语种配音版本' },
+      { icon: 'Languages', title: '多语言版本', description: '一个视频生成多语种翻译字幕' },
       { icon: 'BookMarked', title: '有声读物', description: '将文字内容转成有声视频' },
       { icon: 'Podcast', title: '解说视频', description: '为教程/解说视频快速配音' },
     ],

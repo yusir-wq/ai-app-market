@@ -13,8 +13,8 @@ import { Search } from 'lucide-react'
 export function MCPServiceList() {
   const [searchQuery, setSearchQuery] = useState('')
   const { 
-    setShowConfigModal, 
-    setConfigModalService, 
+    setShowQuickConfigModal,
+    setQuickConfigService,
     userMCPServices,
     setSelectedMCPServices,
     selectedMCPServices
@@ -61,8 +61,8 @@ export function MCPServiceList() {
     }
     
     // 待配置或已关闭服务弹出配置窗口
-    setConfigModalService(service)
-    setShowConfigModal(true)
+    setQuickConfigService(service)
+    setShowQuickConfigModal(true)
   }
 
   return (

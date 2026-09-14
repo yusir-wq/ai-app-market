@@ -1,8 +1,61 @@
 'use client'
 
 import { AgentScene } from '@/lib/mock-data'
-import * as LucideIcons from 'lucide-react'
+import * as PhosphorIcons from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
+
+// Lucide to Phosphor icon name mapping
+const iconMapping: Record<string, string> = {
+  // Audio
+  Mic: 'Microphone',
+  Headphones: 'Headphones',
+  AudioLines: 'Waveform',
+  BookAudio: 'BookOpenText',
+  Podcast: 'Broadcast',
+  Volume2: 'SpeakerHigh',
+  // Video
+  Film: 'FilmStrip',
+  Video: 'VideoCamera',
+  ImagePlay: 'PlayCircle',
+  Camera: 'Camera',
+  Clapperboard: 'FilmStrip',
+  // Image
+  Image: 'Image',
+  Album: 'Images',
+  ShoppingBag: 'ShoppingBag',
+  // Text
+  Pencil: 'PencilSimple',
+  PenTool: 'PenNib',
+  ScrollText: 'Scroll',
+  Sparkles: 'Sparkle',
+  Wand2: 'MagicWand',
+  // UI
+  Globe: 'Globe',
+  GraduationCap: 'GraduationCap',
+  Users: 'Users',
+  Megaphone: 'Megaphone',
+  BookMarked: 'BookmarkSimple',
+  BookOpen: 'BookOpen',
+  Languages: 'Translate',
+  Subtitles: 'Subtitles',
+  Eraser: 'Eraser',
+  // Video process
+  Building2: 'Buildings',
+  Package: 'Package',
+  PartyPopper: 'Confetti',
+  Youtube: 'YoutubeLogo',
+  Accessibility: 'Hand',
+  Store: 'Storefront',
+  // Fallback
+  Circle: 'Circle',
+}
+
+// Get Phosphor icon by name (with fallback)
+function getPhosphorIcon(iconName: string) {
+  const mappedName = iconMapping[iconName] || iconName
+  const Icon = (PhosphorIcons as any)[mappedName]
+  return Icon || PhosphorIcons.Circle
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -92,8 +145,7 @@ export function AgentSceneCards({ scenes }: AgentSceneCardsProps) {
       {/* ── Responsive grid ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {scenes.map((scene, index) => {
-          const IconComponent =
-            (LucideIcons as any)[scene.icon] || LucideIcons.Circle
+          const IconComponent = getPhosphorIcon(scene.icon)
           const slot = colorSlots[scene.color ?? defaultColor]
 
           return (

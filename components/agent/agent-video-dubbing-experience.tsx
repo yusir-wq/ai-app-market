@@ -40,6 +40,14 @@ const COST_POINTS = 30
 const COST_PRICE = 0.03
 const COST_TEXT = `使用费用：${COST_POINTS} 智点/次（约 ${COST_PRICE} 元）`
 
+type VoicePreset = {
+  value: string
+  label: string
+  avatar: string
+  tags: string[]
+  tagColor: string
+}
+
 interface VideoDubbingExperienceProps {
   agent: Agent
   onBack: () => void
@@ -57,7 +65,7 @@ function formatTime(dateStr: string) {
 
 // 声音选择下拉组件
 function VoiceSelectDropdown({ voicePresets, selectedVoice, onSelectVoice, playingVoice, onTogglePlay, speed, volume, onSpeedChange, onVolumeChange }: {
-  voicePresets: typeof voicePresets
+  voicePresets: VoicePreset[]
   selectedVoice: string
   onSelectVoice: (v: string) => void
   playingVoice: string | null
@@ -151,7 +159,7 @@ function VoiceSelectDropdown({ voicePresets, selectedVoice, onSelectVoice, playi
 }
 
 // 声音预设（与TTS一致）
-const voicePresets = [
+const voicePresets: VoicePreset[] = [
   { value: 'female-gentle', label: '知夏', avatar: '/avatars/voice-zhixia.jpg', tags: ['温暖', '知性', '细腻'], tagColor: 'bg-rose-50 text-rose-600' },
   { value: 'female-lively', label: '悦晴', avatar: '/avatars/voice-yueqing.jpg', tags: ['欢快', '明亮', '自信'], tagColor: 'bg-pink-50 text-pink-600' },
   { value: 'male-calm', label: '正宇', avatar: '/avatars/voice-zhengyu.jpg', tags: ['沉稳', '大气', '字正腔圆'], tagColor: 'bg-blue-50 text-blue-600' },

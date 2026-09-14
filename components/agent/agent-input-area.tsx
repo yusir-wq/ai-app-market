@@ -22,30 +22,31 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import {
-  Upload,
+  UploadSimple,
   X,
   FileAudio,
   FileVideo,
   FileImage,
   FileText,
-  AlertCircle,
+  Warning,
   Play,
   Pause,
-  Wand2,
+  MagicWand,
   BookOpen,
-  Sparkles,
-  Type,
+  Sparkle,
+  TextT,
   Globe,
-  Volume2,
-  Music,
+  SpeakerHigh,
+  MusicNote,
   Crop,
   Plus,
-  Trash2,
-  CheckCircle2,
-  Loader2,
-  Languages,
-  Zap,
-} from 'lucide-react'
+  Trash,
+  CheckCircle,
+  Spinner,
+  Translate,
+  Lightning,
+  WarningCircle as AlertCircle,
+} from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { Agent } from '@/lib/mock-data'
 
@@ -108,11 +109,11 @@ const fileTypeIcons: Record<string, React.ReactNode> = {
 // ============================================================
 
 const quickFillActions = [
-  { id: 'ai-write', label: 'AI帮我写', icon: Wand2 },
+  { id: 'ai-write', label: 'AI帮我写', icon: MagicWand },
   { id: 'random-story', label: '随机故事', icon: BookOpen },
   { id: 'upload-txt', label: '上传txt', icon: FileText },
   { id: 'translate', label: '翻译', icon: Globe },
-  { id: 'pause', label: '插入停顿', icon: Type },
+  { id: 'pause', label: '插入停顿', icon: TextT },
 ]
 
 function QuickFillBar({
@@ -273,7 +274,7 @@ function FileUploadZone({
       )}
     >
       <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mx-auto mb-3">
-        <Upload className="h-5 w-5 text-muted-foreground" />
+        <UploadSimple className="h-5 w-5 text-muted-foreground" />
       </div>
       <p className="text-sm text-foreground mb-1">
         拖拽文件到此处，或 <span className="text-primary font-medium">点击上传</span>
@@ -407,7 +408,7 @@ function VoiceSelector({
               {/* Selected indicator */}
               {isSelected && (
                 <div className="absolute top-2.5 right-2.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-foreground/70" />
+                <CheckCircle className="h-3.5 w-3.5 text-foreground/70" />
                 </div>
               )}
             </button>
@@ -507,7 +508,7 @@ function RegionPicker({
                 className="h-7 w-7 shrink-0 text-muted-foreground hover:text-destructive"
                 onClick={() => removeRegion(region.id)}
               >
-                <Trash2 className="h-3.5 w-3.5" />
+                <Trash className="h-3.5 w-3.5" />
               </Button>
             </div>
           ))}
@@ -677,7 +678,7 @@ function SpeechToTextInputArea({
       {/* Processing state */}
       {isProcessing ? (
         <div className="rounded-xl border border-border bg-secondary/30 p-8 text-center space-y-4">
-          <Loader2 className="h-8 w-8 text-primary animate-spin mx-auto" />
+          <Spinner className="h-8 w-8 text-primary animate-spin mx-auto" />
           <div className="space-y-2">
             <p className="text-sm font-medium text-foreground">AI 正在转写中...</p>
             {progressSteps && progressSteps.length > 0 && (
@@ -742,7 +743,7 @@ function SpeechToTextInputArea({
           )}
         >
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
-            <Upload className="h-5 w-5 text-primary" />
+            <UploadSimple className="h-5 w-5 text-primary" />
           </div>
           <p className="text-sm text-foreground mb-4">
             拖拽音视频文件到此处，或 <span className="text-primary font-medium">点击上传</span>
@@ -791,7 +792,7 @@ function SpeechToTextInputArea({
       {/* Error */}
       {error && (
         <div className="flex items-center gap-2 p-3 rounded-xl bg-destructive/10 text-destructive text-sm">
-          <AlertCircle className="h-4 w-4 shrink-0" />
+          <Warning className="h-4 w-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -861,7 +862,7 @@ function VideoTranslateInputArea({
       <Card className="border-border/60 shadow-sm overflow-hidden">
         <CardContent className="p-8">
           <div className="flex flex-col items-center gap-4 text-center">
-            <Loader2 className="h-10 w-10 text-primary animate-spin" />
+            <Spinner className="h-10 w-10 text-primary animate-spin" />
             <p className="text-sm font-medium text-foreground">AI 正在翻译处理中...</p>
             <div className="w-full h-2 bg-muted rounded-full overflow-hidden max-w-xs">
               <div
@@ -902,7 +903,7 @@ function VideoTranslateInputArea({
           >
             {/* Center upload icon */}
             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-              <Upload className="h-6 w-6 text-primary" />
+              <UploadSimple className="h-6 w-6 text-primary" />
             </div>
             {/* Drag hint text */}
             <p className="text-sm text-muted-foreground">
@@ -917,7 +918,7 @@ function VideoTranslateInputArea({
                 inputRef.current?.click()
               }}
             >
-              <Upload className="h-4 w-4" />
+              <UploadSimple className="h-4 w-4" />
               上传文件
             </Button>
 
@@ -945,7 +946,7 @@ function VideoTranslateInputArea({
       {/* Error */}
       {error && (
         <div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive text-sm">
-          <AlertCircle className="h-4 w-4 shrink-0" />
+          <Warning className="h-4 w-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -1100,7 +1101,7 @@ export function AgentInputArea({
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button variant="ghost" size="sm" className="h-6 px-2 text-[11px] gap-1 rounded-md text-muted-foreground/60 hover:text-foreground hover:bg-muted/60 transition-colors">
-                          <Wand2 className="h-3 w-3" />
+                          <MagicWand className="h-3 w-3" />
                           AI帮我写
                         </Button>
                       </PopoverTrigger>
@@ -1111,7 +1112,7 @@ export function AgentInputArea({
                         <div className="p-4 space-y-3">
                           <Input value={aiWriteKeyword} onChange={(e) => setAiWriteKeyword(e.target.value)} placeholder="输入关键词，使用AI帮写生成完整故事内容" className="h-9 text-sm rounded-lg" onKeyDown={(e) => e.key === 'Enter' && handleAiWriteGenerate()} />
                           <Button className="w-full h-9 text-sm gap-2 rounded-lg" onClick={handleAiWriteGenerate} disabled={aiWriteGenerating}>
-                            {aiWriteGenerating ? <><Loader2 className="h-3.5 w-3.5 animate-spin" />生成中...</> : (<><Sparkles className="h-3.5 w-3.5" />生成<span className="flex items-center gap-1 ml-1 text-xs font-normal opacity-70"><span className="w-px h-3 bg-primary-foreground/30" /><Zap className="h-3 w-3" />1</span></>)}
+                            {aiWriteGenerating ? <><Spinner className="h-3.5 w-3.5 animate-spin" />生成中...</> : (<><Sparkle className="h-3.5 w-3.5" />生成<span className="flex items-center gap-1 ml-1 text-xs font-normal opacity-70"><span className="w-px h-3 bg-primary-foreground/30" /><Lightning className="h-3 w-3" />1</span></>)}
                           </Button>
                         </div>
                       </PopoverContent>
@@ -1143,7 +1144,7 @@ export function AgentInputArea({
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-6 px-2 text-[11px] gap-1 rounded-md text-muted-foreground/60 hover:text-foreground hover:bg-muted/60 transition-colors">
-                      <Wand2 className="h-3 w-3" />
+                      <MagicWand className="h-3 w-3" />
                       AI帮我写
                     </Button>
                   </PopoverTrigger>
@@ -1154,7 +1155,7 @@ export function AgentInputArea({
                     <div className="p-4 space-y-3">
                       <Input value={aiWriteKeyword} onChange={(e) => setAiWriteKeyword(e.target.value)} placeholder="输入关键词，使用AI帮写生成完整故事内容" className="h-9 text-sm rounded-lg" onKeyDown={(e) => e.key === 'Enter' && handleAiWriteGenerate()} />
                       <Button className="w-full h-9 text-sm gap-2 rounded-lg" onClick={handleAiWriteGenerate} disabled={aiWriteGenerating}>
-                        {aiWriteGenerating ? <><Loader2 className="h-3.5 w-3.5 animate-spin" />生成中...</> : (<><Sparkles className="h-3.5 w-3.5" />生成<span className="flex items-center gap-1 ml-1 text-xs font-normal opacity-70"><span className="w-px h-3 bg-primary-foreground/30" /><Zap className="h-3 w-3" />1</span></>)}
+                        {aiWriteGenerating ? <><Spinner className="h-3.5 w-3.5 animate-spin" />生成中...</> : (<><Sparkle className="h-3.5 w-3.5" />生成<span className="flex items-center gap-1 ml-1 text-xs font-normal opacity-70"><span className="w-px h-3 bg-primary-foreground/30" /><Lightning className="h-3 w-3" />1</span></>)}
                       </Button>
                     </div>
                   </PopoverContent>
