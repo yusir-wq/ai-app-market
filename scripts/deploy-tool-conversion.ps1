@@ -80,6 +80,7 @@ $sourceFiles = @(
   'public/prototype-assets/chinaz-hero-image-background.jpg',
   'public/prototype-assets/chinaz-logo.png',
   'public/prototype-assets/chinaz-scene-01.jpg',
+  'public/prototype-assets/chinaz-scene-landscape-result.jpg',
   'public/prototype-assets/chinaz-scene-02.jpg',
   'public/prototype-assets/chinaz-scene-03.jpg',
   'public/prototype-assets/chinaz-scene-04.jpg',

@@ -21,6 +21,7 @@ export type Scene = {
   ratio: string
   previewImage?: string
   hoverImage?: string
+  interaction?: 'expand'
 }
 
 export type EventLog = { name: string; detail: string; time: string }

@@ -751,7 +751,7 @@ export function ConversionPrototype() {
                           <FrameCorners size={17} weight="regular" />
                         </button>
                         <span
-                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""}`}
+                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""} ${item.interaction === "expand" ? "has-expand-preview" : ""}`}
                         >
                           <Image
                             src={item.previewImage ?? item.image}
@@ -767,14 +767,14 @@ export function ConversionPrototype() {
                                 alt={`${item.name}原图`}
                                 fill
                                 sizes="(max-width: 960px) 50vw, 250px"
-                                className="tc-scene-hover-original"
+                                className={`tc-scene-hover-original ${item.interaction === "expand" ? "tc-scene-expand-original" : ""}`}
                               />
                               <Image
                                 src={item.previewImage ?? item.image}
                                 alt={`${item.name}效果图`}
                                 fill
                                 sizes="(max-width: 960px) 50vw, 250px"
-                                className="tc-scene-hover-result"
+                                className={`tc-scene-hover-result ${item.interaction === "expand" ? "tc-scene-expand-result" : ""}`}
                               />
                             </>
                           )}
