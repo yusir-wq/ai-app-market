@@ -88,29 +88,23 @@
 .tc-sidebar-bottom.is-logged-in .tc-account small { display:none; }
 .tc-sidebar-bottom.is-logged-in .tc-account { min-height:54px!important; }
 
-/* Reward settlement feedback: count rolls into the new balance, then the
-   task entry flashes twice so users can see where the reward was collected. */
-.tc-score b { display:inline-block; min-width:72px; text-align:right; transform-origin:center; }
-.tc-score.is-rolling b { animation:tc-points-number-roll .76s cubic-bezier(.2,.8,.2,1) both; }
+/* Reward settlement feedback: keep the entry still and pulse only its label
+   so users can see where the reward was collected. */
 .tc-sidebar-bottom.is-logged-in .tc-invite.is-reward-target {
-  animation:tc-reward-entry-flash .45s ease-in-out 2;
-  background:#fff8ed;
-  box-shadow:0 0 0 1px #ffd6a2 inset,0 0 0 5px rgba(255,177,79,.12);
+  background:transparent;
+  box-shadow:none;
 }
-@keyframes tc-points-number-roll {
-  0% { opacity:.45; transform:translateY(8px) scale(.96); }
-  55% { opacity:1; transform:translateY(-2px) scale(1.04); }
-  100% { opacity:1; transform:translateY(0) scale(1); }
-}
-@keyframes tc-reward-entry-flash {
-  0%,100% { opacity:1; }
-  25% { opacity:.45; background:#fff0dc; box-shadow:0 0 0 5px rgba(255,177,79,.28); }
-  50% { opacity:1; background:#fff8ed; box-shadow:0 0 0 1px #ffd6a2 inset; }
-  75% { opacity:.45; background:#fff0dc; box-shadow:0 0 0 5px rgba(255,177,79,.28); }
+.tc-sidebar-bottom.is-logged-in .tc-invite.is-reward-target > span {
+  display:inline-block;
+  transform-origin:center;
+  animation:tc-reward-text-pulse 1s ease-in-out both;
 }
 @media (prefers-reduced-motion:reduce) {
-  .tc-score.is-rolling b,
-  .tc-sidebar-bottom.is-logged-in .tc-invite.is-reward-target { animation:none; }
+  .tc-sidebar-bottom.is-logged-in .tc-invite.is-reward-target > span { animation:none; }
+}
+@keyframes tc-reward-text-pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:.56; transform:scale(1.04); }
 }
 
 /* The online control block is one pale panel, without a divider after upload. */

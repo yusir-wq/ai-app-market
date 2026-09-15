@@ -191,8 +191,7 @@ export function ConversionPrototype() {
   const [backgroundRatio, setBackgroundRatio] = useState("接近原图");
   const [taskChestOpen, setTaskChestOpen] = useState(query.get("reward") === "task");
   const [displayPoints, setDisplayPoints] = useState(prototypeStartingPoints);
-  const [pointsRolling, setPointsRolling] = useState(false);
-  const [rewardEntryFlashing, setRewardEntryFlashing] = useState(false);
+  const [rewardEntryPulsing, setRewardEntryPulsing] = useState(false);
   const [newUserOpen, setNewUserOpen] = useState(false);
   const [newUser, setNewUser] = useState(true);
   // Keep the prototype review console visible so login/guest and task states
@@ -212,7 +211,6 @@ export function ConversionPrototype() {
   const [intentId, setIntentId] = useState<string | null>(null);
   const consumedIntent = useRef<string | null>(null);
   const timerIds = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const pointsRollInterval = useRef<number | null>(null);
   const rewardEntryFlashTimer = useRef<number | null>(null);
   const settledTaskRewardIds = useRef<Set<string>>(new Set());
   const resultRef = useRef<HTMLDivElement>(null);
@@ -252,16 +250,11 @@ export function ConversionPrototype() {
     timerIds.current = [];
   }, []);
   const clearRewardAnimations = useCallback(() => {
-    if (pointsRollInterval.current !== null) {
-      window.clearInterval(pointsRollInterval.current);
-      pointsRollInterval.current = null;
-    }
     if (rewardEntryFlashTimer.current !== null) {
       window.clearTimeout(rewardEntryFlashTimer.current);
       rewardEntryFlashTimer.current = null;
     }
-    setPointsRolling(false);
-    setRewardEntryFlashing(false);
+    setRewardEntryPulsing(false);
   }, []);
   const changeState = useCallback(
     (next: PrototypeState) => {
@@ -310,39 +303,19 @@ export function ConversionPrototype() {
 
     pendingRewards.forEach((reward) => settledTaskRewardIds.current.add(reward.rewardId));
     const rewardPoints = pendingRewards.reduce((total, reward) => total + reward.points, 0);
-    const fromPoints = displayPoints;
-    const toPoints = fromPoints + rewardPoints;
+    const toPoints = displayPoints + rewardPoints;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     clearRewardAnimations();
-    if (prefersReducedMotion) {
-      setDisplayPoints(toPoints);
-    } else {
-      const startedAt = performance.now();
-      const duration = 760;
-      setPointsRolling(true);
-      pointsRollInterval.current = window.setInterval(() => {
-        const progress = Math.min(1, (performance.now() - startedAt) / duration);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setDisplayPoints(Math.round(fromPoints + rewardPoints * eased));
-        if (progress >= 1) {
-          if (pointsRollInterval.current !== null) {
-            window.clearInterval(pointsRollInterval.current);
-            pointsRollInterval.current = null;
-          }
-          setDisplayPoints(toPoints);
-          setPointsRolling(false);
-        }
-      }, 32);
-    }
+    setDisplayPoints(toPoints);
 
-    setRewardEntryFlashing(true);
+    setRewardEntryPulsing(true);
     rewardEntryFlashTimer.current = window.setTimeout(
       () => {
-        setRewardEntryFlashing(false);
+        setRewardEntryPulsing(false);
         rewardEntryFlashTimer.current = null;
       },
-      prefersReducedMotion ? 180 : 900,
+      prefersReducedMotion ? 180 : 1000,
     );
     setTaskChestOpen(false);
   }, [clearRewardAnimations, displayPoints]);
@@ -527,7 +500,7 @@ export function ConversionPrototype() {
             {loggedIn && (
               <>
                 <div
-                  className={`tc-score ${pointsRolling ? "is-rolling" : ""}`}
+                  className="tc-score"
                   aria-live="polite"
                 >
                   <span>剩余智点</span>
@@ -538,7 +511,7 @@ export function ConversionPrototype() {
                   充值智点
                 </button>
                 <button
-                  className={`tc-invite ${rewardEntryFlashing ? "is-reward-target" : ""}`}
+                  className={`tc-invite ${rewardEntryPulsing ? "is-reward-target" : ""}`}
                   data-reward-entry
                 >
                   <Gift size={20} weight="regular" />
