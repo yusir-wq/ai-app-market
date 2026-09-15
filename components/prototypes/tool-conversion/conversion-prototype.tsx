@@ -815,16 +815,18 @@ export function ConversionPrototype() {
                   </div>
                 )}
                 {state === "failed-refunded" && (
-                  <div className="tc-failed">
-                    <WarningCircle size={29} weight="fill" />
-                    <div>
-                      <h2>这次生成未完成</h2>
+                  <div className="tc-result tc-failed-result">
+                    <div className="tc-result-title">
+                      <h2>生成结果</h2>
+                      <button type="button" onClick={retry}>
+                        <ArrowCounterClockwise size={17} />
+                        重新生成
+                      </button>
+                    </div>
+                    <div className="tc-failed-result-content">
+                      <WarningCircle size={48} weight="regular" />
                       <p>模型服务暂时繁忙，已返还 490 智点。请稍后重试。</p>
                     </div>
-                    <button onClick={retry}>
-                      <ArrowCounterClockwise size={17} />
-                      重新生成
-                    </button>
                   </div>
                 )}
                 {state === "success" && (
