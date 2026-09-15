@@ -19,6 +19,7 @@ export type Scene = {
   image: string
   result: string
   ratio: string
+  hoverImage?: string
 }
 
 export type EventLog = { name: string; detail: string; time: string }

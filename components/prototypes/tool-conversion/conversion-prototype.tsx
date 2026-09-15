@@ -751,15 +751,33 @@ export function ConversionPrototype() {
                           <FrameCorners size={17} weight="regular" />
                         </button>
                         <span
-                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""}`}
+                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""}`}
                         >
                           <Image
                             src={item.image}
                             alt={item.name}
                             fill
                             sizes="(max-width: 960px) 50vw, 250px"
-                            className="tc-scene-background"
+                            className={`tc-scene-background ${item.hoverImage ? "tc-scene-result-base" : ""}`}
                           />
+                          {item.hoverImage && (
+                            <>
+                              <Image
+                                src={item.hoverImage}
+                                alt={`${item.name}原图`}
+                                fill
+                                sizes="(max-width: 960px) 50vw, 250px"
+                                className="tc-scene-hover-original"
+                              />
+                              <Image
+                                src={item.image}
+                                alt={`${item.name}效果图`}
+                                fill
+                                sizes="(max-width: 960px) 50vw, 250px"
+                                className="tc-scene-hover-result"
+                              />
+                            </>
+                          )}
                           {showFreeCutoutPreview && (
                             <>
                               <Image

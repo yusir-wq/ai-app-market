@@ -138,6 +138,7 @@ $sourceFiles = @(
   'public/prototype-assets/background-scenes/scene-08.jpg',
   'public/prototype-assets/background-scenes/scene-09.jpg',
   'public/prototype-assets/background-scenes/scene-10.jpg',
+  'public/prototype-assets/background-scenes/scene-10-original.png',
   'public/prototype-assets/background-scenes/scene-11.jpg',
   'public/prototype-assets/background-scenes/scene-12.jpg',
   'public/prototype-assets/background-scenes/scene-13.jpg',

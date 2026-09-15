@@ -59,7 +59,7 @@ export const backgroundScenes: Scene[] = [
   { id: 'background-7', name: '办公空间', description: '替换背景', image: '/prototype-assets/background-scenes/scene-07.jpg', result: '/prototype-assets/background-scenes/scene-07.jpg', ratio: '' },
   { id: 'background-8', name: '城市街景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-08.jpg', result: '/prototype-assets/background-scenes/scene-08.jpg', ratio: '' },
   { id: 'background-9', name: '自然风景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-09.jpg', result: '/prototype-assets/background-scenes/scene-09.jpg', ratio: '' },
-  { id: 'background-10', name: '海边度假', description: '替换背景', image: '/prototype-assets/background-scenes/scene-10.jpg', result: '/prototype-assets/background-scenes/scene-10.jpg', ratio: '' },
+  { id: 'background-10', name: '海边度假', description: '替换背景', image: '/prototype-assets/background-scenes/scene-10.jpg', result: '/prototype-assets/background-scenes/scene-10.jpg', ratio: '', hoverImage: '/prototype-assets/background-scenes/scene-10-original.png' },
   { id: 'background-11', name: '森林草地', description: '替换背景', image: '/prototype-assets/background-scenes/scene-11.jpg', result: '/prototype-assets/background-scenes/scene-11.jpg', ratio: '' },
   { id: 'background-12', name: '花园花墙', description: '替换背景', image: '/prototype-assets/background-scenes/scene-12.jpg', result: '/prototype-assets/background-scenes/scene-12.jpg', ratio: '' },
   { id: 'background-13', name: '雪景背景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-13.jpg', result: '/prototype-assets/background-scenes/scene-13.jpg', ratio: '' },
