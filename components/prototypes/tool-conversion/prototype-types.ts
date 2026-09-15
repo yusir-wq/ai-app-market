@@ -19,6 +19,7 @@ export type Scene = {
   image: string
   result: string
   ratio: string
+  previewImage?: string
   hoverImage?: string
 }
 

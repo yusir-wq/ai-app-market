@@ -754,7 +754,7 @@ export function ConversionPrototype() {
                           className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""}`}
                         >
                           <Image
-                            src={item.image}
+                            src={item.previewImage ?? item.image}
                             alt={item.name}
                             fill
                             sizes="(max-width: 960px) 50vw, 250px"
@@ -770,7 +770,7 @@ export function ConversionPrototype() {
                                 className="tc-scene-hover-original"
                               />
                               <Image
-                                src={item.image}
+                                src={item.previewImage ?? item.image}
                                 alt={`${item.name}效果图`}
                                 fill
                                 sizes="(max-width: 960px) 50vw, 250px"
