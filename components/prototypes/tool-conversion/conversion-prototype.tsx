@@ -1164,7 +1164,7 @@ export function ConversionPrototype() {
               <X size={22} />
             </button>
             <Image
-              src={activeScenes.find((item) => item.id === zoomScene)?.image ?? ""}
+              src={activeScenes.find((item) => item.id === zoomScene)?.zoomImage ?? activeScenes.find((item) => item.id === zoomScene)?.image ?? ""}
               alt="场景案例大图"
               fill
               sizes="80vw"

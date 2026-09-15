@@ -23,7 +23,7 @@ export const backgroundToolConfig = {
 } as const
 
 export const scenes: Scene[] = [
-  { id: 'landscape', name: '横图扩展', description: '把图扩成横版', image: '/prototype-assets/material-detail/main.png', result: '/prototype-assets/chinaz-scene-landscape-result.jpg', ratio: '1920 x 1080', previewImage: '/prototype-assets/chinaz-scene-landscape-result.jpg', hoverImage: '/prototype-assets/material-detail/main.png', interaction: 'expand' },
+  { id: 'landscape', name: '横图扩展', description: '把图扩成横版', image: '/prototype-assets/material-detail/main.png', result: '/prototype-assets/chinaz-scene-landscape-result.jpg', ratio: '1920 x 1080', previewImage: '/prototype-assets/chinaz-scene-landscape-result.jpg', hoverImage: '/prototype-assets/material-detail/main.png', interaction: 'expand', zoomImage: '/prototype-assets/chinaz-scene-landscape-result.jpg' },
   { id: 'portrait', name: '竖图扩展', description: '把图扩成竖版', image: '/prototype-assets/chinaz-scene-02.jpg', result: '/prototype-assets/chinaz-scene-02.jpg', ratio: '1080 x 1920' },
   { id: 'square', name: '方图扩展', description: '把图扩成方图', image: '/prototype-assets/chinaz-scene-03.jpg', result: '/prototype-assets/chinaz-scene-03.jpg', ratio: '1200 x 1200' },
   { id: 'common-landscape', name: '普通横版图', description: '文章展示配图', image: '/prototype-assets/chinaz-scene-04.jpg', result: '/prototype-assets/chinaz-scene-04.jpg', ratio: '1600 x 1200' },
