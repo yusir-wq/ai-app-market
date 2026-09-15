@@ -62,7 +62,7 @@ const relatedImages = [
 
 const collectionTags = ['美女', '白色', '站在', 't恤', '绿植', 'T恤美女', '白色t恤', '美女图']
 const relatedTags = ['白色T恤美女', 'T恤美女']
-const inflowLinks = ['AI扩图', '写真', '换背景', '风格转换', '配色重绘', '更多']
+const inflowLinks = ['AI扩图', 'AI写真', '换背景', '换个风格', '换配色', '商品海报']
 
 export function MaterialDetailPrototype() {
   const [categoryOpen, setCategoryOpen] = useState(false)

@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowCounterClockwise,
   ArrowLeft,
+  ArrowSquareOut,
   Briefcase,
   CaretDown,
   CaretRight,
@@ -974,6 +975,13 @@ export function ConversionPrototype() {
             <b>原型评审控制台</b>
             <button onClick={() => setToolbarOpen(false)}>收起</button>
           </div>
+          <button
+            className="tc-landing-entry"
+            onClick={() => router.push("/prototypes/material-detail?source=26091424322")}
+          >
+            <ArrowSquareOut size={14} />
+            打开引流页
+          </button>
           <SelectControl
             label="页面版本"
             value={variant}

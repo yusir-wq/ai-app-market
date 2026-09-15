@@ -16,6 +16,8 @@
 @keyframes tc-spin { to { transform:rotate(360deg); } }
 .tc-cutout-note { position:absolute; z-index:2; left:10px; bottom:10px; display:flex; align-items:center; gap:4px; padding:5px 8px; color:#398657; background:rgba(237,251,242,.92); border-radius:5px; font-size:11px; }
 .tc-toolbar-head button { border:0; background:transparent; color:#8e96a7; font-size:10px; cursor:pointer; }
+.tc-landing-entry { width:100%; min-height:31px; margin:0 0 5px; display:flex; align-items:center; justify-content:center; gap:5px; border:0; border-radius:5px; background:#575ce9; color:#fff; font-size:11px; cursor:pointer; }
+.tc-landing-entry:hover { background:#4e53d9; }
 .tc-toolbar-reopen { position:fixed; z-index:10; top:82px; right:18px; border:1px solid #dce1ee; border-radius:7px; padding:7px 10px; color:#575ce9; background:#fff; box-shadow:0 4px 13px rgba(30,38,65,.12); font-size:11px; cursor:pointer; }
 @media (max-width:1250px) { .tc-toolbar { display:none; }.tc-workbench { grid-template-columns:45% 55%; }.tc-header { padding:0 32px; }.tc-scene { height:156px; } }
 @media (max-width:850px) { .tc-header nav { display:none; }.tc-header { gap:12px; }.tc-task { display:none; }.tc-crumb,.tc-shell,.tc-status { width:calc(100% - 32px); }.tc-workbench { grid-template-columns:1fr; }.tc-operation { border-right:0; border-bottom:1px solid var(--border-color); }.tc-scene-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.tc-scene { height:190px; }.tc-compare,.tc-single-result { height:290px; } }
