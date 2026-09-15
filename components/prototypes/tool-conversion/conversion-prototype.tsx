@@ -742,8 +742,8 @@ export function ConversionPrototype() {
                       >
                         <button
                           className="tc-scene-preview"
-                          aria-label={`查看${item.name}原图`}
-                          title="查看原图"
+                          aria-label={`查看${item.name}大图`}
+                          title="查看大图"
                           onClick={(event) => {
                             event.stopPropagation();
                             setZoomScene(item.id);
@@ -1165,7 +1165,7 @@ export function ConversionPrototype() {
               <X size={22} />
             </button>
             <Image
-              src={zoomedScene?.hoverImage ?? zoomedScene?.image ?? ""}
+              src={zoomedScene?.previewImage ?? zoomedScene?.result ?? zoomedScene?.image ?? ""}
               alt="场景案例大图"
               fill
               sizes="80vw"
