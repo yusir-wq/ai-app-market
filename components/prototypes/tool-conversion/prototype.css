@@ -153,7 +153,8 @@
 .tc-failed-result .tc-result-title { margin-bottom:0; }
 .tc-failed-result-content { min-height:615px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
 .tc-failed-result-content svg { color:#ef6060; }
-.tc-failed-result-content p { margin:0; color:#ef6060; font-size:14px; line-height:1.6; text-align:center; }
+.tc-failed-result-content p { display:flex; flex-direction:column; gap:5px; margin:0; color:#ef6060; font-size:14px; font-weight:700; line-height:1.6; text-align:center; }
+.tc-failed-result-content p strong,.tc-failed-result-content p span { font-weight:700; }
 .tc-compare-details { margin-top:18px; }
 .tc-compare-details summary { color:#575ce9; cursor:pointer; font-size:12px; }
 .tc-compare-details .tc-compare { margin-top:10px; height:400px; }

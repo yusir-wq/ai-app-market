@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
-  ArrowCounterClockwise,
   ArrowLeft,
   ArrowSquareOut,
   Briefcase,
@@ -411,10 +410,6 @@ export function ConversionPrototype() {
     log("login_success", `trigger=generate · intentId=${id ?? "none"}`);
     if (id) timerIds.current.push(setTimeout(() => submit(id), 260));
   };
-  const retry = () => {
-    consumedIntent.current = null;
-    generate();
-  };
   const reset = () => {
     clearTimers();
     consumedIntent.current = null;
@@ -818,14 +813,13 @@ export function ConversionPrototype() {
                   <div className="tc-result tc-failed-result">
                     <div className="tc-result-title">
                       <h2>生成结果</h2>
-                      <button type="button" onClick={retry}>
-                        <ArrowCounterClockwise size={17} />
-                        重新生成
-                      </button>
                     </div>
                     <div className="tc-failed-result-content">
                       <WarningCircle size={48} weight="regular" />
-                      <p>模型服务暂时繁忙，已返还 490 智点。请稍后重试。</p>
+                      <p>
+                        <strong>图片生成失败</strong>
+                        <span>模型服务繁忙，本次消耗智点已返还。请稍后重试。</span>
+                      </p>
                     </div>
                   </div>
                 )}
