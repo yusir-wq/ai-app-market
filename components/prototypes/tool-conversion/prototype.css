@@ -413,6 +413,9 @@
 .tc-scene-visual.has-expand-preview:hover .tc-scene-expand-result {
   animation: tc-expand-result-reveal .9s ease-out both;
 }
+.tc-scene-visual.has-hover-preview:not(.has-expand-preview):hover .tc-scene-hover-result {
+  transition-duration: .5s;
+}
 @keyframes tc-expand-result-reveal {
   0% { clip-path: inset(0 23% 0 23%); opacity: .16; filter: blur(8px); }
   22% { clip-path: inset(0); opacity: .24; filter: blur(8px); }
