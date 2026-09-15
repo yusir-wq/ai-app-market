@@ -121,6 +121,7 @@ const prototypeTaskRewards = [
 ];
 
 const cutoutPreviewImage = "/prototype-assets/cutouts/cat-subject.png";
+const prototypeStartingPoints = 416359;
 
 function SelectControl<T extends string>({
   label,
@@ -189,6 +190,9 @@ export function ConversionPrototype() {
   const [backgroundColor, setBackgroundColor] = useState("自动推荐");
   const [backgroundRatio, setBackgroundRatio] = useState("接近原图");
   const [taskChestOpen, setTaskChestOpen] = useState(query.get("reward") === "task");
+  const [displayPoints, setDisplayPoints] = useState(prototypeStartingPoints);
+  const [pointsRolling, setPointsRolling] = useState(false);
+  const [rewardEntryFlashing, setRewardEntryFlashing] = useState(false);
   const [newUserOpen, setNewUserOpen] = useState(false);
   const [newUser, setNewUser] = useState(true);
   // Keep the prototype review console visible so login/guest and task states
@@ -208,6 +212,9 @@ export function ConversionPrototype() {
   const [intentId, setIntentId] = useState<string | null>(null);
   const consumedIntent = useRef<string | null>(null);
   const timerIds = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const pointsRollInterval = useRef<number | null>(null);
+  const rewardEntryFlashTimer = useRef<number | null>(null);
+  const settledTaskRewardIds = useRef<Set<string>>(new Set());
   const resultRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLButtonElement>(null);
   const activeConfig = toolKey === "background" ? backgroundToolConfig : prototypeConfig.tool;
@@ -244,6 +251,18 @@ export function ConversionPrototype() {
     timerIds.current.forEach(clearTimeout);
     timerIds.current = [];
   }, []);
+  const clearRewardAnimations = useCallback(() => {
+    if (pointsRollInterval.current !== null) {
+      window.clearInterval(pointsRollInterval.current);
+      pointsRollInterval.current = null;
+    }
+    if (rewardEntryFlashTimer.current !== null) {
+      window.clearTimeout(rewardEntryFlashTimer.current);
+      rewardEntryFlashTimer.current = null;
+    }
+    setPointsRolling(false);
+    setRewardEntryFlashing(false);
+  }, []);
   const changeState = useCallback(
     (next: PrototypeState) => {
       clearTimers();
@@ -272,7 +291,61 @@ export function ConversionPrototype() {
     [clearTimers, log, syncUrl, toolKey, variant],
   );
 
-  useEffect(() => () => clearTimers(), [clearTimers]);
+  useEffect(
+    () => () => {
+      clearTimers();
+      clearRewardAnimations();
+    },
+    [clearRewardAnimations, clearTimers],
+  );
+
+  const settleTaskRewards = useCallback(() => {
+    const pendingRewards = prototypeTaskRewards.filter(
+      (reward) => !settledTaskRewardIds.current.has(reward.rewardId),
+    );
+    if (pendingRewards.length === 0) {
+      setTaskChestOpen(false);
+      return;
+    }
+
+    pendingRewards.forEach((reward) => settledTaskRewardIds.current.add(reward.rewardId));
+    const rewardPoints = pendingRewards.reduce((total, reward) => total + reward.points, 0);
+    const fromPoints = displayPoints;
+    const toPoints = fromPoints + rewardPoints;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    clearRewardAnimations();
+    if (prefersReducedMotion) {
+      setDisplayPoints(toPoints);
+    } else {
+      const startedAt = performance.now();
+      const duration = 760;
+      setPointsRolling(true);
+      pointsRollInterval.current = window.setInterval(() => {
+        const progress = Math.min(1, (performance.now() - startedAt) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplayPoints(Math.round(fromPoints + rewardPoints * eased));
+        if (progress >= 1) {
+          if (pointsRollInterval.current !== null) {
+            window.clearInterval(pointsRollInterval.current);
+            pointsRollInterval.current = null;
+          }
+          setDisplayPoints(toPoints);
+          setPointsRolling(false);
+        }
+      }, 32);
+    }
+
+    setRewardEntryFlashing(true);
+    rewardEntryFlashTimer.current = window.setTimeout(
+      () => {
+        setRewardEntryFlashing(false);
+        rewardEntryFlashTimer.current = null;
+      },
+      prefersReducedMotion ? 180 : 900,
+    );
+    setTaskChestOpen(false);
+  }, [clearRewardAnimations, displayPoints]);
 
   const finish = useCallback(
     (success: boolean) => {
@@ -378,6 +451,9 @@ export function ConversionPrototype() {
     setNewUser(true);
     setTaskChestOpen(false);
     setNewUserOpen(false);
+    settledTaskRewardIds.current.clear();
+    setDisplayPoints(prototypeStartingPoints);
+    clearRewardAnimations();
     setLogs([]);
     setIntentId(null);
     syncUrl("guest-ready");
@@ -450,15 +526,21 @@ export function ConversionPrototype() {
           >
             {loggedIn && (
               <>
-                <div className="tc-score">
+                <div
+                  className={`tc-score ${pointsRolling ? "is-rolling" : ""}`}
+                  aria-live="polite"
+                >
                   <span>剩余智点</span>
-                  <b>416,359</b>
+                  <b>{displayPoints.toLocaleString("en-US")}</b>
                 </div>
                 <button>
                   <HandCoins size={18} weight="regular" />
                   充值智点
                 </button>
-                <button className="tc-invite" data-reward-entry>
+                <button
+                  className={`tc-invite ${rewardEntryFlashing ? "is-reward-target" : ""}`}
+                  data-reward-entry
+                >
                   <Gift size={20} weight="regular" />
                   <span>做任务赚智点</span>
                 </button>
@@ -1135,7 +1217,7 @@ export function ConversionPrototype() {
         open={taskChestOpen}
         rewards={prototypeTaskRewards}
         targetSelector="[data-reward-entry]"
-        onClose={() => setTaskChestOpen(false)}
+        onClose={settleTaskRewards}
       />
       <div className="tc-floating-actions" aria-label="辅助操作">
         <button aria-label="联系客服">

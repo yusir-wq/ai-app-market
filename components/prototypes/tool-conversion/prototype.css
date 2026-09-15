@@ -88,6 +88,31 @@
 .tc-sidebar-bottom.is-logged-in .tc-account small { display:none; }
 .tc-sidebar-bottom.is-logged-in .tc-account { min-height:54px!important; }
 
+/* Reward settlement feedback: count rolls into the new balance, then the
+   task entry flashes twice so users can see where the reward was collected. */
+.tc-score b { display:inline-block; min-width:72px; text-align:right; transform-origin:center; }
+.tc-score.is-rolling b { animation:tc-points-number-roll .76s cubic-bezier(.2,.8,.2,1) both; }
+.tc-sidebar-bottom.is-logged-in .tc-invite.is-reward-target {
+  animation:tc-reward-entry-flash .45s ease-in-out 2;
+  background:#fff8ed;
+  box-shadow:0 0 0 1px #ffd6a2 inset,0 0 0 5px rgba(255,177,79,.12);
+}
+@keyframes tc-points-number-roll {
+  0% { opacity:.45; transform:translateY(8px) scale(.96); }
+  55% { opacity:1; transform:translateY(-2px) scale(1.04); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes tc-reward-entry-flash {
+  0%,100% { opacity:1; }
+  25% { opacity:.45; background:#fff0dc; box-shadow:0 0 0 5px rgba(255,177,79,.28); }
+  50% { opacity:1; background:#fff8ed; box-shadow:0 0 0 1px #ffd6a2 inset; }
+  75% { opacity:.45; background:#fff0dc; box-shadow:0 0 0 5px rgba(255,177,79,.28); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .tc-score.is-rolling b,
+  .tc-sidebar-bottom.is-logged-in .tc-invite.is-reward-target { animation:none; }
+}
+
 /* The online control block is one pale panel, without a divider after upload. */
 .tc-settings { background:linear-gradient(180deg,#fbfcff,#f7f9ff); border:1px solid #f1f4fb; border-radius:14px; display:grid; gap:14px; margin-top:0; padding:16px; }
 .tc-settings-title { color:#4f55ec; font-size:14px; margin:0; }
