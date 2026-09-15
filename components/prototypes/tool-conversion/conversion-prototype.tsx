@@ -705,6 +705,9 @@ export function ConversionPrototype() {
                         </>
                       )}
                     </button>
+                    {!loggedIn && (
+                      <div className="tc-guest-note">新用户可免费体验</div>
+                    )}
                     {loggedIn && (
                       <div className="tc-cost-after-login">
                         <p className="tc-online-cost">
