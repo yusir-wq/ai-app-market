@@ -218,6 +218,7 @@ export function ConversionPrototype() {
   const activeConfig = toolKey === "background" ? backgroundToolConfig : prototypeConfig.tool;
   const activeScenes = toolKey === "background" ? backgroundScenes : scenes;
   const scene = activeScenes.find((item) => item.id === sceneId) ?? activeScenes[0];
+  const zoomedScene = activeScenes.find((item) => item.id === zoomScene);
   const showFreeCutoutPreview =
     toolKey === "background" && source !== "empty" && autoCutout;
 
@@ -1164,7 +1165,7 @@ export function ConversionPrototype() {
               <X size={22} />
             </button>
             <Image
-              src={activeScenes.find((item) => item.id === zoomScene)?.zoomImage ?? activeScenes.find((item) => item.id === zoomScene)?.image ?? ""}
+              src={zoomedScene?.hoverImage ?? zoomedScene?.image ?? ""}
               alt="场景案例大图"
               fill
               sizes="80vw"

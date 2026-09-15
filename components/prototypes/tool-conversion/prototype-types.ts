@@ -22,7 +22,6 @@ export type Scene = {
   previewImage?: string
   hoverImage?: string
   interaction?: 'expand'
-  zoomImage?: string
 }
 
 export type EventLog = { name: string; detail: string; time: string }

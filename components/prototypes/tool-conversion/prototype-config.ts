@@ -25,7 +25,7 @@ export const backgroundToolConfig = {
 const expansionSourceImage = '/prototype-assets/chinaz-expansion-source.png'
 
 export const scenes: Scene[] = [
-  { id: 'landscape', name: '横图扩展', description: '把图扩成横版', image: expansionSourceImage, result: '/prototype-assets/chinaz-scene-landscape-result.jpg', ratio: '1920 x 1080', previewImage: '/prototype-assets/chinaz-scene-landscape-result.jpg', hoverImage: expansionSourceImage, interaction: 'expand', zoomImage: '/prototype-assets/chinaz-scene-landscape-result.jpg' },
+  { id: 'landscape', name: '横图扩展', description: '把图扩成横版', image: expansionSourceImage, result: '/prototype-assets/chinaz-scene-landscape-result.jpg', ratio: '1920 x 1080', previewImage: '/prototype-assets/chinaz-scene-landscape-result.jpg', hoverImage: expansionSourceImage, interaction: 'expand' },
   { id: 'portrait', name: '竖图扩展', description: '把图扩成竖版', image: expansionSourceImage, result: '/prototype-assets/chinaz-scene-02-result.jpg', ratio: '1080 x 1920', previewImage: '/prototype-assets/chinaz-scene-02-result.jpg', hoverImage: expansionSourceImage, interaction: 'expand' },
   { id: 'square', name: '方图扩展', description: '把图扩成方图', image: expansionSourceImage, result: '/prototype-assets/chinaz-scene-03-result.jpg', ratio: '1200 x 1200', previewImage: '/prototype-assets/chinaz-scene-03-result.jpg', hoverImage: expansionSourceImage, interaction: 'expand' },
   { id: 'common-landscape', name: '普通横版图', description: '文章展示配图', image: expansionSourceImage, result: '/prototype-assets/chinaz-scene-04-result.jpg', ratio: '1600 x 1200', previewImage: '/prototype-assets/chinaz-scene-04-result.jpg', hoverImage: expansionSourceImage, interaction: 'expand' },
@@ -51,7 +51,7 @@ export const scenes: Scene[] = [
   { id: 'desktop-wallpaper', name: '电脑壁纸', description: '桌面屏幕壁纸', image: expansionSourceImage, result: '/prototype-assets/chinaz-scene-24-result.jpg', ratio: '1920 x 1080', previewImage: '/prototype-assets/chinaz-scene-24-result.jpg', hoverImage: expansionSourceImage, interaction: 'expand' },
 ]
 
-const backgroundSourceImage = '/prototype-assets/background-scenes/scene-10-original.png'
+const backgroundSourceImage = expansionSourceImage
 
 export const backgroundScenes: Scene[] = [
   { id: 'background-1', name: '摄影棚背景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-01.jpg', result: '/prototype-assets/background-scenes/scene-01-result.jpg', ratio: '', previewImage: '/prototype-assets/background-scenes/scene-01-result.jpg', hoverImage: backgroundSourceImage },
