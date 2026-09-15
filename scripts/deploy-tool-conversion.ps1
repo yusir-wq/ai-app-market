@@ -1,4 +1,4 @@
-<#!
+<#
 .SYNOPSIS
 Deploys the current AI APP Market runtime changes to the configured server.
 
