@@ -716,7 +716,7 @@ export function ConversionPrototype() {
                 <div className={`tc-gallery ${toolKey === "background" ? "is-background-gallery" : ""}`}>
                   <div className="tc-section-head">
                     <div>
-                      <b>风格</b>
+                      <b>选择想生成的效果</b>
                       <span>
                         {variant === "optimized" && toolKey === "background"
                           ? "选择背景后即时合成预览，无需生成"
