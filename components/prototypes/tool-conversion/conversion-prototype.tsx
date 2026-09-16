@@ -123,6 +123,11 @@ const prototypeTaskRewards = [
 const cutoutPreviewImage = "/prototype-assets/cutouts/cat-subject.png";
 const prototypeStartingPoints = 416359;
 
+function emitPrototypeEvent(name: string, detail: Record<string, string | undefined>) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(name, { detail }));
+}
+
 function SelectControl<T extends string>({
   label,
   value,
@@ -160,6 +165,20 @@ export function ConversionPrototype() {
   const query = useSearchParams();
   const stateParam = query.get("state") as PrototypeState;
   const initialToolKey = query.get("tool") === "background" ? "background" : "expand";
+  const queryImage = query.get("image");
+  const sourceImage = queryImage && /^\/(?:prototype-assets|thumbnails)\//.test(queryImage)
+    ? queryImage
+    : "/thumbnails/thumb-cat-window.jpg";
+  const targetRatio = query.get("target_ratio");
+  const initialSceneId = initialToolKey === "background"
+    ? backgroundScenes[0].id
+    : targetRatio === "16:9"
+      ? "landscape"
+      : targetRatio === "1:1"
+        ? "square"
+        : targetRatio === "9:16"
+          ? "portrait"
+          : scenes[0].id;
   const [state, setState] = useState<PrototypeState>(
     validStates.has(stateParam) ? stateParam : "guest-ready",
   );
@@ -182,7 +201,7 @@ export function ConversionPrototype() {
     ].includes(stateParam),
   );
   const [sceneId, setSceneId] = useState(
-    initialToolKey === "background" ? backgroundScenes[0].id : scenes[0].id,
+    initialSceneId,
   );
   const [showCompare, setShowCompare] = useState(true);
   const [autoCutout, setAutoCutout] = useState(false);
@@ -220,6 +239,10 @@ export function ConversionPrototype() {
   const activeScenes = toolKey === "background" ? backgroundScenes : scenes;
   const scene = activeScenes.find((item) => item.id === sceneId) ?? activeScenes[0];
   const zoomedScene = activeScenes.find((item) => item.id === zoomScene);
+  const attributedTool = query.get("target_tool") || toolKey;
+  const sourcePage = query.get("source_page") || undefined;
+  const sourcePosition = query.get("source_position") || undefined;
+  const sourceImageId = query.get("image_id") || undefined;
   const showFreeCutoutPreview =
     toolKey === "background" && source !== "empty" && autoCutout;
 
@@ -229,11 +252,18 @@ export function ConversionPrototype() {
       nextVariant = variant,
       nextTool: "expand" | "background" = toolKey,
     ) => {
-      router.replace(`${pathname}?variant=${nextVariant}&state=${nextState}&tool=${nextTool}`, {
-        scroll: false,
+      const params = new URLSearchParams({
+        variant: nextVariant,
+        state: nextState,
+        tool: nextTool,
       });
+      ["target_tool", "source_page", "source_position", "image_id", "image", "target_ratio"].forEach((key) => {
+        const value = query.get(key);
+        if (value) params.set(key, value);
+      });
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [pathname, router, toolKey, variant],
+    [pathname, query, router, toolKey, variant],
   );
   const log = useCallback(
     (name: string, detail: string) =>
@@ -335,6 +365,16 @@ export function ConversionPrototype() {
         "generation_result",
         `success=${success} · mockDuration=3s · refunded=${!success}`,
       );
+      if (sourcePage === "material_detail") {
+        emitPrototypeEvent("ai_tool_generate_result", {
+          tool: attributedTool,
+          image_id: sourceImageId,
+          source_page: sourcePage,
+          source_position: sourcePosition,
+          target_ratio: targetRatio || undefined,
+          result: success ? "success" : "fail",
+        });
+      }
       timerIds.current.push(
         setTimeout(
           () =>
@@ -348,7 +388,7 @@ export function ConversionPrototype() {
       if (success && chestEnabled)
         timerIds.current.push(setTimeout(() => setTaskChestOpen(true), 450));
     },
-    [chestEnabled, log, syncUrl],
+    [attributedTool, chestEnabled, log, sourceImageId, sourcePage, sourcePosition, syncUrl, targetRatio],
   );
   const submit = useCallback(
     (id: string) => {
@@ -358,6 +398,15 @@ export function ConversionPrototype() {
       setState("submitting");
       syncUrl("submitting");
       log("generation_auto_resume", `intentId=${id} · submitCount=1`);
+      if (sourcePage === "material_detail") {
+        emitPrototypeEvent("ai_tool_generate", {
+          tool: attributedTool,
+          image_id: sourceImageId,
+          source_page: sourcePage,
+          source_position: sourcePosition,
+          target_ratio: targetRatio || undefined,
+        });
+      }
       timerIds.current.push(
         setTimeout(() => {
           setState("generating");
@@ -371,7 +420,7 @@ export function ConversionPrototype() {
         }, prototypeConfig.timings.submittingMs),
       );
     },
-    [finish, log, syncUrl],
+    [attributedTool, finish, log, sourceImageId, sourcePage, sourcePosition, syncUrl, targetRatio],
   );
   const generate = () => {
     if (source === "empty") {
@@ -598,7 +647,7 @@ export function ConversionPrototype() {
                     }}
                   >
                     <Image
-                      src="/thumbnails/thumb-cat-window.jpg"
+                      src={sourceImage}
                       alt="带入的素材原图"
                       fill
                       sizes="460px"
@@ -906,7 +955,7 @@ export function ConversionPrototype() {
                             </>
                           ) : (
                             <Image
-                              src={resultTab === "original" ? "/thumbnails/thumb-cat-window.jpg" : scene.result}
+                              src={resultTab === "original" ? sourceImage : scene.result}
                               alt={resultTab === "original" ? "生成前原图" : "生成结果"}
                               fill
                               sizes="1000px"

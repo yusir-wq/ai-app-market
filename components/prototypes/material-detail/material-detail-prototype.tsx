@@ -1,15 +1,22 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   ArrowRight,
+  Briefcase,
   Check,
   DownloadSimple,
+  DotsThreeOutline,
+  ImagesSquare,
   List,
+  MagicWand,
   MagnifyingGlass,
   Note,
+  Palette,
   ShareNetwork,
   Star,
+  UserFocus,
   X,
 } from '@phosphor-icons/react'
 import './material-detail.css'
@@ -62,19 +69,95 @@ const relatedImages = [
 
 const collectionTags = ['美女', '白色', '站在', 't恤', '绿植', 'T恤美女', '白色t恤', '美女图']
 const relatedTags = ['白色T恤美女', 'T恤美女']
-const inflowLinks = ['AI扩图', 'AI写真', '换背景', '换个风格', '换配色', '商品海报']
+
+type AiTool = 'expand' | 'background' | 'portrait' | 'style' | 'poster' | 'palette'
+type AiPosition = 'top_toolbar' | 'right_card' | 'download_success'
+type AiRatio = '16:9' | '1:1' | '9:16'
+
+const aiToolbarTools: Array<{ tool: AiTool | 'more'; name: string; description: string }> = [
+  { tool: 'expand', name: 'AI扩图', description: '扩展画面，不裁剪主体' },
+  { tool: 'background', name: 'AI换背景', description: '一键更换图片场景' },
+  { tool: 'portrait', name: 'AI写真', description: '生成不同写真效果' },
+  { tool: 'style', name: '换个风格', description: '快速转换图片风格' },
+  { tool: 'poster', name: '商品海报', description: '一键生成营销海报' },
+  { tool: 'more', name: '更多', description: '换配色等更多工具' },
+]
+
+const aiRatioOptions: Array<{ value: AiRatio; label: string }> = [
+  { value: '16:9', label: '16:9 横图' },
+  { value: '1:1', label: '1:1 方图' },
+  { value: '9:16', label: '9:16 竖图' },
+]
+
+function AiToolIcon({ tool }: { tool: AiTool | 'more' }) {
+  if (tool === 'expand') return <MagicWand size={21} weight="regular" />
+  if (tool === 'background') return <ImagesSquare size={21} weight="regular" />
+  if (tool === 'portrait') return <UserFocus size={21} weight="regular" />
+  if (tool === 'style' || tool === 'palette') return <Palette size={21} weight="regular" />
+  if (tool === 'poster') return <Briefcase size={21} weight="regular" />
+  return <DotsThreeOutline size={21} weight="regular" />
+}
+
+function emitAiEvent(name: string, detail: Record<string, string | undefined>) {
+  if (typeof window === 'undefined') return
+  window.dispatchEvent(new CustomEvent(name, { detail }))
+}
 
 export function MaterialDetailPrototype() {
+  const router = useRouter()
+  const [imageId] = useState(() => {
+    if (typeof window === 'undefined') return '26091424322'
+    return new URLSearchParams(window.location.search).get('source') || '26091424322'
+  })
   const [categoryOpen, setCategoryOpen] = useState(false)
   const [selectedSize, setSelectedSize] = useState<'small' | 'large'>('large')
   const [searchText, setSearchText] = useState('')
   const [notice, setNotice] = useState('')
   const [loginOpen, setLoginOpen] = useState(false)
+  const [moreToolsOpen, setMoreToolsOpen] = useState(false)
+  const [selectedAiRatio, setSelectedAiRatio] = useState<AiRatio>('16:9')
+  const [downloadSucceeded, setDownloadSucceeded] = useState(false)
+  const [downloadRecommendationDismissed, setDownloadRecommendationDismissed] = useState(false)
   const noticeTimer = useRef<number | null>(null)
+  const toolbarRef = useRef<HTMLElement>(null)
+  const rightRecommendationRef = useRef<HTMLElement>(null)
+  const downloadRecommendationRef = useRef<HTMLElement>(null)
+  const exposureSeenRef = useRef<Set<AiPosition>>(new Set())
 
   useEffect(() => () => {
     if (noticeTimer.current !== null) window.clearTimeout(noticeTimer.current)
   }, [])
+
+  useEffect(() => {
+    const targets: Array<{ position: AiPosition; node: HTMLElement | null }> = [
+      { position: 'top_toolbar', node: toolbarRef.current },
+      { position: 'right_card', node: rightRecommendationRef.current },
+      { position: 'download_success', node: downloadRecommendationRef.current },
+    ]
+    const report = (position: AiPosition) => {
+      if (exposureSeenRef.current.has(position)) return
+      exposureSeenRef.current.add(position)
+      emitAiEvent('ai_tool_exposure', { position, image_id: imageId })
+    }
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(({ position, node }) => node && report(position))
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        const position = (entry.target as HTMLElement).dataset.aiPosition as AiPosition
+        if (position) report(position)
+      }),
+      { threshold: 0.25 },
+    )
+    targets.forEach(({ position, node }) => {
+      if (!node) return
+      node.dataset.aiPosition = position
+      observer.observe(node)
+    })
+    return () => observer.disconnect()
+  }, [downloadSucceeded, downloadRecommendationDismissed, imageId])
 
   const showNotice = (message: string) => {
     setNotice(message)
@@ -88,6 +171,38 @@ export function MaterialDetailPrototype() {
   const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     showNotice(searchText.trim() ? `正在搜索：${searchText.trim()}` : '请输入想搜索的素材')
+  }
+
+  const navigateToAiTool = (tool: AiTool, position: AiPosition, targetRatio?: AiRatio) => {
+    emitAiEvent('ai_tool_click', {
+      tool,
+      position,
+      image_id: imageId,
+      target_ratio: targetRatio,
+    })
+    const params = new URLSearchParams({
+      variant: 'optimized',
+      state: 'guest-ready',
+      tool: tool === 'background' ? 'background' : 'expand',
+      target_tool: tool,
+      source_page: 'material_detail',
+      source_position: position,
+      image_id: imageId,
+      image: mainImage,
+    })
+    if (targetRatio) params.set('target_ratio', targetRatio)
+    router.push(`/prototypes/tool-conversion?${params.toString()}`)
+  }
+
+  const handleDownload = () => {
+    const downloadSize = selectedSize === 'large' ? '864x1102' : '650x829'
+    emitAiEvent('image_download', {
+      image_id: imageId,
+      download_size: downloadSize,
+      result: 'success',
+    })
+    setDownloadSucceeded(true)
+    showNotice(`已准备 ${downloadSize} PNG 下载`)
   }
 
   return (
@@ -182,15 +297,47 @@ export function MaterialDetailPrototype() {
                   一键分享
                 </button>
               </div>
+              <section className="md-ai-toolbar" ref={toolbarRef} aria-labelledby="md-ai-toolbar-title">
+                <h2 id="md-ai-toolbar-title">用 AI 继续处理这张图片</h2>
+                <div className="md-ai-tool-grid">
+                  {aiToolbarTools.map((item) => (
+                    item.tool === 'more' ? (
+                      <button
+                        key={item.tool}
+                        type="button"
+                        className={`md-ai-tool ${moreToolsOpen ? 'is-active' : ''}`}
+                        onClick={() => setMoreToolsOpen((open) => !open)}
+                        aria-expanded={moreToolsOpen}
+                      >
+                        <AiToolIcon tool={item.tool} />
+                        <span className="md-ai-tool-name">{item.name}</span>
+                        <small>{item.description}</small>
+                      </button>
+                    ) : (
+                      <button
+                        key={item.tool}
+                        type="button"
+                        className="md-ai-tool"
+                        onClick={() => navigateToAiTool(item.tool as AiTool, 'top_toolbar')}
+                      >
+                        <AiToolIcon tool={item.tool} />
+                        <span className="md-ai-tool-name">{item.name}</span>
+                        <small>{item.description}</small>
+                      </button>
+                    )
+                  ))}
+                </div>
+                {moreToolsOpen && (
+                  <div className="md-ai-more-menu" role="menu" aria-label="更多 AI 工具">
+                    <button type="button" role="menuitem" onClick={() => navigateToAiTool('palette', 'top_toolbar')}>
+                      <AiToolIcon tool="palette" />
+                      <span><b>换配色</b><small>重新搭配图片色彩</small></span>
+                    </button>
+                  </div>
+                )}
+              </section>
               <div className="md-image-box">
                 <img src={mainImage} alt="站在绿植墙前的白色T恤美女图片" />
-                <nav className="md-inflow-links" aria-label="AI工具推荐">
-                  {inflowLinks.map((label, index) => (
-                    <a key={label} className={index === 0 ? 'is-active' : ''} href={`#${label}`} onClick={() => showNotice(`${label}工具原型入口`)}>
-                      {label}{index === inflowLinks.length - 1 && <ArrowRight size={12} />}
-                    </a>
-                  ))}
-                </nav>
               </div>
               <div className="md-intro">
                 <div className="md-intro-top">
@@ -219,11 +366,45 @@ export function MaterialDetailPrototype() {
                   <span>864x1102</span><b>PNG</b>
                 </button>
               </div>
-              <p className="md-side-promo">更多尺寸请使用<a href="#ai-tools">AI扩图工具</a>，<a href="#free">新用户免费体验</a> &gt;</p>
-              <button type="button" className="md-download" onClick={() => showNotice(`已准备 ${selectedSize === 'large' ? '864x1102' : '650x829'} PNG 下载`)}>
+              <section className="md-ai-recommendation" ref={rightRecommendationRef} aria-labelledby="md-ai-recommendation-title">
+                <h2 id="md-ai-recommendation-title">需要其他尺寸？</h2>
+                <p>用 AI 自动补全画面，无需裁剪主体</p>
+                <div className="md-ai-ratios" role="radiogroup" aria-label="扩图比例">
+                  {aiRatioOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      role="radio"
+                      aria-checked={selectedAiRatio === option.value}
+                      className={selectedAiRatio === option.value ? 'is-selected' : ''}
+                      onClick={() => setSelectedAiRatio(option.value)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+                <button type="button" className="md-ai-recommendation-cta" onClick={() => navigateToAiTool('expand', 'right_card', selectedAiRatio)}>
+                  <MagicWand size={17} weight="regular" />
+                  AI 扩图这张图片
+                </button>
+                <small>自动带入当前图片</small>
+              </section>
+              <button type="button" className="md-download" onClick={handleDownload}>
                 <DownloadSimple size={20} weight="regular" />
                 立即下载
               </button>
+              {downloadSucceeded && !downloadRecommendationDismissed && (
+                <section className="md-download-recommendation" ref={downloadRecommendationRef} aria-labelledby="md-download-recommendation-title">
+                  <button type="button" className="md-download-recommendation-close" aria-label="关闭下载推荐" onClick={() => setDownloadRecommendationDismissed(true)}><X size={16} /></button>
+                  <b id="md-download-recommendation-title">图片已下载</b>
+                  <p>还想让它更适合使用？</p>
+                  <div>
+                    <button type="button" onClick={() => navigateToAiTool('expand', 'download_success', '16:9')}>扩成横图</button>
+                    <button type="button" onClick={() => navigateToAiTool('background', 'download_success')}>一键换背景</button>
+                    <button type="button" onClick={() => navigateToAiTool('style', 'download_success')}>换个风格</button>
+                  </div>
+                </section>
+              )}
               <div className="md-side-divider" />
               <div className="md-meta-list">
                 <div><span>更新时间：</span><b>2026-09-14</b></div>
