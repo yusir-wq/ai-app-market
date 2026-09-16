@@ -12,8 +12,7 @@
   animation: backdropIn 220ms ease-out both;
 }
 
-.backdropClosing { animation: backdropOut 260ms ease-in both; }
-.backdropWithFlight { animation-duration: 620ms; }
+.backdropClosing { animation: backdropOut 400ms cubic-bezier(.4,0,.2,1) both; }
 
 .modal {
   position: relative;
@@ -30,7 +29,12 @@
   animation: modalIn 280ms cubic-bezier(.2,.8,.2,1) both;
 }
 
-.modalClosing { animation: modalOut 240ms ease-in both; }
+.modalOpening,
+.modalClosing { animation: none; }
+.modalOpening { visibility: hidden; opacity: 0; }
+.modalClosing { animation: modalOut 400ms cubic-bezier(.4,0,.2,1) both; }
+.modalNoEntrance { animation: none; }
+.modalClosing.modalNoEntrance { animation: modalOut 400ms cubic-bezier(.4,0,.2,1) both; }
 
 .imageModal { position: relative; width: 100%; transform: translateY(-42px); }
 .rewardImage { display: block; width: 100%; height: auto; user-select: none; }
@@ -48,24 +52,27 @@
 .imageCloseHotspot:focus-visible,
 .imageAcceptHotspot:focus-visible { outline: 3px solid rgb(255 255 255 / 90%); outline-offset: 2px; }
 
-.flightIcon {
+.flightMirror {
   position: fixed;
   z-index: 1702;
-  top: 0;
-  left: 0;
-  display: grid;
-  width: 52px;
-  height: 52px;
-  place-items: center;
-  border: 2px solid rgb(255 255 255 / 80%);
-  border-radius: 18px;
-  color: #fff;
-  background: linear-gradient(140deg, #ffad55, #f15f32);
-  box-shadow: 0 8px 18px rgb(237 99 43 / 38%);
+  top: var(--flight-top);
+  left: var(--flight-left);
+  width: var(--flight-width);
+  height: var(--flight-height);
+  overflow: hidden;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 20px 60px rgb(24 27 40 / 28%);
   pointer-events: none;
-  transform: translate(calc(var(--from-x) - 26px), calc(var(--from-y) - 26px));
-  animation: flyToRewardEntry 560ms cubic-bezier(.16,.72,.24,1) both;
-  will-change: transform, opacity;
+  transform-origin: center;
+  animation: rewardFlightToTarget 400ms cubic-bezier(.4,0,.2,1) both;
+  will-change: transform, opacity, border-radius;
+}
+.flightMirror[data-direction="open"] {
+  animation-name: rewardFlightFromTarget;
+}
+.flightImage {
+  object-fit: fill;
 }
 
 @keyframes backdropIn { from { opacity: 0; } to { opacity: 1; } }
@@ -78,11 +85,29 @@
   from { opacity: 1; transform: translateY(0) scale(1); }
   to { opacity: 0; transform: translateY(8px) scale(.96); }
 }
-@keyframes flyToRewardEntry {
-  0% { opacity: 0; transform: translate(calc(var(--from-x) - 26px), calc(var(--from-y) - 26px)) scale(1); }
-  12% { opacity: 1; }
-  62% { transform: translate(calc(var(--mid-x) - 26px), calc(var(--mid-y) - 26px)) scale(.82); }
-  100% { opacity: .15; transform: translate(calc(var(--to-x) - 26px), calc(var(--to-y) - 26px)) scale(.35); }
+@keyframes rewardFlightToTarget {
+  from {
+    opacity: 1;
+    border-radius: 24px;
+    transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1, 1);
+  }
+  to {
+    opacity: 0;
+    border-radius: 999px;
+    transform: translate(-50%, -50%) translate3d(var(--flight-dx), var(--flight-dy), 0) scale(var(--flight-scale-x), var(--flight-scale-y));
+  }
+}
+@keyframes rewardFlightFromTarget {
+  from {
+    opacity: 0;
+    border-radius: 999px;
+    transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(var(--flight-scale-x), var(--flight-scale-y));
+  }
+  to {
+    opacity: 1;
+    border-radius: 24px;
+    transform: translate(-50%, -50%) translate3d(var(--flight-dx), var(--flight-dy), 0) scale(1);
+  }
 }
 
 @media (max-width: 560px) {
@@ -99,7 +124,8 @@
   .modal { animation: none; }
   .backdropClosing { animation: reducedBackdropOut 160ms ease both; }
   .modalClosing { animation: reducedFadeOut 160ms ease both; }
-  .flightIcon { display: none; }
+  .modalClosing.modalNoEntrance { animation: reducedFadeOut 160ms ease both; }
+  .flightMirror { display: none; }
   .imageCloseHotspot,
   .imageAcceptHotspot { transition: none; }
 }

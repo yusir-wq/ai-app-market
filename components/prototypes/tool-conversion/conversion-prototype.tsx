@@ -190,6 +190,7 @@ export function ConversionPrototype() {
   const [backgroundColor, setBackgroundColor] = useState("自动推荐");
   const [backgroundRatio, setBackgroundRatio] = useState("接近原图");
   const [taskChestOpen, setTaskChestOpen] = useState(query.get("reward") === "task");
+  const [taskChestCollapsed, setTaskChestCollapsed] = useState(false);
   const [displayPoints, setDisplayPoints] = useState(prototypeStartingPoints);
   const [rewardEntryPulsing, setRewardEntryPulsing] = useState(false);
   const [newUserOpen, setNewUserOpen] = useState(false);
@@ -278,6 +279,7 @@ export function ConversionPrototype() {
       consumedIntent.current = null;
       setResultTab("result");
       setTaskChestOpen(false);
+      setTaskChestCollapsed(false);
       setNewUserOpen(false);
       syncUrl("guest-ready", variant, nextTool);
       log("tool_switch", `tool=${nextTool}`);
@@ -299,6 +301,7 @@ export function ConversionPrototype() {
     );
     if (pendingRewards.length === 0) {
       setTaskChestOpen(false);
+      setTaskChestCollapsed(true);
       return;
     }
 
@@ -318,6 +321,7 @@ export function ConversionPrototype() {
       },
       prefersReducedMotion ? 180 : 1000,
     );
+    setTaskChestCollapsed(true);
     setTaskChestOpen(false);
   }, [clearRewardAnimations, displayPoints]);
 
@@ -420,6 +424,7 @@ export function ConversionPrototype() {
     setSourceError(false);
     setNewUser(true);
     setTaskChestOpen(false);
+    setTaskChestCollapsed(false);
     setNewUserOpen(false);
     settledTaskRewardIds.current.clear();
     setDisplayPoints(prototypeStartingPoints);
@@ -510,6 +515,12 @@ export function ConversionPrototype() {
                 <button
                   className={`tc-invite ${rewardEntryPulsing ? "is-reward-target" : ""}`}
                   data-reward-entry
+                  onClick={() => {
+                    if (!taskChestCollapsed) return;
+                    setTaskChestCollapsed(false);
+                    setTaskChestOpen(true);
+                    log("reward_chest_expand", "source=reward-entry");
+                  }}
                 >
                   <Gift size={20} weight="regular" />
                   <span>做任务赚智点</span>
@@ -1057,6 +1068,7 @@ export function ConversionPrototype() {
                     }
                     if (label === "展示宝箱奖励") {
                       setTaskChestOpen(checked);
+                      setTaskChestCollapsed(false);
                       log("reward_chest_toggle", `enabled=${checked}`);
                     }
                   }}
@@ -1212,10 +1224,10 @@ export function ConversionPrototype() {
         </div>
       )}
       <NewUserBenefitToast
-        key={taskChestOpen ? "task-reward-open" : "task-reward-closed"}
         open={taskChestOpen}
         rewards={prototypeTaskRewards}
         targetSelector="[data-reward-entry]"
+        animateFromTarget
         onClose={settleTaskRewards}
       />
       <div className="tc-floating-actions" aria-label="辅助操作">
