@@ -52,11 +52,17 @@ export const scenes: Scene[] = [
 ]
 
 const backgroundSourceImage = expansionSourceImage
+const seaComposite = {
+  subject: '/prototype-assets/background-scenes/scene-10-subject.png',
+  originalBackground: '/prototype-assets/background-scenes/scene-10-original-background.png',
+  effectBackground: '/prototype-assets/background-scenes/scene-10-effect-background.png',
+  demoSubject: '/prototype-assets/cutouts/cat-subject.png',
+} as const
 
 export const backgroundScenes: Scene[] = [
   { id: 'background-14', name: '夜景霓虹', description: '替换背景', image: '/prototype-assets/background-scenes/scene-14.jpg', result: '/prototype-assets/background-scenes/scene-14-result.jpg', ratio: '', previewImage: '/prototype-assets/background-scenes/scene-14-result.jpg', hoverImage: backgroundSourceImage },
   { id: 'background-23', name: '梦幻柔光', description: '替换背景', image: '/prototype-assets/background-scenes/scene-23.jpg', result: '/prototype-assets/background-scenes/scene-23-result.jpg', ratio: '', previewImage: '/prototype-assets/background-scenes/scene-23-result.jpg', hoverImage: backgroundSourceImage },
-  { id: 'background-10', name: '海边度假', description: '替换背景', image: backgroundSourceImage, result: '/prototype-assets/background-scenes/scene-10.jpg', ratio: '', previewImage: '/prototype-assets/background-scenes/scene-10.jpg', hoverImage: backgroundSourceImage },
+  { id: 'background-10', name: '海边度假', description: '替换背景', image: backgroundSourceImage, result: '/prototype-assets/background-scenes/scene-10.jpg', ratio: '', previewImage: '/prototype-assets/background-scenes/scene-10.jpg', hoverImage: backgroundSourceImage, composite: seaComposite },
   { id: 'background-24', name: '极简高级', description: '替换背景', image: '/prototype-assets/background-scenes/scene-24.jpg', result: '/prototype-assets/background-scenes/scene-24-result.jpg', ratio: '', previewImage: '/prototype-assets/background-scenes/scene-24-result.jpg', hoverImage: backgroundSourceImage },
   { id: 'background-8', name: '城市街景', description: '替换背景', image: '/prototype-assets/background-scenes/scene-08.jpg', result: '/prototype-assets/background-scenes/scene-08-result.jpg', ratio: '', previewImage: '/prototype-assets/background-scenes/scene-08-result.jpg', hoverImage: backgroundSourceImage },
   { id: 'background-12', name: '花园花墙', description: '替换背景', image: '/prototype-assets/background-scenes/scene-12.jpg', result: '/prototype-assets/background-scenes/scene-12-result.jpg', ratio: '', previewImage: '/prototype-assets/background-scenes/scene-12-result.jpg', hoverImage: backgroundSourceImage },

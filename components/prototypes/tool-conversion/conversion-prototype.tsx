@@ -185,7 +185,7 @@ export function ConversionPrototype() {
     initialToolKey === "background" ? backgroundScenes[0].id : scenes[0].id,
   );
   const [showCompare, setShowCompare] = useState(true);
-  const [autoCutout, setAutoCutout] = useState(true);
+  const [autoCutout, setAutoCutout] = useState(false);
   const [chestEnabled, setChestEnabled] = useState(query.get("reward") === "task");
   const [backgroundColor, setBackgroundColor] = useState("自动推荐");
   const [backgroundRatio, setBackgroundRatio] = useState("接近原图");
@@ -763,42 +763,68 @@ export function ConversionPrototype() {
                           <FrameCorners size={17} weight="regular" />
                         </button>
                         <span
-                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""} ${item.interaction === "expand" ? "has-expand-preview" : ""}`}
+                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""} ${item.interaction === "expand" ? "has-expand-preview" : ""} ${item.composite ? "has-sea-composite" : ""}`}
                         >
-                          <Image
-                            src={item.previewImage ?? item.image}
-                            alt={item.name}
-                            fill
-                            sizes="(max-width: 960px) 50vw, 250px"
-                            className={`tc-scene-background ${item.hoverImage ? "tc-scene-result-base" : ""}`}
-                          />
-                          {item.hoverImage && (
+                          {item.composite ? (
                             <>
                               <Image
-                                src={item.hoverImage}
-                                alt={`${item.name}原图`}
+                                src={item.composite.effectBackground}
+                                alt={`${item.name}效果背景`}
                                 fill
                                 sizes="(max-width: 960px) 50vw, 250px"
-                                className={`tc-scene-hover-original ${item.interaction === "expand" ? "tc-scene-expand-original" : ""}`}
+                                className="tc-sea-background tc-sea-effect-background"
                               />
                               <Image
-                                src={item.previewImage ?? item.image}
-                                alt={`${item.name}效果图`}
+                                src={item.composite.originalBackground}
+                                alt={`${item.name}原图背景`}
                                 fill
                                 sizes="(max-width: 960px) 50vw, 250px"
-                                className={`tc-scene-hover-result ${item.interaction === "expand" ? "tc-scene-expand-result" : ""}`}
+                                className="tc-sea-background tc-sea-original-background"
                               />
-                            </>
-                          )}
-                          {showFreeCutoutPreview && (
-                            <>
                               <Image
-                                src={cutoutPreviewImage}
-                                alt="已抠出的上传主体"
+                                src={autoCutout ? item.composite.demoSubject ?? item.composite.subject : item.composite.subject}
+                                alt={autoCutout ? "自动抠图演示主体" : "海边度假主体"}
                                 fill
                                 sizes="(max-width: 960px) 45vw, 220px"
-                                className="tc-cutout-subject"
+                                className="tc-sea-subject"
                               />
+                            </>
+                          ) : (
+                            <>
+                              <Image
+                                src={item.previewImage ?? item.image}
+                                alt={item.name}
+                                fill
+                                sizes="(max-width: 960px) 50vw, 250px"
+                                className={`tc-scene-background ${item.hoverImage ? "tc-scene-result-base" : ""}`}
+                              />
+                              {item.hoverImage && (
+                                <>
+                                  <Image
+                                    src={item.hoverImage}
+                                    alt={`${item.name}原图`}
+                                    fill
+                                    sizes="(max-width: 960px) 50vw, 250px"
+                                    className={`tc-scene-hover-original ${item.interaction === "expand" ? "tc-scene-expand-original" : ""}`}
+                                  />
+                                  <Image
+                                    src={item.previewImage ?? item.image}
+                                    alt={`${item.name}效果图`}
+                                    fill
+                                    sizes="(max-width: 960px) 50vw, 250px"
+                                    className={`tc-scene-hover-result ${item.interaction === "expand" ? "tc-scene-expand-result" : ""}`}
+                                  />
+                                </>
+                              )}
+                              {showFreeCutoutPreview && (
+                                <Image
+                                  src={cutoutPreviewImage}
+                                  alt="已抠出的上传主体"
+                                  fill
+                                  sizes="(max-width: 960px) 45vw, 220px"
+                                  className="tc-cutout-subject"
+                                />
+                              )}
                             </>
                           )}
                         </span>

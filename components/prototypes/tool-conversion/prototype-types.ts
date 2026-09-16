@@ -22,6 +22,12 @@ export type Scene = {
   previewImage?: string
   hoverImage?: string
   interaction?: 'expand'
+  composite?: {
+    subject: string
+    originalBackground: string
+    effectBackground: string
+    demoSubject?: string
+  }
 }
 
 export type EventLog = { name: string; detail: string; time: string }
