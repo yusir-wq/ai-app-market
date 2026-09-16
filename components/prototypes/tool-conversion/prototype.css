@@ -22,6 +22,7 @@
 @media (max-width:1250px) { .tc-toolbar { display:none; }.tc-workbench { grid-template-columns:45% 55%; }.tc-header { padding:0 32px; }.tc-scene { height:156px; } }
 @media (max-width:850px) { .tc-header nav { display:none; }.tc-header { gap:12px; }.tc-task { display:none; }.tc-crumb,.tc-shell,.tc-status { width:calc(100% - 32px); }.tc-workbench { grid-template-columns:1fr; }.tc-operation { border-right:0; border-bottom:1px solid var(--border-color); }.tc-scene-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.tc-scene { height:190px; }.tc-compare,.tc-single-result { height:290px; } }
 @media (max-width:520px) { .tc-header { padding:0 16px; }.tc-user { font-size:0; }.tc-crumb,.tc-shell,.tc-status { width:calc(100% - 24px); }.tc-title p { max-width:240px; }.tc-action { align-items:flex-start; flex-direction:column; }.tc-generate { width:100%; }.tc-scene-grid { grid-template-columns:1fr; }.tc-scene { height:220px; }.tc-result-title { align-items:flex-start; gap:10px; flex-direction:column; }.tc-compare,.tc-single-result { height:220px; } }
+.tc-decision>svg { display:block; margin:0 auto 4px; }
 @media (prefers-reduced-motion:reduce) { .tool-conversion-prototype *, .tool-conversion-prototype *::before, .tool-conversion-prototype *::after { animation-duration:.01ms!important; transition-duration:.01ms!important; scroll-behavior:auto!important; } }
 
 /* Online image-tool frame: keep the sidebar and work area as the shared skeleton. */

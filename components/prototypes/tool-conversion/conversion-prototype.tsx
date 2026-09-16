@@ -1147,11 +1147,8 @@ export function ConversionPrototype() {
           <section className="tc-decision">
             <WarningCircle size={38} weight="fill" />
             <h2>智点余额不足</h2>
-            <p>本次生成需要 490 智点。可先完成任务赚取智点，再继续创作。</p>
+            <p>本次生成需要 490 智点，可先充值或完成任务赚取智点，再继续创作。</p>
             <div>
-              <button onClick={() => changeState("guest-ready")}>
-                暂不生成
-              </button>
               <button
                 onClick={() => {
                   setTaskChestOpen(true);
@@ -1159,6 +1156,9 @@ export function ConversionPrototype() {
                 }}
               >
                 去赚智点
+              </button>
+              <button onClick={() => changeState("guest-ready")}>
+                去充值
               </button>
             </div>
           </section>
