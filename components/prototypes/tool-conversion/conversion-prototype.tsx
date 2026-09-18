@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -156,6 +157,222 @@ function SelectControl<T extends string>({
         <CaretDown size={13} weight="bold" />
       </div>
     </label>
+  );
+}
+
+const backgroundColorGroups = [
+  {
+    label: "基础色",
+    options: [
+      ["白色", "#ffffff"],
+      ["浅灰", "#edf0f5"],
+      ["深灰", "#687385"],
+      ["黑色", "#1d2028"],
+      ["米白", "#f4efe4"],
+      ["米色", "#e8d8c2"],
+    ],
+  },
+  {
+    label: "冷色系",
+    options: [
+      ["浅蓝", "#c9dafa"],
+      ["天蓝", "#8fc8f4"],
+      ["深蓝", "#425fa7"],
+      ["青绿色", "#4bb9ab"],
+      ["薄荷绿", "#c6e9dd"],
+      ["墨绿色", "#2d6d59"],
+    ],
+  },
+  {
+    label: "暖色系",
+    options: [
+      ["浅粉", "#f5d7e1"],
+      ["玫瑰粉", "#e9a1bf"],
+      ["红色", "#e85c5e"],
+      ["橙色", "#e69b3f"],
+      ["黄色", "#f0d255"],
+      ["金色", "#d5aa55"],
+    ],
+  },
+  {
+    label: "高级色",
+    options: [
+      ["奶茶色", "#ceb895"],
+      ["香槟色", "#ead9b5"],
+      ["暖灰", "#bbb5ae"],
+      ["咖色", "#9a6d4e"],
+      ["蓝紫", "#6a57c7"],
+      ["紫色", "#9a5bd4"],
+    ],
+  },
+  {
+    label: "节日色",
+    options: [
+      ["红金", "#c84a45"],
+      ["黑金", "#302b26"],
+      ["蓝银", "#759bc9"],
+      ["粉紫", "#ce7fbb"],
+      ["绿金", "#648c5b"],
+      ["彩色", "linear-gradient(135deg,#ef6d6d 0 25%,#f0c85b 25% 50%,#6bc0a8 50% 75%,#7889da 75%)"],
+    ],
+  },
+] as const;
+
+function PanelSelectControl<T extends string>({
+  label,
+  value,
+  onChange,
+  options,
+  colorGroups,
+}: {
+  label: string;
+  value: T;
+  onChange: (value: T) => void;
+  options: { value: T; label: string }[];
+  colorGroups?: ReadonlyArray<{
+    label: string;
+    options: readonly (readonly [string, string])[];
+  }>;
+}) {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({
+    left: 0,
+    top: 0,
+    width: 0,
+    placement: "above" as "above" | "below",
+  });
+  const selectedLabel = options.find((option) => option.value === value)?.label ?? value;
+
+  const repositionMenu = useCallback(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+    const rect = trigger.getBoundingClientRect();
+    const menuHeight = menuRef.current?.getBoundingClientRect().height
+      ?? (colorGroups ? 360 : Math.min(options.length * 34 + 20, 360));
+    const availableAbove = rect.top - 16;
+    const availableBelow = window.innerHeight - rect.bottom - 16;
+    const placement = availableAbove >= menuHeight || availableAbove >= availableBelow ? "above" : "below";
+    setMenuPosition({
+      left: rect.left,
+      top: placement === "above"
+        ? Math.max(16 + menuHeight, rect.top - 8)
+        : rect.bottom + 8,
+      width: rect.width,
+      placement,
+    });
+  }, [colorGroups, options.length]);
+
+  useEffect(() => {
+    if (!open) return;
+    repositionMenu();
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (!triggerRef.current?.contains(target) && !menuRef.current?.contains(target)) {
+        setOpen(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("resize", repositionMenu);
+    document.addEventListener("scroll", repositionMenu, true);
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      window.removeEventListener("resize", repositionMenu);
+      document.removeEventListener("scroll", repositionMenu, true);
+      document.removeEventListener("mousedown", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open, repositionMenu]);
+
+  const choose = (nextValue: T) => {
+    onChange(nextValue);
+    setOpen(false);
+  };
+
+  const menu = open && typeof document !== "undefined"
+    ? createPortal(
+        <div
+          ref={menuRef}
+          className={`tc-panel-select-menu ${colorGroups ? "is-color-menu" : ""} ${menuPosition.placement === "below" ? "is-below" : ""}`}
+          role="listbox"
+          aria-label={`选择${label}`}
+          style={{
+            left: menuPosition.left,
+            top: menuPosition.top,
+            width: menuPosition.width,
+          }}
+        >
+          {colorGroups ? (
+            <>
+              <button
+                className={`tc-panel-select-option tc-panel-select-recommended ${value === "自动推荐" ? "selected" : ""}`}
+                type="button"
+                role="option"
+                aria-selected={value === "自动推荐"}
+                onClick={() => choose("自动推荐" as T)}
+              >
+                自动推荐
+              </button>
+              {colorGroups.map((group) => (
+                <div className="tc-panel-select-color-group" key={group.label}>
+                  <span>{group.label}</span>
+                  <div>
+                    {group.options.map(([optionValue, color]) => (
+                      <button
+                        className={`tc-panel-color-option ${value === optionValue ? "selected" : ""}`}
+                        key={optionValue}
+                        type="button"
+                        role="option"
+                        aria-label={optionValue}
+                        aria-selected={value === optionValue}
+                        onClick={() => choose(optionValue as T)}
+                      >
+                        <i style={{ background: color }} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            options.map((option) => (
+              <button
+                className={`tc-panel-select-option ${value === option.value ? "selected" : ""}`}
+                key={option.value}
+                type="button"
+                role="option"
+                aria-selected={value === option.value}
+                onClick={() => choose(option.value)}
+              >
+                {option.label}
+              </button>
+            ))
+          )}
+        </div>,
+        document.body,
+      )
+    : null;
+
+  return (
+    <div className={`tc-panel-select ${open ? "is-open" : ""}`}>
+      <button
+        ref={triggerRef}
+        className="tc-panel-select-trigger"
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+      >
+        <span>{label}</span>
+        <strong>{selectedLabel}</strong>
+        <CaretDown size={17} weight="regular" />
+      </button>
+      {menu}
+    </div>
   );
 }
 
@@ -682,7 +899,7 @@ export function ConversionPrototype() {
                     <div className="tc-settings-title">生成设置</div>
                     {toolKey === "background" ? (
                       <>
-                        <SelectControl
+                        <PanelSelectControl
                           label="背景色"
                           value={backgroundColor}
                           onChange={setBackgroundColor}
@@ -719,14 +936,24 @@ export function ConversionPrototype() {
                             "绿金",
                             "彩色",
                           ].map((value) => ({ value, label: value }))}
+                          colorGroups={backgroundColorGroups}
                         />
-                        <SelectControl
+                        <PanelSelectControl
                           label="比例"
                           value={backgroundRatio}
                           onChange={setBackgroundRatio}
                           options={["接近原图", "1:1", "4:3", "3:4", "16:9", "9:16"].map((value) => ({
                             value,
                             label: value,
+                          }))}
+                        />
+                        <PanelSelectControl
+                          label="风格"
+                          value={sceneId}
+                          onChange={setSceneId}
+                          options={backgroundScenes.map((item) => ({
+                            value: item.id,
+                            label: item.name,
                           }))}
                         />
                       </>
@@ -996,9 +1223,6 @@ export function ConversionPrototype() {
                           <span>
                             <em>风格</em>
                             {scene.name}
-                          </span>
-                          <span>
-                            <em>比例</em>120:67
                           </span>
                           <span>
                             <em>尺寸</em>1920 x 1072

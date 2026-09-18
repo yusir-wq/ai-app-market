@@ -74,14 +74,22 @@ type AiTool = 'expand' | 'background' | 'portrait' | 'style' | 'poster' | 'palet
 type AiPosition = 'top_toolbar' | 'right_card' | 'download_success'
 type AiRatio = '16:9' | '1:1' | '9:16'
 
-const aiToolbarTools: Array<{ tool: AiTool | 'more'; name: string; description: string }> = [
+type AiToolbarTool = { tool: AiTool | 'more'; name: string; description: string }
+
+const aiToolbarPrimaryTools: AiToolbarTool[] = [
   { tool: 'expand', name: 'AI扩图', description: '扩展画面，不裁剪主体' },
   { tool: 'background', name: 'AI换背景', description: '一键更换图片场景' },
   { tool: 'portrait', name: 'AI写真', description: '生成不同写真效果' },
   { tool: 'style', name: '换个风格', description: '快速转换图片风格' },
-  { tool: 'poster', name: '商品海报', description: '一键生成营销海报' },
-  { tool: 'more', name: '更多', description: '换配色等更多工具' },
 ]
+
+const aiToolbarExpandedTools: AiToolbarTool[] = [
+  ...aiToolbarPrimaryTools,
+  { tool: 'poster', name: '商品海报', description: '一键生成营销海报' },
+  { tool: 'palette', name: '换配色', description: '重新搭配图片色彩' },
+]
+
+const aiToolbarMoreTool: AiToolbarTool = { tool: 'more', name: '更多', description: '查看更多 AI 工具' }
 
 const aiRatioOptions: Array<{ value: AiRatio; label: string }> = [
   { value: '16:9', label: '16:9 横图' },
@@ -115,7 +123,7 @@ export function MaterialDetailPrototype() {
   const [notice, setNotice] = useState('')
   const [loginOpen, setLoginOpen] = useState(false)
   const [moreToolsOpen, setMoreToolsOpen] = useState(false)
-  const [selectedAiRatio, setSelectedAiRatio] = useState<AiRatio>('16:9')
+  const [selectedAiRatio, setSelectedAiRatio] = useState<AiRatio | null>(null)
   const [downloadSucceeded, setDownloadSucceeded] = useState(false)
   const [downloadRecommendationDismissed, setDownloadRecommendationDismissed] = useState(false)
   const noticeTimer = useRef<number | null>(null)
@@ -123,6 +131,9 @@ export function MaterialDetailPrototype() {
   const rightRecommendationRef = useRef<HTMLElement>(null)
   const downloadRecommendationRef = useRef<HTMLElement>(null)
   const exposureSeenRef = useRef<Set<AiPosition>>(new Set())
+  const selectedAiRatioLabel = selectedAiRatio
+    ? aiRatioOptions.find((option) => option.value === selectedAiRatio)?.label || selectedAiRatio
+    : ''
 
   useEffect(() => () => {
     if (noticeTimer.current !== null) window.clearTimeout(noticeTimer.current)
@@ -298,43 +309,25 @@ export function MaterialDetailPrototype() {
                 </button>
               </div>
               <section className="md-ai-toolbar" ref={toolbarRef} aria-labelledby="md-ai-toolbar-title">
-                <h2 id="md-ai-toolbar-title">用 AI 继续处理这张图片</h2>
+                <h2 id="md-ai-toolbar-title">用 AI 继续创作</h2>
                 <div className="md-ai-tool-grid">
-                  {aiToolbarTools.map((item) => (
-                    item.tool === 'more' ? (
-                      <button
-                        key={item.tool}
-                        type="button"
-                        className={`md-ai-tool ${moreToolsOpen ? 'is-active' : ''}`}
-                        onClick={() => setMoreToolsOpen((open) => !open)}
-                        aria-expanded={moreToolsOpen}
-                      >
-                        <AiToolIcon tool={item.tool} />
-                        <span className="md-ai-tool-name">{item.name}</span>
-                        <small>{item.description}</small>
-                      </button>
-                    ) : (
-                      <button
-                        key={item.tool}
-                        type="button"
-                        className="md-ai-tool"
-                        onClick={() => navigateToAiTool(item.tool as AiTool, 'top_toolbar')}
-                      >
-                        <AiToolIcon tool={item.tool} />
-                        <span className="md-ai-tool-name">{item.name}</span>
-                        <small>{item.description}</small>
-                      </button>
-                    )
+                  {(moreToolsOpen ? aiToolbarExpandedTools : [...aiToolbarPrimaryTools, aiToolbarMoreTool]).map((item) => (
+                    <button
+                      key={item.tool}
+                      type="button"
+                      className={`md-ai-tool ${item.tool === 'more' && moreToolsOpen ? 'is-active' : ''}`}
+                      onClick={() => item.tool === 'more'
+                        ? setMoreToolsOpen((open) => !open)
+                        : navigateToAiTool(item.tool as AiTool, 'top_toolbar')}
+                      aria-expanded={item.tool === 'more' ? moreToolsOpen : undefined}
+                      aria-label={`${item.name}：${item.description}`}
+                    >
+                      <AiToolIcon tool={item.tool} />
+                      <span className="md-ai-tool-name">{item.name}</span>
+                      <small className="md-ai-tool-tooltip" role="tooltip">{item.description}</small>
+                    </button>
                   ))}
                 </div>
-                {moreToolsOpen && (
-                  <div className="md-ai-more-menu" role="menu" aria-label="更多 AI 工具">
-                    <button type="button" role="menuitem" onClick={() => navigateToAiTool('palette', 'top_toolbar')}>
-                      <AiToolIcon tool="palette" />
-                      <span><b>换配色</b><small>重新搭配图片色彩</small></span>
-                    </button>
-                  </div>
-                )}
               </section>
               <div className="md-image-box">
                 <img src={mainImage} alt="站在绿植墙前的白色T恤美女图片" />
@@ -383,11 +376,15 @@ export function MaterialDetailPrototype() {
                     </button>
                   ))}
                 </div>
-                <button type="button" className="md-ai-recommendation-cta" onClick={() => navigateToAiTool('expand', 'right_card', selectedAiRatio)}>
+                <button
+                  type="button"
+                  className="md-ai-recommendation-cta"
+                  aria-label={selectedAiRatio ? `AI扩图：扩成 ${selectedAiRatioLabel}` : 'AI扩图'}
+                  onClick={() => navigateToAiTool('expand', 'right_card', selectedAiRatio ?? undefined)}
+                >
                   <MagicWand size={17} weight="regular" />
-                  AI 扩图这张图片
+                  {selectedAiRatio ? `扩成 ${selectedAiRatioLabel}` : 'AI扩图'}
                 </button>
-                <small>自动带入当前图片</small>
               </section>
               <button type="button" className="md-download" onClick={handleDownload}>
                 <DownloadSimple size={20} weight="regular" />
