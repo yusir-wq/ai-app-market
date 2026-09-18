@@ -1097,10 +1097,10 @@ export function ConversionPrototype() {
                           <FrameCorners size={17} weight="regular" />
                         </button>
                         <span
-                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""} ${item.interaction === "expand" ? "has-expand-preview" : ""} ${item.interaction === "expand" && isStaticExpansionRatio(item.ratio) ? "is-static-expansion" : ""} ${item.interaction === "expand" && isVerticalExpansionRatio(item.ratio) ? "is-vertical-expansion" : ""} ${touchExpandedSceneId === item.id ? "is-touch-expanded" : ""} ${item.composite ? "has-sea-composite" : ""}`}
+                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""} ${item.interaction === "expand" ? "has-expand-preview" : ""} ${item.interaction === "expand" && isStaticExpansionRatio(item.ratio) ? "is-static-expansion" : ""} ${item.interaction === "expand" && isVerticalExpansionRatio(item.ratio) ? "is-vertical-expansion" : ""} ${touchExpandedSceneId === item.id ? "is-touch-expanded" : ""} ${item.composite && showFreeCutoutPreview ? "has-sea-composite" : ""}`}
                           style={item.interaction === "expand" ? getExpansionPreviewStyle(item.ratio) : undefined}
                         >
-                          {item.composite ? (
+                          {item.composite && showFreeCutoutPreview ? (
                             <>
                               <Image
                                 src={item.composite.effectBackground}
@@ -1122,6 +1122,30 @@ export function ConversionPrototype() {
                                 fill
                                 sizes="(max-width: 960px) 45vw, 220px"
                                 className="tc-sea-subject"
+                              />
+                            </>
+                          ) : item.composite ? (
+                            <>
+                              <Image
+                                src={item.previewImage ?? item.image}
+                                alt={item.name}
+                                fill
+                                sizes="(max-width: 960px) 50vw, 250px"
+                                className="tc-scene-background tc-scene-result-base"
+                              />
+                              <Image
+                                src={item.composite.subject}
+                                alt={`${item.name}原图`}
+                                fill
+                                sizes="(max-width: 960px) 50vw, 250px"
+                                className="tc-scene-hover-original"
+                              />
+                              <Image
+                                src={item.previewImage ?? item.image}
+                                alt={`${item.name}效果图`}
+                                fill
+                                sizes="(max-width: 960px) 50vw, 250px"
+                                className="tc-scene-hover-result"
                               />
                             </>
                           ) : item.interaction === "expand" ? (

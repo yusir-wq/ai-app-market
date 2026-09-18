@@ -51,7 +51,7 @@ export const scenes: Scene[] = [
   { id: 'meeting-background', name: '会议背景', description: '线上会议背景', image: expansionSourceImage, result: '/prototype-assets/chinaz-scene-20-result.jpg', ratio: '1920 x 1080', previewImage: '/prototype-assets/chinaz-scene-20-result.jpg', hoverImage: expansionSourceImage, interaction: 'expand' },
 ]
 
-const backgroundSourceImage = expansionSourceImage
+const backgroundSourceImage = '/prototype-assets/background-scenes/scene-10-subject.png'
 const seaComposite = {
   subject: '/prototype-assets/background-scenes/scene-10-subject.png',
   originalBackground: '/prototype-assets/background-scenes/scene-10-original-background.png',
