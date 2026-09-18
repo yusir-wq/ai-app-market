@@ -64,7 +64,8 @@
 /* Scene cards: visual area is always square; responsive changes only the column count. */
 .tc-scene-grid { gap:18px; grid-template-columns:repeat(4,minmax(0,1fr)); }
 .is-baseline .tc-scene-grid { grid-template-columns:repeat(5,minmax(0,1fr)); }
-.tc-scene,.is-baseline .tc-scene { background:#fff; border:1px solid transparent; border-radius:13px; display:grid; gap:9px; grid-template-rows:auto auto; height:auto; overflow:visible; padding:8px 8px 10px; text-align:center; }
+.tc-scene,.is-baseline .tc-scene { background:#fff; border:1px solid transparent; border-radius:13px; display:grid; gap:9px; grid-template-rows:auto auto; height:auto; overflow:visible; padding:8px 8px 10px; position:relative; text-align:center; z-index:0; }
+.tc-scene:hover { z-index:100; }
 .tc-scene.selected { border-color:#575ce942; box-shadow:0 10px 24px #575ce914; }
 .tc-scene>button,.tc-scene>i { display:none; }
 .tc-scene-visual { aspect-ratio:1 / 1; border-radius:11px; display:block; overflow:hidden; position:relative; width:100%; }
@@ -438,36 +439,134 @@
   transition-delay: .3s;
 }
 
-/* Expansion preview: keep the source portrait centered while the generated
-   canvas grows outward, then resolve the new area before fading the source
-   boundary away. The first option uses this treatment as a focused demo. */
-.tc-scene-visual.has-expand-preview .tc-scene-expand-original {
-  bottom: 0!important;
-  height: 100%!important;
-  left: 23%!important;
+/* Expansion preview: keep one complete generated canvas and reveal the part
+   that starts outside the fixed square card. No image swap or scale is used. */
+.tc-scene-visual.has-expand-preview {
+  overflow: hidden;
+  z-index: 20;
+}
+.tc-scene-visual.has-expand-preview .tc-scene-expand-canvas {
+  bottom: auto!important;
+  height: var(--scene-expand-height)!important;
+  left: 50%!important;
   right: auto!important;
-  top: 0!important;
-  width: 54%!important;
+  top: 50%!important;
+  width: var(--scene-expand-width)!important;
+  max-width: none!important;
+  max-height: none!important;
+  z-index: 1;
+  object-fit: cover;
+  pointer-events: auto;
+  transform: translate(-50%,-50%)!important;
+  border-radius: 11px;
+  clip-path: inset(var(--scene-expand-clip-top) var(--scene-expand-clip-right) var(--scene-expand-clip-bottom) var(--scene-expand-clip-left) round 11px);
+  will-change: clip-path;
+  transition: clip-path .18s cubic-bezier(.22,.61,.36,1);
+}
+.tc-scene-visual.has-expand-preview:hover,
+.tc-scene-visual.has-expand-preview.is-touch-expanded {
+  overflow: visible;
+}
+.tc-scene-visual.has-expand-preview.is-static-expansion:hover,
+.tc-scene-visual.has-expand-preview.is-static-expansion.is-touch-expanded {
+  overflow: hidden;
+}
+.tc-scene-visual.has-expand-preview:hover .tc-scene-expand-canvas,
+.tc-scene-visual.has-expand-preview.is-touch-expanded .tc-scene-expand-canvas {
+  clip-path: inset(0 round 11px);
+  transition-duration: .32s;
+}
+.tc-scene-visual.has-expand-preview .tc-scene-expand-guides {
+  bottom: auto!important;
+  height: var(--scene-expand-height)!important;
+  left: 50%!important;
+  right: auto!important;
+  top: 50%!important;
+  width: var(--scene-expand-width)!important;
+  max-width: none!important;
+  max-height: none!important;
   z-index: 3;
   opacity: 0;
-  object-fit: cover;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.86);
+  pointer-events: none;
+  position: absolute!important;
+  transform: translate(-50%,-50%)!important;
+  overflow: visible;
+  transition: opacity .12s ease;
 }
-.tc-scene-visual.has-expand-preview .tc-scene-expand-result {
-  z-index: 2;
+.tc-scene-visual.has-expand-preview:hover .tc-scene-expand-guides,
+.tc-scene-visual.has-expand-preview.is-touch-expanded .tc-scene-expand-guides {
+  opacity: var(--scene-guide-opacity);
+  transition-delay: .18s;
+}
+.tc-scene-visual.has-expand-preview.is-vertical-expansion:hover + div,
+.tc-scene-visual.has-expand-preview.is-vertical-expansion.is-touch-expanded + div {
   opacity: 0;
-  clip-path: inset(0 23% 0 23%);
-  filter: blur(8px);
+  visibility: hidden;
 }
-.tc-scene-visual.has-expand-preview:hover .tc-scene-result-base {
-  opacity: 0;
-  transition-duration: 0s;
+.tc-scene-expand-zone,
+.tc-scene-expand-seam {
+  display: block;
+  position: absolute;
 }
-.tc-scene-visual.has-expand-preview:hover .tc-scene-expand-original {
-  animation: tc-expand-original-reveal .9s ease-out both;
+.tc-scene-expand-zone {
+  background: rgba(255,255,255,.12);
 }
-.tc-scene-visual.has-expand-preview:hover .tc-scene-expand-result {
-  animation: tc-expand-result-reveal .9s ease-out both;
+.tc-scene-expand-zone-left {
+  bottom: 0;
+  left: 0;
+  top: 0;
+  width: var(--scene-source-inset-left);
+}
+.tc-scene-expand-zone-right {
+  bottom: 0;
+  right: 0;
+  top: 0;
+  width: var(--scene-source-inset-right);
+}
+.tc-scene-expand-zone-top {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--scene-source-inset-top);
+}
+.tc-scene-expand-zone-bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--scene-source-inset-bottom);
+}
+.tc-scene-expand-seam {
+  border-color: rgba(255,255,255,.7);
+  border-style: dashed;
+  border-width: 0;
+}
+.tc-scene-expand-seam-left {
+  bottom: 0;
+  left: var(--scene-source-inset-left);
+  opacity: var(--scene-seam-left-opacity);
+  top: 0;
+  border-left-width: 1px;
+}
+.tc-scene-expand-seam-right {
+  bottom: 0;
+  opacity: var(--scene-seam-right-opacity);
+  right: var(--scene-source-inset-right);
+  top: 0;
+  border-right-width: 1px;
+}
+.tc-scene-expand-seam-top {
+  left: 0;
+  opacity: var(--scene-seam-top-opacity);
+  right: 0;
+  top: var(--scene-source-inset-top);
+  border-top-width: 1px;
+}
+.tc-scene-expand-seam-bottom {
+  bottom: var(--scene-source-inset-bottom);
+  left: 0;
+  opacity: var(--scene-seam-bottom-opacity);
+  right: 0;
+  border-bottom-width: 1px;
 }
 .tc-scene-visual.has-hover-preview:not(.has-expand-preview):hover .tc-scene-hover-result {
   transition-duration: .5s;
@@ -509,27 +608,9 @@
   0%, 37.5% { opacity: 0; }
   100% { opacity: 1; }
 }
-@keyframes tc-expand-result-reveal {
-  0% { clip-path: inset(0 23% 0 23%); opacity: .16; filter: blur(8px); }
-  22% { clip-path: inset(0); opacity: .24; filter: blur(8px); }
-  78% { clip-path: inset(0); opacity: 1; filter: blur(0); }
-  100% { clip-path: inset(0); opacity: 1; filter: blur(0); }
-}
-@keyframes tc-expand-original-reveal {
-  0%,78% { opacity: 1; box-shadow: 0 0 0 1px rgba(255,255,255,.86); }
-  100% { opacity: 0; box-shadow: 0 0 0 1px rgba(255,255,255,0); }
-}
 @media (prefers-reduced-motion:reduce) {
-  .tc-scene-visual.has-expand-preview:hover .tc-scene-expand-original {
-    animation: none;
-    opacity: 0;
-  }
-  .tc-scene-visual.has-expand-preview:hover .tc-scene-expand-result {
-    animation: none;
-    clip-path: inset(0);
-    filter: none;
-    opacity: 1;
-  }
+  .tc-scene-visual.has-expand-preview .tc-scene-expand-canvas { transition: none; }
+  .tc-scene-visual.has-expand-preview .tc-scene-expand-guides { transition: none; }
 }
 .tc-single-result .tc-result-background { object-fit: cover; }
 .tc-single-result img.tc-result-cutout-subject {

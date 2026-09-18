@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { createPortal } from "react-dom";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -66,6 +66,60 @@ const states: { value: PrototypeState; label: string }[] = [
   { value: "insufficient-balance", label: "余额不足" },
 ];
 const validStates = new Set(states.map((item) => item.value));
+
+const expansionSourceAspectRatio = 3 / 4;
+
+function getExpansionPreviewStyle(ratio: string): CSSProperties {
+  const [width, height] = ratio.split("x").map((value) => Number(value.trim()));
+  const targetAspectRatio = width > 0 && height > 0 ? width / height : 1;
+  const canvasWidth = targetAspectRatio >= 1 ? targetAspectRatio * 100 : 100;
+  const canvasHeight = targetAspectRatio >= 1 ? 100 : 100 / targetAspectRatio;
+  const sourceWidth = targetAspectRatio >= expansionSourceAspectRatio
+    ? canvasHeight * expansionSourceAspectRatio
+    : canvasWidth;
+  const sourceHeight = targetAspectRatio >= expansionSourceAspectRatio
+    ? canvasHeight
+    : canvasWidth / expansionSourceAspectRatio;
+  const sourceInsetTop = ((canvasHeight - sourceHeight) / canvasHeight) * 50;
+  const sourceInsetRight = ((canvasWidth - sourceWidth) / canvasWidth) * 50;
+  const sourceInsetBottom = sourceInsetTop;
+  const sourceInsetLeft = sourceInsetRight;
+  const isSquareCanvas = Math.abs(targetAspectRatio - 1) < 0.001;
+  const hasExpansionDifference = !isSquareCanvas && Math.abs(targetAspectRatio - expansionSourceAspectRatio) >= 0.001;
+  const initialClipTop = hasExpansionDifference ? sourceInsetTop : 0;
+  const initialClipRight = hasExpansionDifference ? sourceInsetRight : 0;
+  const initialClipBottom = hasExpansionDifference ? sourceInsetBottom : 0;
+  const initialClipLeft = hasExpansionDifference ? sourceInsetLeft : 0;
+
+  return {
+    "--scene-expand-width": `${canvasWidth.toFixed(3)}%`,
+    "--scene-expand-height": `${canvasHeight.toFixed(3)}%`,
+    "--scene-expand-clip-top": `${initialClipTop.toFixed(3)}%`,
+    "--scene-expand-clip-right": `${initialClipRight.toFixed(3)}%`,
+    "--scene-expand-clip-bottom": `${initialClipBottom.toFixed(3)}%`,
+    "--scene-expand-clip-left": `${initialClipLeft.toFixed(3)}%`,
+    "--scene-source-inset-top": `${sourceInsetTop.toFixed(3)}%`,
+    "--scene-source-inset-right": `${sourceInsetRight.toFixed(3)}%`,
+    "--scene-source-inset-bottom": `${sourceInsetBottom.toFixed(3)}%`,
+    "--scene-source-inset-left": `${sourceInsetLeft.toFixed(3)}%`,
+    "--scene-seam-left-opacity": sourceInsetLeft > 0.001 ? "1" : "0",
+    "--scene-seam-right-opacity": sourceInsetRight > 0.001 ? "1" : "0",
+    "--scene-seam-top-opacity": sourceInsetTop > 0.001 ? "1" : "0",
+    "--scene-seam-bottom-opacity": sourceInsetBottom > 0.001 ? "1" : "0",
+    "--scene-guide-opacity": isSquareCanvas || hasExpansionDifference ? "1" : "0",
+  } as CSSProperties;
+}
+
+function isStaticExpansionRatio(ratio: string): boolean {
+  const [width, height] = ratio.split("x").map((value) => Number(value.trim()));
+  const targetAspectRatio = width > 0 && height > 0 ? width / height : 1;
+  return Math.abs(targetAspectRatio - 1) < 0.001 || Math.abs(targetAspectRatio - expansionSourceAspectRatio) < 0.001;
+}
+
+function isVerticalExpansionRatio(ratio: string): boolean {
+  const [width, height] = ratio.split("x").map((value) => Number(value.trim()));
+  return width > 0 && height > width;
+}
 
 const historyItems = [
   {
@@ -420,6 +474,7 @@ export function ConversionPrototype() {
   const [sceneId, setSceneId] = useState(
     initialSceneId,
   );
+  const [touchExpandedSceneId, setTouchExpandedSceneId] = useState<string | null>(null);
   const [showCompare, setShowCompare] = useState(true);
   const [autoCutout, setAutoCutout] = useState(false);
   const [chestEnabled, setChestEnabled] = useState(query.get("reward") === "task");
@@ -1021,6 +1076,9 @@ export function ConversionPrototype() {
                         className={`tc-scene ${sceneId === item.id ? "selected" : ""}`}
                         onClick={() => {
                           setSceneId(item.id);
+                          if (item.interaction === "expand" && window.matchMedia("(hover: none)").matches) {
+                            setTouchExpandedSceneId((current) => (current === item.id ? null : item.id));
+                          }
                           log(
                             "scene_card_click",
                             `tool=${toolKey} · sceneId=${item.id} · position=${activeScenes.indexOf(item) + 1} · variant=${variant}`,
@@ -1039,7 +1097,8 @@ export function ConversionPrototype() {
                           <FrameCorners size={17} weight="regular" />
                         </button>
                         <span
-                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""} ${item.interaction === "expand" ? "has-expand-preview" : ""} ${item.composite ? "has-sea-composite" : ""}`}
+                          className={`tc-scene-visual ${showFreeCutoutPreview ? "has-free-composite" : ""} ${item.hoverImage ? "has-hover-preview" : ""} ${item.interaction === "expand" ? "has-expand-preview" : ""} ${item.interaction === "expand" && isStaticExpansionRatio(item.ratio) ? "is-static-expansion" : ""} ${item.interaction === "expand" && isVerticalExpansionRatio(item.ratio) ? "is-vertical-expansion" : ""} ${touchExpandedSceneId === item.id ? "is-touch-expanded" : ""} ${item.composite ? "has-sea-composite" : ""}`}
+                          style={item.interaction === "expand" ? getExpansionPreviewStyle(item.ratio) : undefined}
                         >
                           {item.composite ? (
                             <>
@@ -1065,6 +1124,26 @@ export function ConversionPrototype() {
                                 className="tc-sea-subject"
                               />
                             </>
+                          ) : item.interaction === "expand" ? (
+                            <>
+                              <Image
+                                src={item.previewImage ?? item.image}
+                                alt={item.name}
+                                fill
+                                sizes="(max-width: 960px) 50vw, 250px"
+                                className="tc-scene-expand-canvas"
+                              />
+                              <span className="tc-scene-expand-guides" aria-hidden="true">
+                                <i className="tc-scene-expand-zone tc-scene-expand-zone-left" />
+                                <i className="tc-scene-expand-zone tc-scene-expand-zone-right" />
+                                <i className="tc-scene-expand-zone tc-scene-expand-zone-top" />
+                                <i className="tc-scene-expand-zone tc-scene-expand-zone-bottom" />
+                                <i className="tc-scene-expand-seam tc-scene-expand-seam-left" />
+                                <i className="tc-scene-expand-seam tc-scene-expand-seam-right" />
+                                <i className="tc-scene-expand-seam tc-scene-expand-seam-top" />
+                                <i className="tc-scene-expand-seam tc-scene-expand-seam-bottom" />
+                              </span>
+                            </>
                           ) : (
                             <>
                               <Image
@@ -1081,14 +1160,14 @@ export function ConversionPrototype() {
                                     alt={`${item.name}原图`}
                                     fill
                                     sizes="(max-width: 960px) 50vw, 250px"
-                                    className={`tc-scene-hover-original ${item.interaction === "expand" ? "tc-scene-expand-original" : ""}`}
+                                    className="tc-scene-hover-original"
                                   />
                                   <Image
                                     src={item.previewImage ?? item.image}
                                     alt={`${item.name}效果图`}
                                     fill
                                     sizes="(max-width: 960px) 50vw, 250px"
-                                    className={`tc-scene-hover-result ${item.interaction === "expand" ? "tc-scene-expand-result" : ""}`}
+                                    className="tc-scene-hover-result"
                                   />
                                 </>
                               )}
